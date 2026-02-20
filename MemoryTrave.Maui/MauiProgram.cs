@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MemoryTrave.Maui.Api;
+using Microsoft.Extensions.Logging;
 
 namespace MemoryTrave.Maui;
 
@@ -15,6 +16,9 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        builder.Services.AddSingleton<HttpClient>();
+        builder.Services.AddSingleton<ApiRequestService>();
+        
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
