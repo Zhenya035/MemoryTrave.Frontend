@@ -30,16 +30,27 @@ public partial class LoginPage : ContentPage
             Password = password
         };
 
-        var response = await _apiRequest.PostRequest<AuthRequest, AuthResponse>(URL.Login, body);
+        var authResponse = await _apiRequest.PostRequest<AuthRequest, AuthResponse>(URL.Login, body);
 
-        if (response.IsSuccess)
+        if (authResponse.IsSuccess)
         {
-            await SecureStorage.SetAsync("JwtToken", response.Data.JwtToken);
-            Application.Current.MainPage = new AppShell();
+            await SecureStorage.Default.SetAsync("JwtToken", authResponse.Data.JwtToken);
+            _apiRequest.SetJwtToken(authResponse.Data.JwtToken);
         }
         else
         {
-            await DisplayAlert("Error", response.ErrorMessage.ToUserFriendlyMessage(), "OK");
+            await DisplayAlert("Error", authResponse.ErrorMessage.ToUserFriendlyMessage(), "OK");
+            return;
         }
+        
+        var privateKeyResponse = await _apiRequest.GetRequest<GetKeyResponse>(URL.GetPrivateKey);
+        
+        if (privateKeyResponse.IsSuccess)
+        {
+            await SecureStorage.Default.SetAsync("PrivateKey", privateKeyResponse.Data.EncryptedPrivateKey);
+            Application.Current.MainPage = new AppShell();
+        }
+        else
+            await DisplayAlert("Error", privateKeyResponse.ErrorMessage.ToUserFriendlyMessage(), "OK");
     }
 }
