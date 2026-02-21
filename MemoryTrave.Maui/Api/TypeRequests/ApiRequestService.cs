@@ -1,10 +1,20 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using MemoryTrave.Maui.Api.TypeRequests;
 
 namespace MemoryTrave.Maui.Api;
 
 public class ApiRequestService(HttpClient client)
 {
+    public void SetJwtToken(string token)
+    {
+        if (string.IsNullOrWhiteSpace(token))
+            throw new ArgumentException("JWT token cannot be null or empty.");
+        
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+    }
+    
     public async Task<ApiResult<T>> GetRequest<T>(string url)
     {
         try
