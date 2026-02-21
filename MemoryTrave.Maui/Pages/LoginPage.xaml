@@ -107,7 +107,8 @@
                     
                 <Button Text="Войти" 
                         BackgroundColor="Black" 
-                        TextColor="White" />
+                        TextColor="White"
+                        Clicked="Login"/>
             </VerticalStackLayout>
         </Border>
     </Grid>
