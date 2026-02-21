@@ -3,7 +3,7 @@ using MemoryTrave.Maui.Dto.Security;
 
 namespace MemoryTrave.Maui.Security;
 
-public class PBKDF2
+public class Pbkdf2
 {
     private const int Iterations = 600000;
     private const int SaltSize = 16;
