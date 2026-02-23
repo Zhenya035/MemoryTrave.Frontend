@@ -7,7 +7,8 @@
     
     <Grid
           HorizontalOptions="Center" 
-          VerticalOptions="Center">
+          VerticalOptions="Center"
+          Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -20,54 +21,66 @@
                FontSize="30"
                HorizontalOptions="Center"
                TextColor="Black"
-               Margin="0,0,0,15"/>
+               Margin="0,0,0,10"/>
         
         <Label Grid.Row="1" Text="Сохраняйте воспоминания о ваших путешествиях"
                FontSize="15"
                TextColor="Gray"
                HorizontalOptions="Center"
-               Margin="0,15,0,20"/>
-        
+               HorizontalTextAlignment="Center"
+               Margin="0,10,0,20"/>
+
         <Border Grid.Row="2" 
                 StrokeShape="RoundRectangle 12"
                 BackgroundColor="LightGray"
-                Margin="0,20,0,2.5"
-                Height="40">
-            <Grid Padding="3" >
+                HeightRequest="40">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-            
+                
                 <Border Grid.Column="0"
                         StrokeShape="RoundRectangle 12"
-                        BackgroundColor="White">
+                        BackgroundColor="White"
+                        Margin="2">
                     <Label Text="Вход"
                            HorizontalOptions="Center"
-                           TextColor="Black"/>
+                           VerticalOptions="Center" 
+                           TextColor="Black"
+                           FontAttributes="Bold"/>
                 </Border>
                 
-                <Label Grid.Column="1" Text="Регистрация"
-                       HorizontalOptions="Center"
-                       TextColor="Black"/>
+                <Border Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        Margin="2"
+                        Stroke="Transparent">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRegisterTapped"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Регистрация"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" 
+                           TextColor="Gray"/>
+                </Border>
+                
             </Grid>
         </Border>
         
         <Border Grid.Row="3" 
                 StrokeShape="RoundRectangle 12" 
                 BackgroundColor="White" 
-                Margin="0,2.5,0,0">
-            <VerticalStackLayout Spacing="12" 
-                                 Padding="20">
+                Margin="0,3,0,0">
+            <VerticalStackLayout Padding="20">
                 <Label Text="Вход в аккаунт"
                        TextColor="Black"
                        FontAttributes="Bold"
-                       Margin="0,0,0,5"
+                       Margin="0,0,0,2.5"
                        Padding="0"/>
                 
                 <Label Text="Введите ваши данные для входа"
                        TextColor="Gray"
-                       Margin="0,5,0,10"/>
+                       Margin="0,2.5,0,10"/>
                 
                 <Label Text="Email"
                        TextColor="Black"
@@ -90,12 +103,12 @@
                 <Label Text="Пароль"
                        TextColor="Black"
                        FontAttributes="Bold"
-                       Margin="5,0,0,2.5"/>
+                       Margin="0,5,0,2.5"/>
                 
                 <Border HeightRequest="40" 
                         Padding="10, 0" 
                         StrokeShape="RoundRectangle 8" 
-                        Margin="0, 10, 0, 10" 
+                        Margin="0, 2.5, 0, 20" 
                         BackgroundColor="LightGray">
                     <Entry x:Name="PasswordEntry" 
                            Placeholder="Password" 

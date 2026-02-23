@@ -47,10 +47,15 @@ public partial class LoginPage : ContentPage
         
         if (privateKeyResponse.IsSuccess)
         {
-            await SecureStorage.Default.SetAsync("PrivateKey", privateKeyResponse.Data.EncryptedPrivateKey);
+            await SecureStorage.Default.SetAsync("EncryptedPrivateKey", privateKeyResponse.Data.EncryptedPrivateKey);
             Application.Current.MainPage = new AppShell();
         }
         else
             await DisplayAlert("Error", privateKeyResponse.ErrorMessage.ToUserFriendlyMessage(), "OK");
+    }
+
+    private void OnRegisterTapped(object? sender, TappedEventArgs e)
+    {
+        Application.Current.MainPage = new RegistrationPage(_apiRequest);
     }
 }

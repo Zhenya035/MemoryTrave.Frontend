@@ -41,7 +41,7 @@ public partial class RegistrationPage : ContentPage
             await SecureStorage.Default.SetAsync("Password", password);
             _apiRequest.SetJwtToken(authResponse.Data.JwtToken);
             
-            CreateEccKeys();
+            await CreateEccKeys();
             
             Application.Current.MainPage = new AppShell();
         }
@@ -49,7 +49,7 @@ public partial class RegistrationPage : ContentPage
             await DisplayAlert("Error", authResponse.ErrorMessage.ToUserFriendlyMessage(), "OK");
     }
 
-    private async void CreateEccKeys()
+    private async Task CreateEccKeys()
     {
         var keys = EccP256.GenerateKeyPair();
         
@@ -78,7 +78,7 @@ public partial class RegistrationPage : ContentPage
             EncryptedPrivateKey = encryptedPrivateKey
         };
         
-        var response = await _apiRequest.PutRequest(URL.Registration, body);
+        var response = await _apiRequest.PutRequest(URL.AddKeys, body);
 
         if (response.IsSuccess)
         {
@@ -87,5 +87,10 @@ public partial class RegistrationPage : ContentPage
         else
             await DisplayAlert("Error", response.ErrorMessage.ToUserFriendlyMessage(), "OK");
 
+    }
+
+    private async void OnLoginTapped(object? sender, TappedEventArgs e)
+    {
+        Application.Current.MainPage = new LoginPage(_apiRequest);
     }
 }
