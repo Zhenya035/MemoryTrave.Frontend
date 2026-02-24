@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MemoryTrave.Maui.Pages.RegistrationPage"
+             BackgroundColor="White">
+    
+    <Grid
+          HorizontalOptions="Center" 
+          VerticalOptions="Center"
+          Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Label Text="MemoryTrave" 
+               FontAttributes="Bold"
+               FontSize="30"
+               HorizontalOptions="Center"
+               TextColor="Black"
+               Margin="0,0,0,15"/>
+        
+        <Label Grid.Row="1" Text="Сохраняйте воспоминания о ваших путешествиях"
+               FontSize="15"
+               TextColor="Gray"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Margin="0,15,0,20"/>
+        
+        <Border Grid.Row="2" 
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="#E0E0E0" 
+                HeightRequest="40">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Grid.Column="0"
+                        BackgroundColor="Transparent" 
+                        Margin="2" 
+                        Stroke="Transparent">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLoginTapped"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Вход"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Gray"/>
+                </Border>
+                
+                <Border Grid.Column="1" 
+                        StrokeShape="RoundRectangle 12" 
+                        BackgroundColor="White" 
+                        Margin="2">
+                    <Label Text="Регистрация" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Black" 
+                           FontAttributes="Bold"/>
+                </Border>
+                
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="3" 
+                StrokeShape="RoundRectangle 12" 
+                BackgroundColor="White" 
+                Margin="0,3,0,0">
+            <VerticalStackLayout Padding="20">
+                <Label Text="Создать аккаунт"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,0,0,2.5"
+                       Padding="0"/>
+                
+                <Label Text="Заполните форму для регистрации"
+                       TextColor="Gray"
+                       Margin="0,2.5,0,10"/>
+                
+                <Label Text="Имя пользователя"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,10,0,2.5"/>
+                
+                <Border HeightRequest="40" 
+                        Padding="10, 0" 
+                        StrokeShape="RoundRectangle 8" 
+                        Margin="0,2.5, 0, 5" 
+                        BackgroundColor="LightGray">
+                    <Entry x:Name="UsernameEntry" 
+                           Placeholder="username" 
+                           TextColor="Black" 
+                           PlaceholderColor="Gray" 
+                           HeightRequest="10"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                
+                <Label Text="Email"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,5,0,2.5"/>
+                
+                <Border HeightRequest="40" 
+                        Padding="10, 0" 
+                        StrokeShape="RoundRectangle 8" 
+                        Margin="0,2.5, 0, 5" 
+                        BackgroundColor="LightGray">
+                    <Entry x:Name="EmailEntry" 
+                           Placeholder="example@mail.ru" 
+                           TextColor="Black" 
+                           PlaceholderColor="Gray" 
+                           HeightRequest="10"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                   
+                <Label Text="Пароль"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,5,0,2.5"/>
+                
+                <Border HeightRequest="40" 
+                        Padding="10, 0" 
+                        StrokeShape="RoundRectangle 8" 
+                        Margin="0, 2.5, 0, 20" 
+                        BackgroundColor="LightGray">
+                    <Entry x:Name="PasswordEntry" 
+                           Placeholder="Password" 
+                           IsPassword="True" 
+                           TextColor="Black" 
+                           PlaceholderColor="Gray" 
+                           VerticalOptions="Center"/>
+                </Border>
+                    
+                <Button Text="Зарегистрироваться" 
+                        BackgroundColor="Black" 
+                        TextColor="White"
+                        Clicked="Registration"/>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+    
+</ContentPage>
