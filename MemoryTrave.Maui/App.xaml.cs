@@ -1,19 +1,17 @@
-﻿using MemoryTrave.Maui.Api;
-using MemoryTrave.Maui.Pages;
-
-namespace MemoryTrave.Maui;
+﻿namespace MemoryTrave.Maui;
 
 public partial class App : Application
 {
-    public App()
+    private readonly IServiceProvider _services;
+    public App(IServiceProvider services)
     {
         InitializeComponent();
+        _services = services;
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        if(string.IsNullOrEmpty(Preferences.Get("isAuthenticate", null)))
-            return new Window(new LoginPage(new ApiRequestService(new HttpClient())));
-        return new Window(new AppShell());
+        var appShell = _services.GetRequiredService<View.AppShell>();
+        return new Window(appShell);
     }
 }

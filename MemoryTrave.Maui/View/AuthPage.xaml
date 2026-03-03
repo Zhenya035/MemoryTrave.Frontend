@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             x:Class="MemoryTrave.Maui.View.AuthPage"
+             x:DataType="viewModel:AuthViewModel"
+             BackgroundColor="#eff6ff">
+    
+    <Grid
+          HorizontalOptions="Center" 
+          VerticalOptions="Center"
+          Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Label Text="MemoryTrave" 
+               FontAttributes="Bold"
+               FontSize="32"
+               HorizontalOptions="Center"
+               TextColor="Black"
+               Margin="0,0,0,15"/>
+        
+        <Label Grid.Row="1" Text="Сохраняйте воспоминания о ваших путешествиях"
+               FontSize="15"
+               TextColor="Gray"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Margin="0,15,0,20"/>
+        
+        <Border Grid.Row="2" 
+                StrokeShape="RoundRectangle 20"
+                Stroke="Transparent"
+                BackgroundColor="#ECECF0"
+                HeightRequest="35">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Grid.Column="0" 
+                        StrokeShape="RoundRectangle 20"
+                        BackgroundColor="White"
+                        Stroke="Transparent"
+                        Margin="3"
+                        IsVisible="{Binding IsLogin}">
+                    <Label Text="Вход"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" 
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="13"/>
+                </Border>
+            
+                <Border Grid.Column="0" 
+                        BackgroundColor="Transparent" 
+                        Margin="3" 
+                        Stroke="Transparent"
+                        IsVisible="{Binding IsRegistration}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoginTappedCommand}"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Вход"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Gray"
+                           FontSize="13"/>
+                </Border>
+            
+                <Border Grid.Column="1" 
+                        BackgroundColor="Transparent"
+                        Margin="3"
+                        Stroke="Transparent"
+                        IsVisible="{Binding IsLogin}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding RegisterTappedCommand}"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Регистрация"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" 
+                           TextColor="Gray"
+                           FontSize="13"/>
+                </Border>
+            
+                <Border Grid.Column="1" 
+                        StrokeShape="RoundRectangle 20" 
+                        Stroke="Transparent"
+                        BackgroundColor="White" 
+                        Margin="3"
+                        IsVisible="{Binding IsRegistration}">
+                    <Label Text="Регистрация" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Black" 
+                           FontAttributes="Bold"
+                           FontSize="13"/>
+                </Border>
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="3" 
+                StrokeShape="RoundRectangle 12" 
+                BackgroundColor="White" 
+                Margin="0,10,0,0"
+                Stroke="#e5e7eb">
+            <VerticalStackLayout Padding="20">
+                <Label Text="Вход в аккаунт"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,0,0,2.5"
+                       Padding="0"
+                       IsVisible="{Binding IsLogin}"/>
+                
+                <Label Text="Создать аккаунт"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,0,0,2.5"
+                       Padding="0"
+                       IsVisible="{Binding IsRegistration}"/>
+                
+                <Label Text="Введите ваши данные для входа"
+                       TextColor="Gray"
+                       Margin="0,2.5,0,10"
+                       IsVisible="{Binding IsLogin}"/>
+                
+                <Label Text="Заполните форму для регистрации"
+                       TextColor="Gray"
+                       Margin="0,2.5,0,10"
+                       IsVisible="{Binding IsRegistration}"/>
+                
+                <Label Text="Имя пользователя"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,10,0,2.5"
+                       IsVisible="{Binding IsRegistration}"/>
+            
+                <Border HeightRequest="40" 
+                        Padding="10, 0" 
+                        StrokeShape="RoundRectangle 8" 
+                        Stroke="Transparent"
+                        Margin="0,2.5, 0, 5" 
+                        BackgroundColor="#F3F3F5"
+                        IsVisible="{Binding IsRegistration}">
+                    <Entry Text="{Binding Username}"
+                           Placeholder="username" 
+                           TextColor="Black" 
+                           PlaceholderColor="#717182" 
+                           HeightRequest="10"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                
+                <Label Text="Email"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,10,0,2.5"/>
+            
+                <Border HeightRequest="40" 
+                        Padding="10, 0" 
+                        StrokeShape="RoundRectangle 8" 
+                        Stroke="Transparent"
+                        Margin="0,2.5, 0, 5" 
+                        BackgroundColor="#F3F3F5">
+                    <Entry Text="{Binding Email}" 
+                           Placeholder="example@mail.ru" 
+                           TextColor="Black" 
+                           PlaceholderColor="#717182" 
+                           HeightRequest="10"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                   
+                <Label Text="Пароль"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0,5,0,2.5"/>
+            
+                <Border HeightRequest="40" 
+                        Padding="10, 0" 
+                        StrokeShape="RoundRectangle 8" 
+                        Stroke="Transparent"
+                        Margin="0, 2.5, 0, 20" 
+                        BackgroundColor="#F3F3F5">
+                    <Entry Text="{Binding Password}" 
+                           Placeholder="Password" 
+                           IsPassword="True" 
+                           TextColor="Black" 
+                           PlaceholderColor="#717182" 
+                           VerticalOptions="Center"/>
+                </Border>
+                    
+                <Button Text="Войти" 
+                        BackgroundColor="Black" 
+                        TextColor="White"
+                        Command="{Binding LoginCommand}"
+                        IsVisible="{Binding IsLogin}"/>
+                
+                <Button Text="Зарегистрироваться" 
+                        BackgroundColor="Black" 
+                        TextColor="White"
+                        Command="{Binding RegistrationCommand}"
+                        IsVisible="{Binding IsRegistration}"/>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+    
+</ContentPage>
