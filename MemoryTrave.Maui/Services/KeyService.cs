@@ -41,7 +41,7 @@ public class KeyService(
             EncryptedPrivateKey = encryptedPrivateKey
         };
     
-        var response = await apiService.PutRequest(URL.AddKeys, body);
+        var response = await apiService.PutRequest(URL.AddKeys(), body);
 
         if (response.IsSuccess)
         {
