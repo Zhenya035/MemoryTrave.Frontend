@@ -1,4 +1,5 @@
-﻿using MemoryTrave.Maui.Infrastructure.Api;
+﻿using System.Globalization;
+using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Services;
 using MemoryTrave.Maui.Services.Interfaces;
 using MemoryTrave.Maui.View;
@@ -22,6 +23,10 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        var culture = new CultureInfo("en");
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+        
         builder.Services.AddSingleton<HttpClient>();
         builder.Services.AddSingleton<ApiRequestService>();
         
@@ -29,6 +34,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IKeyService, KeyService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
 
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<AppShellViewModel>();

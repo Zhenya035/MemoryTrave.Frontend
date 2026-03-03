@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Models.Authorization;
+using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui.ViewModel;
@@ -11,7 +12,8 @@ public partial class AuthViewModel(
     IAuthService authService,
     INavigationService navigation,
     IDialogService dialogService,
-    IKeyService keyService) : ObservableObject
+    IKeyService keyService,
+    ILocalizationService localization) : BaseViewModel(localization)
 {
     private const string PasswordStorageName = "Password";
     
@@ -35,7 +37,7 @@ public partial class AuthViewModel(
     {
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
         {
-            await dialogService.ShowMessage("Error", "Пожалуйста заполните все поля");
+            await dialogService.ShowMessage(Localization.Error, Localization.FillError);
             return;
         }
 
@@ -60,7 +62,7 @@ public partial class AuthViewModel(
             await navigation.GoBack();
         }
         else
-            await dialogService.ShowMessage("Error", authResponse.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);
 
     }
     
@@ -69,7 +71,7 @@ public partial class AuthViewModel(
     {
         if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
         {
-            await dialogService.ShowMessage("Error", "Пожалуйста заполните все поля");
+            await dialogService.ShowMessage(Localization.Error, Localization.FillError);
             return;
         }
 
@@ -88,7 +90,7 @@ public partial class AuthViewModel(
         }
         else
         {
-            await dialogService.ShowMessage("Error", authResponse.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);
             return;
         }
         
@@ -101,7 +103,7 @@ public partial class AuthViewModel(
             await navigation.GoBack();
         }
         else
-            await dialogService.ShowMessage("Error", privateKeyResponse.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, privateKeyResponse.ErrorMessage);
     }
     
     [RelayCommand]

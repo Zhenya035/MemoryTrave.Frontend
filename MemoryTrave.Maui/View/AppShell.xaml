@@ -5,14 +5,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:view="clr-namespace:MemoryTrave.Maui.View"
     xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+    xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
     x:DataType="viewModel:AppShellViewModel">
 
     <TabBar>
-        <Tab Title="Map" Icon="map.png">
+        <Tab Title="{x:Static localization:Localization.Map}" 
+             Icon="map.png">
             <ShellContent ContentTemplate="{DataTemplate view:MapPage}" />
         </Tab>
         
-        <Tab Title="Profile" Icon="profile.png" IsVisible="{Binding IsAuthorized}">
+        <Tab Title="{x:Static localization:Localization.Profile}" 
+             Icon="profile.png" 
+             IsVisible="{Binding IsAuthorized}">
             <ShellContent ContentTemplate="{DataTemplate view:ProfilePage}" />
         </Tab>
     </TabBar>

@@ -1,6 +1,7 @@
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Authorization;
+using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui.Services;
@@ -48,6 +49,6 @@ public class KeyService(
             await SecureStorage.SetAsync(EncryptedPrivateKeyStorageName, encryptedPrivateKey);
         }
         else
-            await dialogService.ShowMessage("Error", response.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, response.ErrorMessage);
     }
 }

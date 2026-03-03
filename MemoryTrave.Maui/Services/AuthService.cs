@@ -1,18 +1,21 @@
+using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui.Services;
 
 public class AuthService : IAuthService
 {
+    private readonly IDialogService _dialogService;
     private bool _isAuthorized;
     private const string JwtTokenKey = "JwtToken";
 
     public bool IsAuthorized => _isAuthorized;
     public event Action AuthStateChanged;
 
-    public AuthService()
+    public AuthService(IDialogService dialogService)
     {
-        _ = CheckAuth(); 
+        _dialogService = dialogService;
+        _ = CheckAuth();
     }
     
     public async Task<bool> CheckAuth()
@@ -36,7 +39,10 @@ public class AuthService : IAuthService
     public async Task Login(string jwtToken)
     {
         if (string.IsNullOrEmpty(jwtToken))
-            throw new ArgumentException("Token cannot be null or empty", nameof(jwtToken));
+        {
+            _dialogService.ShowMessage(Localization.Error, Localization.JwtError);
+            return;
+        }
 
         await SecureStorage.Default.SetAsync(JwtTokenKey, jwtToken);
         _isAuthorized = true;
