@@ -30,7 +30,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IKeyService, KeyService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
 
-        builder.Services.AddSingleton<View.AppShell>();
+        builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<AppShellViewModel>();
         
         builder.Services.AddTransient<MapPage>();

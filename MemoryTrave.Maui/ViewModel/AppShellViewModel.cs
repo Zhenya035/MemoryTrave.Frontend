@@ -6,24 +6,25 @@ namespace MemoryTrave.Maui.ViewModel;
 public partial class AppShellViewModel : ObservableObject
 {
     [ObservableProperty]
-    private bool isAuhorized;
-    
-    [ObservableProperty]
-    private bool isGuest = true;
+    private bool isAuthorized;
 
     private IAuthService _authService;
     
     public AppShellViewModel(IAuthService authService)
     {
         _authService = authService;
-        authService.AuthStateChanged += OnAuthStateChanged;
+        _authService.AuthStateChanged += OnAuthStateChanged;
         
-        OnAuthStateChanged();
+        UpdateAuthorizationState();
     }
+    
+    private void OnAuthStateChanged() => UpdateAuthorizationState();
 
-    private void OnAuthStateChanged()
+    private void UpdateAuthorizationState()
     {
-        IsAuhorized = _authService.IsAuthorized;
-        OnPropertyChanged(nameof(IsGuest)); 
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            IsAuthorized = _authService.IsAuthorized;
+        });
     }
 }

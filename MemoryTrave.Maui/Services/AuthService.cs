@@ -12,7 +12,7 @@ public class AuthService : IAuthService
 
     public AuthService()
     {
-        CheckAuth().Wait();
+        _ = CheckAuth(); 
     }
     
     public async Task<bool> CheckAuth()
@@ -22,13 +22,13 @@ public class AuthService : IAuthService
             var token = await SecureStorage.Default.GetAsync(JwtTokenKey);
             _isAuthorized = !string.IsNullOrEmpty(token);
             
-            AuthStateChanged?.Invoke();
+            MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
             return _isAuthorized;
         }
         catch (Exception ex)
         {
             _isAuthorized = false;
-            AuthStateChanged?.Invoke();
+            MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
             return false;
         }
     }
@@ -40,13 +40,13 @@ public class AuthService : IAuthService
 
         await SecureStorage.Default.SetAsync(JwtTokenKey, jwtToken);
         _isAuthorized = true;
-        AuthStateChanged?.Invoke();
+        MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
     }
 
     public void Logout()
     {
         SecureStorage.Default.Remove(JwtTokenKey);
         _isAuthorized = false;
-        AuthStateChanged?.Invoke();
+        MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
     }
 }
