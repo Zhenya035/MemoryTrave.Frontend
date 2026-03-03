@@ -46,7 +46,7 @@ public partial class AuthViewModel(
             Password = Password
         };
 
-        var authResponse = await apiService.PostRequest<RegRequest, AuthResponse>(URL.Registration, body);
+        var authResponse = await apiService.PostRequest<RegRequest, AuthResponse>(URL.Registration(), body);
 
         if (authResponse.IsSuccess)
         {
@@ -69,7 +69,7 @@ public partial class AuthViewModel(
     {
         if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
         {
-            await dialogService.ShowMessage("Error", "Пожалуйста заполните все поля", "OK");
+            await dialogService.ShowMessage("Error", "Пожалуйста заполните все поля");
             return;
         }
 
@@ -79,7 +79,7 @@ public partial class AuthViewModel(
             Password = Password
         };
 
-        var authResponse = await apiService.PostRequest<AuthRequest, AuthResponse>(URL.Login, body);
+        var authResponse = await apiService.PostRequest<AuthRequest, AuthResponse>(URL.Authorization(), body);
 
         if (authResponse.IsSuccess)
         {
@@ -92,7 +92,7 @@ public partial class AuthViewModel(
             return;
         }
         
-        var privateKeyResponse = await apiService.GetRequest<GetKeyResponse>(URL.GetPrivateKey);
+        var privateKeyResponse = await apiService.GetRequest<GetKeyResponse>(URL.GetEncryptedPrivateKey());
         
         if (privateKeyResponse.IsSuccess)
         {
