@@ -35,15 +35,28 @@ public static class MauiProgram
         builder.Services.AddSingleton<IKeyService, KeyService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
+        builder.Services.AddSingleton<IStorageService, StorageService>();
 
+        builder.Services.AddSingleton<AddArticlePage>();
+        builder.Services.AddSingleton<AddArticleViewModel>();
+        
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<AppShellViewModel>();
+        
+        builder.Services.AddSingleton<ArticleDetailPage>();
+        builder.Services.AddSingleton<ArticleDetailViewModel>();
+        
+        builder.Services.AddTransient<AuthPage>();
+        builder.Services.AddTransient<AuthViewModel>();
         
         builder.Services.AddTransient<MapPage>();
         builder.Services.AddTransient<MapViewModel>();
         
-        builder.Services.AddTransient<AuthPage>();
-        builder.Services.AddTransient<AuthViewModel>();
+        builder.Services.AddSingleton<ProfilePage>();
+        builder.Services.AddSingleton<ProfileViewModel>();
+        
+        builder.Services.AddSingleton<SettingsPage>();
+        builder.Services.AddSingleton<SettingsViewModel>();
         
 #if DEBUG
         builder.Logging.AddDebug();
