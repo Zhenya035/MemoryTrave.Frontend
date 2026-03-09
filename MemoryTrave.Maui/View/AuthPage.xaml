@@ -9,8 +9,8 @@
              BackgroundColor="#eff6ff">
     
     <Grid
-          HorizontalOptions="Center" 
-          VerticalOptions="Center"
+          HorizontalOptions="Fill" 
+          VerticalOptions="Fill"
           Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
