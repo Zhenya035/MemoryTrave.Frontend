@@ -6,11 +6,15 @@ public interface IStorageService
     public Task<bool> LoadTokenAsync(string token);
     public bool DeleteToken();
     
-    public Task<string?> GetPassword();
+    public Task<string?> GetPasswordAsync();
     public Task<bool> LoadPasswordDekAsync(string password);
     public bool DeletePassword();
 
-    public Task<string?> GetPrivateKey();
+    public Task<string?> GetPrivateKeyAsync();
     public Task<bool> LoadPrivateKeyAsync(string key);
     public bool DeletePrivateKey();
+    
+    public string GetCulture();
+    public bool LoadCultureAsync(string key);
+    public bool DeleteCulture();
 }

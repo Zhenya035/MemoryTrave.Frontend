@@ -14,14 +14,9 @@ public partial class SettingsPage : ContentPage
         _localizationService = localizationService;
         _storageService = service;
         _authService = authService;
-
-        var culture = _localizationService.CurrentCulture.Name;
-        LanguagePicker.SelectedIndex = culture switch
-        {
-            "en" => 0,
-            "ru" => 1,
-            _ => 0
-        };
+        
+        LanguagePicker.ItemsSource = new List<string>{ "en", "ru" };
+        LanguagePicker.SelectedIndex = 0;
     }
     
     private async void OnApplyLanguageClicked(object sender, EventArgs e)
@@ -34,8 +29,6 @@ public partial class SettingsPage : ContentPage
         };
         
         await _localizationService.SetCultureAsync(culture);
-
-        await DisplayAlertAsync("Done", "Language changed", "OK");
     }
 
     private void LogOut(object? sender, EventArgs e)
@@ -43,6 +36,7 @@ public partial class SettingsPage : ContentPage
         _storageService.DeletePassword();
         _storageService.DeletePrivateKey();
         _storageService.DeleteToken();
+        _storageService.DeleteCulture();
         _authService.Logout();
     }
 }

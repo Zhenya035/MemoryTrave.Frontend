@@ -22,10 +22,6 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
-
-        var culture = new CultureInfo("en");
-        CultureInfo.DefaultThreadCurrentCulture = culture;
-        CultureInfo.DefaultThreadCurrentUICulture = culture;
         
         builder.Services.AddSingleton<HttpClient>();
         builder.Services.AddSingleton<ApiRequestService>();

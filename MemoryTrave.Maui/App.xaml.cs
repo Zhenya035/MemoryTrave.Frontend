@@ -1,4 +1,5 @@
-﻿using MemoryTrave.Maui.Infrastructure.Api;
+﻿using System.Globalization;
+using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui;
@@ -20,6 +21,8 @@ public partial class App : Application
     protected override Window CreateWindow(IActivationState? activationState)
     {
         CheckToken();
+        CheckCulture();
+        
         var appShell = _services.GetRequiredService<View.AppShell>();
         return new Window(appShell);
     }
@@ -29,5 +32,25 @@ public partial class App : Application
         var token = await _storageService.GetTokenAsync();
         if (!string.IsNullOrWhiteSpace(token))
             _apiService.SetJwtToken(token);
+    }
+
+    private void CheckCulture()
+    {
+        var cultureCode = _storageService.GetCulture();
+        
+        if(cultureCode != string.Empty)
+        {
+            var culture = new CultureInfo(cultureCode);
+        
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        }
+        else
+        {
+            var culture = new CultureInfo("en");
+        
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        }
     }
 }

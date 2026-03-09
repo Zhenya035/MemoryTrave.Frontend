@@ -7,12 +7,13 @@ public class StorageService : IStorageService
     private const string KeyName = "EncryptedPrivateKey";
     private const string PasswordDekName = "PasswordDek";
     private const string TokenName = "JwtToken";
+    private const string CultureName = "Culture";
     
     public async Task<string?> GetTokenAsync()
     {
         try
         {
-            var token = await SecureStorage.GetAsync(TokenName);
+            var token = await SecureStorage.Default.GetAsync(TokenName);
             
             return token ?? null;
         }
@@ -51,11 +52,11 @@ public class StorageService : IStorageService
         }
     }
 
-    public async Task<string?> GetPassword()
+    public async Task<string?> GetPasswordAsync()
     {
         try
         {
-            var password = await SecureStorage.GetAsync(PasswordDekName);
+            var password = await SecureStorage.Default.GetAsync(PasswordDekName);
             
             return password ?? null;
         }
@@ -94,11 +95,11 @@ public class StorageService : IStorageService
         }
     }
     
-    public async Task<string?> GetPrivateKey()
+    public async Task<string?> GetPrivateKeyAsync()
     {
         try
         {
-            var key = await SecureStorage.GetAsync(KeyName);
+            var key = await SecureStorage.Default.GetAsync(KeyName);
             
             return key ?? null;
         }
@@ -128,6 +129,49 @@ public class StorageService : IStorageService
         try
         {
             SecureStorage.Default.Remove(KeyName);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
+
+    public string GetCulture()
+    {
+        try
+        {
+            var culture = Preferences.Default.Get(CultureName, string.Empty);
+            
+            return culture;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return string.Empty;
+        }
+    }
+
+    public bool LoadCultureAsync(string culture)
+    {
+        try
+        {
+            Preferences.Default.Set(CultureName, culture);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
+
+    public bool DeleteCulture()
+    {
+        try
+        {
+            Preferences.Default.Remove(CultureName);
             return true;
         }
         catch (Exception e)

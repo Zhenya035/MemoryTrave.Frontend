@@ -13,8 +13,7 @@ public partial class AuthViewModel(
     INavigationService navigation,
     IDialogService dialogService,
     IKeyService keyService,
-    IStorageService storageService,
-    ILocalizationService localization) : BaseViewModel(localization)
+    IStorageService storageService) : ObservableObject
 {
     [ObservableProperty] 
     private string? _username;
@@ -120,9 +119,6 @@ public partial class AuthViewModel(
         
         if (privateKeyResponse.IsSuccess && privateKeyResponse.Data != null)
         {
-            
-            //todo добавить генерацию dek из пароля и сохранение
-            
             await storageService.LoadPrivateKeyAsync(privateKeyResponse.Data.EncryptedPrivateKey);
             await navigation.GoBack();
         }
