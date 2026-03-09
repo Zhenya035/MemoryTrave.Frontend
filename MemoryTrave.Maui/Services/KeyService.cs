@@ -1,19 +1,14 @@
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Authorization;
-using MemoryTrave.Maui.Resources.Localization;
+using MemoryTrave.Maui.Models.Service;
 using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui.Services;
 
-public class KeyService(
-    ApiRequestService apiService,
-    IDialogService dialogService) : IKeyService
+public class KeyService(ApiRequestService apiService) : IKeyService
 {
-    private const string EncryptedPrivateKeyStorageName = "EncryptedPrivateKey";
-    private const string PasswordStorageName = "JwtToken";
-    
-    public async Task GenerateKeys()
+    public async Task<KeyResponse> GenerateKeys(string password)
     {
         var keys = EccP256.GenerateKeyPair();
     
@@ -22,8 +17,6 @@ public class KeyService(
     
         var privateKeyBytes = EccP256.PrivateKeyToBytes(keys.Private);
         var  privateKey = Convert.ToBase64String(privateKeyBytes);
-    
-        var password = await SecureStorage.GetAsync(PasswordStorageName);
 
         var pbkdf2Data = Pbkdf2.DeriveKey(password);
     
@@ -46,9 +39,22 @@ public class KeyService(
 
         if (response.IsSuccess)
         {
-            await SecureStorage.SetAsync(EncryptedPrivateKeyStorageName, encryptedPrivateKey);
+            var result = new KeyResponse
+            {
+                IsSuccess = true,
+                EncryptedPasswordKey = Convert.ToBase64String(pbkdf2Data.Key),
+                EncryptedPrivateKey = encryptedPrivateKey
+            };
+            return result;
         }
         else
-            await dialogService.ShowMessage(Localization.Error, response.ErrorMessage);
+        {
+            var result = new KeyResponse
+            {
+                IsSuccess = false,
+                Error =  response.ErrorMessage
+            };
+            return result;
+        }
     }
 }

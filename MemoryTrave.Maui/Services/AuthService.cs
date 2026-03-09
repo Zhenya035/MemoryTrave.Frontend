@@ -1,20 +1,17 @@
-using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IDialogService _dialogService;
     private bool _isAuthorized;
     private const string JwtTokenKey = "JwtToken";
 
     public bool IsAuthorized => _isAuthorized;
     public event Action AuthStateChanged;
 
-    public AuthService(IDialogService dialogService)
+    public AuthService()
     {
-        _dialogService = dialogService;
         _ = CheckAuth();
     }
     
@@ -36,22 +33,14 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task Login(string jwtToken)
-    {
-        if (string.IsNullOrEmpty(jwtToken))
-        {
-            _dialogService.ShowMessage(Localization.Error, Localization.JwtError);
-            return;
-        }
-
-        await SecureStorage.Default.SetAsync(JwtTokenKey, jwtToken);
+    public async Task Login()
+    { 
         _isAuthorized = true;
         MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
     }
 
     public void Logout()
     {
-        SecureStorage.Default.Remove(JwtTokenKey);
         _isAuthorized = false;
         MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
     }
