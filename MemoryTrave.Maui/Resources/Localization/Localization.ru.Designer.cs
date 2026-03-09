@@ -69,6 +69,33 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Статей.
+        /// </summary>
+        internal static string Articles {
+            get {
+                return ResourceManager.GetString("Articles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изменено:.
+        /// </summary>
+        internal static string ChangeAt {
+            get {
+                return ResourceManager.GetString("ChangeAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Создано:.
+        /// </summary>
+        internal static string CreatedAt {
+            get {
+                return ResourceManager.GetString("CreatedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ошибка.
         /// </summary>
         internal static string Error {
@@ -83,6 +110,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string FillError {
             get {
                 return ResourceManager.GetString("FillError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Друзей.
+        /// </summary>
+        internal static string Friends {
+            get {
+                return ResourceManager.GetString("Friends", resourceCulture);
             }
         }
         
@@ -146,6 +182,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Map {
             get {
                 return ResourceManager.GetString("Map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нет посещенных мест.
+        /// </summary>
+        internal static string NoVisitedPalced {
+            get {
+                return ResourceManager.GetString("NoVisitedPalced", resourceCulture);
             }
         }
         
@@ -222,11 +267,29 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Непредвиденная ошибка.
+        /// </summary>
+        internal static string UnexpectedError {
+            get {
+                return ResourceManager.GetString("UnexpectedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя пользователя.
         /// </summary>
         internal static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Посещенные места.
+        /// </summary>
+        internal static string VisitedPalces {
+            get {
+                return ResourceManager.GetString("VisitedPalces", resourceCulture);
             }
         }
     }

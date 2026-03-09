@@ -75,4 +75,25 @@
     <data name="Settings" xml:space="preserve">
         <value>Настройки</value>
     </data>
+    <data name="UnexpectedError" xml:space="preserve">
+        <value>Непредвиденная ошибка</value>
+    </data>
+    <data name="Articles" xml:space="preserve">
+        <value>Статей</value>
+    </data>
+    <data name="Friends" xml:space="preserve">
+        <value>Друзей</value>
+    </data>
+    <data name="VisitedPalces" xml:space="preserve">
+        <value>Посещенные места</value>
+    </data>
+    <data name="ChangeAt" xml:space="preserve">
+        <value>Изменено:</value>
+    </data>
+    <data name="CreatedAt" xml:space="preserve">
+        <value>Создано:</value>
+    </data>
+    <data name="NoVisitedPalced" xml:space="preserve">
+        <value>Нет посещенных мест</value>
+    </data>
 </root>

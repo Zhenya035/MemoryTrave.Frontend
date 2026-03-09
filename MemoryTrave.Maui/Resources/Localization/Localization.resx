@@ -75,4 +75,25 @@
     <data name="Settings" xml:space="preserve">
         <value>Settings</value>
     </data>
+    <data name="UnexpectedError" xml:space="preserve">
+        <value>Unexpected error</value>
+    </data>
+    <data name="Articles" xml:space="preserve">
+        <value>Articles</value>
+    </data>
+    <data name="Friends" xml:space="preserve">
+        <value>Friends</value>
+    </data>
+    <data name="VisitedPalces" xml:space="preserve">
+        <value>Places visited</value>
+    </data>
+    <data name="ChangeAt" xml:space="preserve">
+        <value>Changed:</value>
+    </data>
+    <data name="CreatedAt" xml:space="preserve">
+        <value>Created:</value>
+    </data>
+    <data name="NoVisitedPalced" xml:space="preserve">
+        <value>No places visited</value>
+    </data>
 </root>
