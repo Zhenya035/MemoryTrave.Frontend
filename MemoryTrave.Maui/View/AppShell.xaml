@@ -9,15 +9,17 @@
     x:DataType="viewModel:AppShellViewModel">
 
     <TabBar>
-        <Tab Title="{x:Static localization:Localization.Map}" 
-             Icon="map.png">
+        <Tab Title="{x:Static localization:Localization.Map}">
             <ShellContent ContentTemplate="{DataTemplate view:MapPage}" />
         </Tab>
         
         <Tab Title="{x:Static localization:Localization.Profile}" 
-             Icon="profile.png" 
              IsVisible="{Binding IsAuthorized}">
             <ShellContent ContentTemplate="{DataTemplate view:ProfilePage}" />
+        </Tab>
+        
+        <Tab Title="{x:Static localization:Localization.Settings}">
+            <ShellContent ContentTemplate="{DataTemplate view:SettingsPage}" />
         </Tab>
     </TabBar>
     

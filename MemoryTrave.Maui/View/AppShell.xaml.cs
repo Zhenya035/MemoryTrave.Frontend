@@ -8,7 +8,9 @@ public partial class AppShell : Shell
     {
         BindingContext = vm;
         InitializeComponent();
-        
+
         Routing.RegisterRoute(nameof(AuthPage), typeof(AuthPage));
+        Routing.RegisterRoute(nameof(AddArticlePage), typeof(AddArticlePage));
+        Routing.RegisterRoute(nameof(ArticleDetailPage), typeof(ArticleDetailPage));
     }
 }
