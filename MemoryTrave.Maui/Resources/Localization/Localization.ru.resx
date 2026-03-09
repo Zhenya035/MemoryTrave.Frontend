@@ -93,7 +93,7 @@
     <data name="CreatedAt" xml:space="preserve">
         <value>Создано:</value>
     </data>
-    <data name="NoVisitedPalced" xml:space="preserve">
+    <data name="NoVisitedPlaces" xml:space="preserve">
         <value>Нет посещенных мест</value>
     </data>
 </root>

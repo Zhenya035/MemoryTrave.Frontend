@@ -188,9 +188,9 @@ namespace MemoryTrave.Maui.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to No places visited.
         /// </summary>
-        internal static string NoVisitedPalced {
+        internal static string NoVisitedPlaces {
             get {
-                return ResourceManager.GetString("NoVisitedPalced", resourceCulture);
+                return ResourceManager.GetString("NoVisitedPlaces", resourceCulture);
             }
         }
         
