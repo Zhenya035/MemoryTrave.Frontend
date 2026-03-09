@@ -6,7 +6,10 @@
     xmlns:view="clr-namespace:MemoryTrave.Maui.View"
     xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
     xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
-    x:DataType="viewModel:AppShellViewModel">
+    x:DataType="viewModel:AppShellViewModel"
+    TabBarTitleColor="Black"
+    TabBarForegroundColor="Black"
+    TabBarUnselectedColor="Gray">
 
     <TabBar>
         <Tab Title="{x:Static localization:Localization.Map}">
