@@ -72,4 +72,7 @@
     <data name="Ok" xml:space="preserve">
         <value>ОК</value>
     </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Настройки</value>
+    </data>
 </root>
