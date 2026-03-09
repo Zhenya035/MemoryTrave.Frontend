@@ -10,15 +10,24 @@
 
     <TabBar>
         <Tab Title="{x:Static localization:Localization.Map}">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#x1F4CD;"/>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate view:MapPage}" />
         </Tab>
         
         <Tab Title="{x:Static localization:Localization.Profile}" 
              IsVisible="{Binding IsAuthorized}">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#x1F464;"/>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate view:ProfilePage}" />
         </Tab>
         
         <Tab Title="{x:Static localization:Localization.Settings}">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#x2699;"/>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate view:SettingsPage}" />
         </Tab>
     </TabBar>
