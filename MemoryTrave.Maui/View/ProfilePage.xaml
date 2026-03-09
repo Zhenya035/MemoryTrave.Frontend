@@ -7,21 +7,31 @@
              xmlns:profile="clr-namespace:MemoryTrave.Maui.Models.Profile"
              x:DataType="viewModel:ProfileViewModel"
              x:Class="MemoryTrave.Maui.View.ProfilePage"
-             x:Name="ProfilePageRoot">
+             x:Name="ProfilePageRoot"
+             BackgroundColor="#eff6ff">
     
     <ScrollView>
-        <VerticalStackLayout Padding="16">
+        <Grid Padding="15" RowSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
         
-            <Border StrokeShape="RoundRectangle 20"
-                    Stroke="Transparent"
-                    BackgroundColor="#ECECF0">
+            <Border Grid.Row="0" 
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#e5e7eb"
+                    Padding="10"
+                    BackgroundColor="White">
                 
-                <VerticalStackLayout>
+                <VerticalStackLayout Spacing="5">
                     <Label Text="{Binding Username}"
+                           TextColor="Black"
                            FontAttributes="Bold"
                            HorizontalTextAlignment="Center"/>
                     
                     <Label Text="{Binding Email}"
+                           TextColor="Gray"
                            HorizontalTextAlignment="Center"/>
                     
                     <Grid ColumnSpacing="20" 
@@ -31,10 +41,11 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
     
-                        <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                        <VerticalStackLayout Grid.Column="0" HorizontalOptions="End">
                             <Label Text="{Binding ArticleCount}" 
                                    FontSize="16" 
                                    FontAttributes="Bold"
+                                   TextColor="Black"
                                    HorizontalTextAlignment="Center"/>
                             <Label Text="{x:Static localization:Localization.Articles}" 
                                    FontSize="14" 
@@ -45,13 +56,13 @@
                         <Border Grid.Column="1" 
                                 Stroke="Transparent" 
                                 BackgroundColor="Transparent"
-                                HorizontalOptions="Center">
+                                HorizontalOptions="Start">
         
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={x:Reference ProfilePageRoot}, Path=BindingContext.ToFriendsCommand}"/>
                             </Border.GestureRecognizers>
 
-                            <VerticalStackLayout HorizontalOptions="Center">
+                            <VerticalStackLayout>
                                 <Label Text="{Binding FriendsCount}"
                                        FontSize="16"
                                        FontAttributes="Bold"
@@ -67,12 +78,16 @@
                 </VerticalStackLayout>
             </Border>
             
-            <Label Text="{x:Static localization:Localization.VisitedPalces}"
-                   FontAttributes="Bold"/>
+            <Label Grid.Row="1"
+                   Text="{x:Static localization:Localization.VisitedPalces}"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   Margin="20, 5,0,0"/>
             
-            <Border StrokeShape="RoundRectangle 20"
-                    Stroke="Transparent"
-                    BackgroundColor="#ECECF0">
+            <Border Grid.Row="2"
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#e5e7eb"
+                    BackgroundColor="White">
                 
                 <CollectionView ItemsSource="{Binding Articles}"
                                 SelectionMode="None">
@@ -134,14 +149,14 @@
                         <VerticalStackLayout HorizontalOptions="Center" 
                                              VerticalOptions="Center"
                                              Padding="20">
-                            <Label Text="{x:Static localization:Localization.NoVisitedPalced}"
+                            <Label Text="{x:Static localization:Localization.NoVisitedPlaces}"
                                    TextColor="Gray"
                                    HorizontalOptions="Center"/>
                         </VerticalStackLayout>
                     </CollectionView.EmptyView>
                 </CollectionView>
             </Border>
-        </VerticalStackLayout>
+        </Grid>
     </ScrollView>
     
 </ContentPage>

@@ -4,6 +4,7 @@ using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Models.Profile;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -25,18 +26,18 @@ public partial class ProfileViewModel(
     private int _articleCount;
 
     [ObservableProperty] 
-    private List<ProfileArticles>? _articles;
+    private List<ProfileArticles>? _articles = [];
 
     [RelayCommand]
     private async Task ToFriends()
     {
-        //await navigation.GoTo(nameof(FriendsPage))
+        await navigation.GoTo(nameof(FriendsPage));
     }
 
     [RelayCommand]
     private async Task ToArticle(int articleId)
     {
-        //await navigation.GoTo(nameof(AricleDetailPage) + "?id={articleId}");
+        await navigation.GoTo(nameof(ArticleDetailPage) + "?id={articleId}");
     }
 
     public async Task GetProfileAsync()
@@ -91,7 +92,17 @@ public partial class ProfileViewModel(
                 });
             }
         }
+
+        await MainThread.InvokeOnMainThreadAsync(() =>
+        {
+            Articles.Clear();
         
-        Articles =  articles;
+            foreach (var item in articles)
+            {
+                Articles.Add(item);
+            }
+        
+            OnPropertyChanged(nameof(Articles));
+        });
     }
 }
