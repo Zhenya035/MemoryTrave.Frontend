@@ -13,22 +13,21 @@ public partial class AuthViewModel(
     INavigationService navigation,
     IDialogService dialogService,
     IKeyService keyService,
+    IStorageService storageService,
     ILocalizationService localization) : BaseViewModel(localization)
 {
-    private const string PasswordStorageName = "Password";
-    
     [ObservableProperty] 
-    private string username;
+    private string? _username;
     
     [ObservableProperty]
-    private string email;
+    private string? _email;
     
     [ObservableProperty]
-    private string password;
+    private string? _password;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRegistration))]
-    private bool isLogin = true;
+    private bool _isLogin = true;
     
     public bool IsRegistration => !IsLogin;
 
@@ -50,26 +49,47 @@ public partial class AuthViewModel(
 
         var authResponse = await apiService.PostRequest<RegRequest, AuthResponse>(URL.Registration(), body);
 
-        if (authResponse.IsSuccess)
+        if (authResponse.IsSuccess && authResponse.Data != null)
         {
-            await SecureStorage.Default.SetAsync(PasswordStorageName, Password);
+            if (string.IsNullOrWhiteSpace(authResponse.Data.JwtToken))
+            {
+                await dialogService.ShowMessage(Localization.Error, Localization.JwtError);
+            }
+
+            var token =  authResponse.Data.JwtToken;
+            await storageService.LoadTokenAsync(token);
+            await authService.Login();
+            apiService.SetJwtToken(token);
             
-            await authService.Login(authResponse.Data.JwtToken);
-            apiService.SetJwtToken(authResponse.Data.JwtToken);
-            
-            await keyService.GenerateKeys();
-            
+            var privateKey = await keyService.GenerateKeys(Password);
+            if(!privateKey.IsSuccess && privateKey.Error != null)
+            {
+                await dialogService.ShowMessage(Localization.Error, privateKey.Error);
+                return;
+            }
+
+            if (privateKey.IsSuccess && privateKey.EncryptedPrivateKey != null &&
+                privateKey.EncryptedPasswordKey != null)
+            {
+                await storageService.LoadPrivateKeyAsync(privateKey.EncryptedPrivateKey);
+                await storageService.LoadPasswordDekAsync(privateKey.EncryptedPasswordKey);
+            }
+            else
+            {
+                dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+            }
+
             await navigation.GoBack();
         }
         else
-            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);//todo создать сервис ответов на коды
 
     }
     
     [RelayCommand]
     private async Task Login()
     {
-        if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+        if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
         {
             await dialogService.ShowMessage(Localization.Error, Localization.FillError);
             return;
@@ -83,10 +103,12 @@ public partial class AuthViewModel(
 
         var authResponse = await apiService.PostRequest<AuthRequest, AuthResponse>(URL.Authorization(), body);
 
-        if (authResponse.IsSuccess)
+        if (authResponse.IsSuccess && authResponse.Data != null)
         {
-            await authService.Login(authResponse.Data.JwtToken);
-            apiService.SetJwtToken(authResponse.Data.JwtToken);
+            var token = authResponse.Data.JwtToken;
+            await storageService.LoadTokenAsync(token);
+            await authService.Login();
+            apiService.SetJwtToken(token);
         }
         else
         {
@@ -96,10 +118,12 @@ public partial class AuthViewModel(
         
         var privateKeyResponse = await apiService.GetRequest<GetKeyResponse>(URL.GetEncryptedPrivateKey());
         
-        if (privateKeyResponse.IsSuccess)
+        if (privateKeyResponse.IsSuccess && privateKeyResponse.Data != null)
         {
-            await SecureStorage.Default.SetAsync("EncryptedPrivateKey", privateKeyResponse.Data.EncryptedPrivateKey);
-
+            
+            //todo добавить генерацию dek из пароля и сохранение
+            
+            await storageService.LoadPrivateKeyAsync(privateKeyResponse.Data.EncryptedPrivateKey);
             await navigation.GoBack();
         }
         else
