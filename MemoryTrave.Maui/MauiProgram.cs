@@ -48,6 +48,9 @@ public static class MauiProgram
         
         builder.Services.AddTransient<AuthPage>();
         builder.Services.AddTransient<AuthViewModel>();
+            
+        builder.Services.AddTransient<FriendsPage>();
+        builder.Services.AddTransient<FriendsViewModel>();
         
         builder.Services.AddTransient<MapPage>();
         builder.Services.AddTransient<MapViewModel>();
