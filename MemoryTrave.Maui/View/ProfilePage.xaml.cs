@@ -1,19 +1,21 @@
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.ViewModel;
 
 namespace MemoryTrave.Maui.View;
 
 public partial class ProfilePage : ContentPage
 {
-    private readonly IAuthService authService;
+    private readonly ProfileViewModel _viewModel;
     
-    public ProfilePage(IAuthService  authService)
+    public ProfilePage(ProfileViewModel viewModel)
     {
         InitializeComponent();
-        this.authService = authService;
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
     }
 
-    private void Logout(object? sender, EventArgs e)
+    protected async override void OnAppearing()
     {
-        authService.Logout();
+        base.OnAppearing();
+        await _viewModel.GetProfileAsync();
     }
 }

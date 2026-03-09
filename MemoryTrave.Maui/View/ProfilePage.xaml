@@ -3,10 +3,145 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
-             x:Class="MemoryTrave.Maui.View.ProfilePage">
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:profile="clr-namespace:MemoryTrave.Maui.Models.Profile"
+             x:DataType="viewModel:ProfileViewModel"
+             x:Class="MemoryTrave.Maui.View.ProfilePage"
+             x:Name="ProfilePageRoot">
     
-    <StackLayout>
-        <Button Text="{x:Static localization:Localization.Logout}" Clicked="Logout"/>
-    </StackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="16">
+        
+            <Border StrokeShape="RoundRectangle 20"
+                    Stroke="Transparent"
+                    BackgroundColor="#ECECF0">
+                
+                <VerticalStackLayout>
+                    <Label Text="{Binding Username}"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"/>
+                    
+                    <Label Text="{Binding Email}"
+                           HorizontalTextAlignment="Center"/>
+                    
+                    <Grid ColumnSpacing="20" 
+                          VerticalOptions="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+    
+                        <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                            <Label Text="{Binding ArticleCount}" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Text="{x:Static localization:Localization.Articles}" 
+                                   FontSize="14" 
+                                   TextColor="Gray"
+                                   HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+    
+                        <Border Grid.Column="1" 
+                                Stroke="Transparent" 
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="Center">
+        
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference ProfilePageRoot}, Path=BindingContext.ToFriendsCommand}"/>
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout HorizontalOptions="Center">
+                                <Label Text="{Binding FriendsCount}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Center"/>
+                                <Label Text="{x:Static localization:Localization.Friends}"
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       HorizontalTextAlignment="Center"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+            
+            <Label Text="{x:Static localization:Localization.VisitedPalces}"
+                   FontAttributes="Bold"/>
+            
+            <Border StrokeShape="RoundRectangle 20"
+                    Stroke="Transparent"
+                    BackgroundColor="#ECECF0">
+                
+                <CollectionView ItemsSource="{Binding Articles}"
+                                SelectionMode="None">
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="profile:ProfileArticles">
+                            <Border StrokeShape="RoundRectangle 15"
+                                Stroke="Transparent"
+                                BackgroundColor="White"
+                                Padding="16"
+                                Margin="0,0,0,12">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={x:Reference ProfilePageRoot}, 
+                                        Path=BindingContext.ToArticleCommand}"
+                                        CommandParameter="{Binding Id}"/>
+                                </Border.GestureRecognizers>
+                                
+                                <VerticalStackLayout Spacing="8">
+                                    
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding LocationName}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               TextColor="Black"/>
+                                        
+                                        <Image Grid.Column="1"
+                                               Source="{Binding IsPrivate}"
+                                               WidthRequest="20"
+                                               HeightRequest="20"
+                                               VerticalOptions="Start"
+                                               Aspect="AspectFit"/>
+                                    </Grid>
+                                    
+                                    <Label Text="{Binding Description}"
+                                           FontSize="14"
+                                           TextColor="#666666"
+                                           LineBreakMode="WordWrap"/>
+                                    
+                                    <HorizontalStackLayout>
+                                        <VerticalStackLayout>
+                                            <Label Text="{x:Static localization:Localization.ChangeAt}"/>
+                                            <Label Text="{Binding LastChange}"/>
+                                        </VerticalStackLayout>
+                                            
+                                        <VerticalStackLayout>
+                                            <Label Text="{x:Static localization:Localization.CreatedAt}"/>
+                                            <Label Text="{Binding CreatedAt}"/>
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                                    
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" 
+                                             VerticalOptions="Center"
+                                             Padding="20">
+                            <Label Text="{x:Static localization:Localization.NoVisitedPalced}"
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
     
 </ContentPage>
