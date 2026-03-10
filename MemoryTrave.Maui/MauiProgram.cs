@@ -32,6 +32,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
         builder.Services.AddSingleton<IStorageService, StorageService>();
+        builder.Services.AddSingleton<IThemeService, ThemeService>();
 
         builder.Services.AddSingleton<AddArticlePage>();
         builder.Services.AddSingleton<AddArticleViewModel>();

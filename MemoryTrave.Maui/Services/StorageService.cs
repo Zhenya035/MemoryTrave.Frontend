@@ -1,3 +1,4 @@
+using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui.Services;
@@ -8,6 +9,7 @@ public class StorageService : IStorageService
     private const string PasswordDekName = "PasswordDek";
     private const string TokenName = "JwtToken";
     private const string CultureName = "Culture";
+    private const string ThemeName = "Theme";
     
     public async Task<string?> GetTokenAsync()
     {
@@ -153,7 +155,7 @@ public class StorageService : IStorageService
         }
     }
 
-    public bool LoadCultureAsync(string culture)
+    public bool LoadCulture(string culture)
     {
         try
         {
@@ -166,12 +168,32 @@ public class StorageService : IStorageService
             return false;
         }
     }
-
-    public bool DeleteCulture()
+    
+    public string GetTheme()
     {
         try
         {
-            Preferences.Default.Remove(CultureName);
+            var theme = Preferences.Default.Get(ThemeName, string.Empty);
+            
+            return theme;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return string.Empty;
+        }
+    }
+
+    public bool LoadTheme(string theme)
+    {
+        try
+        {
+            if(theme == Localization.ThemeLight)
+                Preferences.Default.Set(ThemeName, "1");
+            else if(theme == Localization.ThemeDark)
+                Preferences.Default.Set(ThemeName, "2");
+            else
+                Preferences.Default.Set(ThemeName, "0");
             return true;
         }
         catch (Exception e)

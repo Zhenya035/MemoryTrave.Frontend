@@ -9,19 +9,25 @@ public partial class App : Application
     private readonly IServiceProvider _services;
     private readonly ApiRequestService _apiService;
     private readonly IStorageService _storageService;
+    private readonly IThemeService _themeService;
 
-    public App(IServiceProvider services, ApiRequestService apiService, IStorageService storageService)
+    public App(IServiceProvider services, 
+        ApiRequestService apiService, 
+        IStorageService storageService,
+        IThemeService themeService)
     {
         InitializeComponent();
         _services = services;
         _apiService = apiService;
         _storageService = storageService;
+        _themeService = themeService;
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
         CheckToken();
         CheckCulture();
+        CheckTheme();
         
         var appShell = _services.GetRequiredService<View.AppShell>();
         return new Window(appShell);
@@ -52,5 +58,11 @@ public partial class App : Application
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
+    }
+
+    private void CheckTheme()
+    {
+        var themeCode = _storageService.GetTheme();
+        _themeService.SetThemeAsync(themeCode);
     }
 }

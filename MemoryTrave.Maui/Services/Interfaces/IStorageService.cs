@@ -15,6 +15,8 @@ public interface IStorageService
     public bool DeletePrivateKey();
     
     public string GetCulture();
-    public bool LoadCultureAsync(string key);
-    public bool DeleteCulture();
+    public bool LoadCulture(string key);
+    
+    public string GetTheme();
+    public bool LoadTheme(string theme);
 }
