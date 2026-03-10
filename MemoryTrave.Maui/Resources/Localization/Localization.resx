@@ -96,4 +96,34 @@
     <data name="NoVisitedPlaces" xml:space="preserve">
         <value>No places visited</value>
     </data>
+    <data name="Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="SelectLanguage" xml:space="preserve">
+        <value>Select the application language</value>
+    </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Apply</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>Theme</value>
+    </data>
+    <data name="SelectTheme" xml:space="preserve">
+        <value>Choose a design theme</value>
+    </data>
+    <data name="Exit" xml:space="preserve">
+        <value>Log out</value>
+    </data>
+    <data name="ExitFromAccount" xml:space="preserve">
+        <value>Log out of your current account</value>
+    </data>
+    <data name="ThemeSystem" xml:space="preserve">
+        <value>System</value>
+    </data>
+    <data name="ThemeLight" xml:space="preserve">
+        <value>Light</value>
+    </data>
+    <data name="ThemeDark" xml:space="preserve">
+        <value>Dark</value>
+    </data>
 </root>

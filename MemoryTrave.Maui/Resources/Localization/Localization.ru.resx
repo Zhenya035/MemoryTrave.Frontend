@@ -96,4 +96,34 @@
     <data name="NoVisitedPlaces" xml:space="preserve">
         <value>Нет посещенных мест</value>
     </data>
+    <data name="Language" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Применить</value>
+    </data>
+    <data name="SelectLanguage" xml:space="preserve">
+        <value>Выберите язык приложения</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>Тема</value>
+    </data>
+    <data name="SelectTheme" xml:space="preserve">
+        <value>Выберите тему оформления</value>
+    </data>
+    <data name="Exit" xml:space="preserve">
+        <value>Выход</value>
+    </data>
+    <data name="ExitFromAccount" xml:space="preserve">
+        <value>Выйти из текущего аккаунта</value>
+    </data>
+    <data name="ThemeSystem" xml:space="preserve">
+        <value>Системная</value>
+    </data>
+    <data name="ThemeLight" xml:space="preserve">
+        <value>Светлая</value>
+    </data>
+    <data name="ThemeDark" xml:space="preserve">
+        <value>Тёмная</value>
+    </data>
 </root>
