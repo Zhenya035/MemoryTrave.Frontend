@@ -8,7 +8,7 @@ using MemoryTrave.Maui.Services.Interfaces;
 
 namespace MemoryTrave.Maui.ViewModel;
 
-[QueryProperty(nameof(_articleId), "id")]
+[QueryProperty(nameof(ArticleId), "id")]
 public partial class ArticleDetailViewModel(
     ApiRequestService apiService,
     IDialogService dialogService) : ObservableObject
@@ -43,7 +43,7 @@ public partial class ArticleDetailViewModel(
 
     private async Task GetArticleAsync()
     {
-        var article = await apiService.GetRequest<Article>(_articleId);
+        var article = await apiService.GetRequest<Article>(URL.GetArticleById(ArticleId));
         if (!article.IsSuccess && article.ErrorMessage != null)
         {
             await dialogService.ShowMessage(Localization.Error, article.ErrorMessage);
