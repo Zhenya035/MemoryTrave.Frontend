@@ -36,9 +36,9 @@ public partial class ProfileViewModel(
     }
 
     [RelayCommand]
-    private async Task ToArticle(int articleId)
+    private async Task ToArticle(Guid articleId)
     {
-        await navigation.GoTo(nameof(ArticleDetailPage) + "?id={articleId}");
+        await navigation.GoTo($"{nameof(ArticleDetailPage)}?id={articleId.ToString()}");
     }
 
     public async Task GetProfileAsync()
