@@ -1,21 +1,12 @@
-﻿using Mapsui;
-using Mapsui.Tiling;
-using MemoryTrave.Maui.ViewModel;
-using Map = Mapsui.Map;
+﻿using MemoryTrave.Maui.ViewModel;
 
 namespace MemoryTrave.Maui.View;
 
 public partial class MapPage : ContentPage
 {
-    private MPoint _point = new MPoint(53.70568405543116, 23.807502623628757);
-    
-    public MapPage(MapViewModel vm)
+    public MapPage(MapViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext = vm;
-
-        var map = new Map();
-        map.Layers.Add(OpenStreetMap.CreateTileLayer());
-        MapControl.Map = map;
+        BindingContext = viewModel;
     }
 }

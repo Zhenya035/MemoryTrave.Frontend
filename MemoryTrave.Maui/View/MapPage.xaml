@@ -5,22 +5,21 @@
              xmlns:viewModel="using:MemoryTrave.Maui.ViewModel"
              x:DataType="viewModel:MapViewModel"
              x:Class="MemoryTrave.Maui.View.MapPage">
+    
     <Grid>
-        <mapsui:MapControl x:Name="MapControl"/>
+        <mapsui:MapControl Map="{Binding Map}"/>
         
-        <Frame 
-            Grid.Row="0" Grid.Column="0"
-            CornerRadius="25"
-            Padding="0"
-            HasShadow="True"
-            BorderColor="#007AFF"
-            BackgroundColor="White"
-            HorizontalOptions="End"
-            VerticalOptions="End"
-            Margin="0,0,20,30"
-            HeightRequest="50"
-            WidthRequest="50"
-            IsVisible="{Binding IsAuthButVisible}">
+        <Frame CornerRadius="25"
+               Padding="0"
+               HasShadow="True"
+               BorderColor="#007AFF"
+               BackgroundColor="White"
+               HorizontalOptions="Start"
+               VerticalOptions="Start"
+               Margin="20,50,20,0"
+               HeightRequest="50"
+               WidthRequest="50"
+               IsVisible="{Binding IsAuthButVisible}">
             
             <Frame.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding LoginTappedCommand}" />
