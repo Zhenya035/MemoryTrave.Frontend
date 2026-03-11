@@ -7,7 +7,8 @@
              x:Class="MemoryTrave.Maui.View.MapPage">
     
     <Grid>
-        <mapsui:MapControl Map="{Binding Map}"/>
+        <mapsui:MapControl x:Name="MapControl" 
+                           Map="{Binding Map}"/>
         
         <Frame CornerRadius="25"
                Padding="0"
