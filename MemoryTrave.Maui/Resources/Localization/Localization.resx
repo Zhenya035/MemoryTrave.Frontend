@@ -84,7 +84,7 @@
     <data name="Friends" xml:space="preserve">
         <value>Friends</value>
     </data>
-    <data name="VisitedPalces" xml:space="preserve">
+    <data name="VisitedPlaces" xml:space="preserve">
         <value>Places visited</value>
     </data>
     <data name="ChangeAt" xml:space="preserve">
