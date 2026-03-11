@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="using:MemoryTrave.Maui.ViewModel"
+             xmlns:articles="using:MemoryTrave.Maui.Models.Articles"
+             xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
+             x:DataType="viewModel:LocationDetailViewModel"
+             x:Class="MemoryTrave.Maui.View.LocationDetailPage"
+             x:Name="LocationDetailPageRoot"
+             Title="{Binding LocationName}">
+    
+    <VerticalStackLayout>
+        <Button Text="Add Article"
+                Command="{Binding ToAddArticleCommand}"/>
+        
+        <Border StrokeShape="RoundRectangle 20"
+                Stroke="#e5e7eb"
+                BackgroundColor="White"
+                Padding="10">
+                
+            <CollectionView ItemsSource="{Binding Articles}"
+                            SelectionMode="None"
+                            Margin="0,5,0,0">
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="articles:ArticleForLocation">
+                        <Border StrokeShape="RoundRectangle 15"
+                                Stroke="#e5e7eb"
+                                BackgroundColor="#F3F3F5"
+                                Padding="16"
+                                Margin="0,0,0,10">
+                            
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={x:Reference LocationDetailPageRoot}, 
+                                    Path=BindingContext.ToArticleCommand}"
+                                    CommandParameter="{Binding Id}"/>
+                            </Border.GestureRecognizers>
+                            
+                            <VerticalStackLayout Spacing="10">
+                                
+                                <HorizontalStackLayout Spacing="5">
+                                    <Label Text="Author:"/>
+                                    <Label Text="{Binding AuthorName}"/>
+                                </HorizontalStackLayout>
+                                
+                                <HorizontalStackLayout Spacing="5">
+                                    <Label Text="Last change:"/>
+                                    <Label Text="{Binding LastChange }"/>
+                                </HorizontalStackLayout>
+                                
+                                <HorizontalStackLayout Spacing="5">
+                                    <Label Text="Created at:"/>
+                                    <Label Text="{Binding CreatedAt }"/>
+                                </HorizontalStackLayout>
+                                
+                                <Image Source="{Binding PhotosUrl}"/>
+                                
+                                <Label Text="{Binding Description}"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout HorizontalOptions="Center" 
+                                         VerticalOptions="Center"
+                                         Padding="30,50"
+                                         Spacing="12">
+                        <Label Text="{x:Static localization:Localization.NoVisitedPlaces}"
+                               TextColor="Gray"
+                               FontSize="15"
+                               HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+                
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                </CollectionView.ItemsLayout>
+                
+            </CollectionView>
+        </Border>
+    </VerticalStackLayout>
+
+</ContentPage>

@@ -1,8 +1,5 @@
 ﻿using Mapsui;
-using Mapsui.Layers;
-using Mapsui.UI.Maui;
 using MemoryTrave.Maui.ViewModel;
-using MemoryTrave.Maui.Models.Location;
 using Location = MemoryTrave.Maui.Models.Location.Location;
 
 namespace MemoryTrave.Maui.View;
@@ -22,13 +19,17 @@ public partial class MapPage : ContentPage
     private async void OnMapInfo(object? sender, MapInfoEventArgs e)
     {
         var mapInfo = e.GetMapInfo(MapControl.Map.Layers);
+    
+        if (mapInfo?.Layer?.Name != "UserLocations")
+            return;
         
-        if (mapInfo.Feature?["Location"] is Location location)
+        if (mapInfo.Feature?["Id"] is string id && !string.IsNullOrEmpty(id))
         {
             var parameters = new Dictionary<string, object>
             {
-                ["id"] = location.Id.ToString()
+                ["id"] = id
             };
+        
             await Shell.Current.GoToAsync(nameof(LocationDetailPage), parameters);
         }
     }

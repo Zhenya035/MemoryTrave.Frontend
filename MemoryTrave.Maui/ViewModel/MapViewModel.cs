@@ -104,7 +104,7 @@ public partial class MapViewModel : ObservableObject
             var feature = new Mapsui.Nts.GeometryFeature
             {
                 Geometry = new NetTopologySuite.Geometries.Point(mapPoint.x, mapPoint.y),
-                ["Id"] = loc.Id
+                ["Id"] = loc.Id.ToString()
             };
             
             feature.Styles.Add(CreatePinStyle());

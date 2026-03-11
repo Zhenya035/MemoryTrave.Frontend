@@ -34,14 +34,14 @@ public static class MauiProgram
         builder.Services.AddSingleton<IStorageService, StorageService>();
         builder.Services.AddSingleton<IThemeService, ThemeService>();
 
-        builder.Services.AddSingleton<AddArticlePage>();
-        builder.Services.AddSingleton<AddArticleViewModel>();
+        builder.Services.AddTransient<AddArticlePage>();
+        builder.Services.AddTransient<AddArticleViewModel>();
         
-        builder.Services.AddSingleton<AppShell>();
-        builder.Services.AddSingleton<AppShellViewModel>();
+        builder.Services.AddTransient<AppShell>();
+        builder.Services.AddTransient<AppShellViewModel>();
         
-        builder.Services.AddSingleton<ArticleDetailPage>();
-        builder.Services.AddSingleton<ArticleDetailViewModel>();
+        builder.Services.AddTransient<ArticleDetailPage>();
+        builder.Services.AddTransient<ArticleDetailViewModel>();
         
         builder.Services.AddTransient<AuthPage>();
         builder.Services.AddTransient<AuthViewModel>();
@@ -49,14 +49,17 @@ public static class MauiProgram
         builder.Services.AddTransient<FriendsPage>();
         builder.Services.AddTransient<FriendsViewModel>();
         
+        builder.Services.AddTransient<LocationDetailPage>();
+        builder.Services.AddTransient<LocationDetailViewModel>();
+        
         builder.Services.AddTransient<MapPage>();
         builder.Services.AddTransient<MapViewModel>();
         
-        builder.Services.AddSingleton<ProfilePage>();
-        builder.Services.AddSingleton<ProfileViewModel>();
+        builder.Services.AddTransient<ProfilePage>();
+        builder.Services.AddTransient<ProfileViewModel>();
         
-        builder.Services.AddSingleton<SettingsPage>();
-        builder.Services.AddSingleton<SettingsViewModel>();
+        builder.Services.AddTransient<SettingsPage>();
+        builder.Services.AddTransient<SettingsViewModel>();
         
 #if DEBUG
         builder.Logging.AddDebug();
