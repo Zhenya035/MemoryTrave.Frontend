@@ -2,8 +2,39 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             x:DataType="viewModel:ArticleDetailViewModel"
              x:Class="MemoryTrave.Maui.View.ArticleDetailPage">
-    <ContentPage.Content>
+    
+    <VerticalStackLayout>
+        <Label Text="{Binding AuthorName}"/>
         
-    </ContentPage.Content>
+        <Label Text="{Binding LocationName}"/>
+        
+        <HorizontalStackLayout>
+            <Label Text="{Binding LastChange}"/>
+            
+            <Label Text="{Binding Visibility}"/>
+        </HorizontalStackLayout>
+        
+        <Label Text="{Binding Description}"/>
+        
+        <CollectionView ItemsSource="{Binding PhotosUrls}" 
+                        HeightRequest="200"
+                        ItemsLayout="HorizontalList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <Border Padding="4" 
+                            Margin="4">
+                        <Image Source="{Binding .}" 
+                               Aspect="AspectFill"
+                               WidthRequest="150"
+                               HeightRequest="150">
+                        </Image>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+    
 </ContentPage>
