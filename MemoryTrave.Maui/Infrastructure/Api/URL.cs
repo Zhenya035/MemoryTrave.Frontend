@@ -6,31 +6,31 @@ public static class URL
     
     //Article
     private const string ArticleUrl = $"{BaseUrl}/articles";
-    public static string GetArticleById(Guid articleId) => $"{ArticleUrl}/{articleId.ToString()}";
+    public static string GetArticleById(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
     public static string AddPrivateArticle() => $"{ArticleUrl}/private";
     public static string AddPublicArticle() => $"{ArticleUrl}/public";
-    public static string UpdateArticle(Guid articleId) => $"{ArticleUrl}/{articleId.ToString()}";
-    public static string DeleteArticle(Guid articleId) => $"{ArticleUrl}/{articleId.ToString()}";
+    public static string UpdateArticle(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
+    public static string DeleteArticle(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
     
     //Location
     private const string LocationUrl = $"{BaseUrl}/locations";
     public static string GetLocations() => $"{LocationUrl}";
-    public static string GetLocationById(Guid locationId) => $"{LocationUrl}/{locationId.ToString()}";
+    public static string GetLocationById(string locationId) => $"{LocationUrl}/{locationId.ToString()}";
     public static string AddLocation() => $"{LocationUrl}";
-    public static string UpdateLocation(Guid locationId) => $"{LocationUrl}/{locationId.ToString()}";
-    public static string DeleteLocation(Guid locationId) => $"{LocationUrl}/{locationId.ToString()}";
+    public static string UpdateLocation(string locationId) => $"{LocationUrl}/{locationId.ToString()}";
+    public static string DeleteLocation(string locationId) => $"{LocationUrl}/{locationId.ToString()}";
     
     //Friendship
     private const string FriendshipUrl = $"{BaseUrl}/friends";
     public static string GetFriends() => $"{FriendshipUrl}";
-    public static string DeleteFriendship(Guid friendshipId) => $"{FriendshipUrl}/{friendshipId.ToString()}";
+    public static string DeleteFriendship(string friendshipId) => $"{FriendshipUrl}/{friendshipId.ToString()}";
     
     //Friend Request
     private const string FriendRequestUrl = $"{BaseUrl}/friends/requests";
-    public static string GetRequests() => $"{FriendRequestUrl}";
+    public static string GetRequests(int direction) => $"{FriendRequestUrl}?direction={direction}";
     public static string AddRequest() => $"{FriendRequestUrl}";
-    public static string ConfirmRequest(Guid requestId) => $"{FriendRequestUrl}/{requestId.ToString()}/confirm";
-    public static string CancelRequest(Guid requestId) => $"{FriendRequestUrl}/{requestId.ToString()}/cancel";
+    public static string ConfirmRequest(string requestId) => $"{FriendRequestUrl}/{requestId.ToString()}/confirm";
+    public static string CancelRequest(string requestId) => $"{FriendRequestUrl}/{requestId.ToString()}/cancel";
     
     //Auth
     private const string AuthUrl = $"{BaseUrl}/users/auth";
