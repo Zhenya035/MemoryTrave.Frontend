@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
@@ -26,7 +27,7 @@ public partial class ProfileViewModel(
     private int _articleCount;
 
     [ObservableProperty] 
-    private List<ProfileArticles>? _articles = [];
+    private ObservableCollection<ProfileArticles>? _articles = [];
 
     [RelayCommand]
     private async Task ToFriends()
@@ -93,16 +94,6 @@ public partial class ProfileViewModel(
             }
         }
 
-        await MainThread.InvokeOnMainThreadAsync(() =>
-        {
-            Articles.Clear();
-        
-            foreach (var item in articles)
-            {
-                Articles.Add(item);
-            }
-        
-            OnPropertyChanged(nameof(Articles));
-        });
+        Articles = new ObservableCollection<ProfileArticles>(articles);
     }
 }
