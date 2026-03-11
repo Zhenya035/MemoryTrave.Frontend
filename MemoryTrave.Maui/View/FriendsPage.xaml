@@ -2,8 +2,151 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MemoryTrave.Maui.View.FriendsPage">
-    <ContentPage.Content>
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:friends="clr-namespace:MemoryTrave.Maui.Models.Friends"
+             x:DataType="viewModel:FriendsViewModel"
+             x:Class="MemoryTrave.Maui.View.FriendsPage"
+             x:Name="FriendsPageRoot">
+   
+    <VerticalStackLayout>
+        <SearchBar Placeholder="Поиск друзей"/>
         
-    </ContentPage.Content>
+        <Border StrokeShape="RoundRectangle 20"
+                Stroke="Transparent"
+                BackgroundColor="#ECECF0"
+                HeightRequest="35">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Grid.Column="0" 
+                        StrokeShape="RoundRectangle 20"
+                        BackgroundColor="White"
+                        Stroke="Transparent"
+                        Margin="3"
+                        IsVisible="{Binding InFriendship}">
+                    <Label Text="Друзья"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" 
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="13"/>
+                </Border>
+            
+                <Border Grid.Column="0" 
+                        BackgroundColor="Transparent" 
+                        Margin="3" 
+                        Stroke="Transparent"
+                        IsVisible="{Binding InRequests}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FriendshipTappedCommand}"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Друзья"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Gray"
+                           FontSize="13"/>
+                </Border>
+            
+                <Border Grid.Column="1" 
+                        BackgroundColor="Transparent"
+                        Margin="3"
+                        Stroke="Transparent"
+                        IsVisible="{Binding InFriendship}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding RequestsTappedCommand}"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Запросы"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" 
+                           TextColor="Gray"
+                           FontSize="13"/>
+                </Border>
+            
+                <Border Grid.Column="1" 
+                        StrokeShape="RoundRectangle 20" 
+                        Stroke="Transparent"
+                        BackgroundColor="White" 
+                        Margin="3"
+                        IsVisible="{Binding InRequests}">
+                    <Label Text="Запросы" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Black" 
+                           FontAttributes="Bold"
+                           FontSize="13"/>
+                </Border>
+            </Grid>
+        </Border>
+        
+        <CollectionView ItemsSource="{Binding Friends}"
+                        SelectionMode="None">
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="friends:Friend">
+                            <Border StrokeShape="RoundRectangle 15"
+                                Stroke="Transparent"
+                                BackgroundColor="White"
+                                Padding="16"
+                                Margin="0,0,0,12">
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding Name}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="Black"/>
+                                    
+                                    <Button Text="Delete"/>
+                                </HorizontalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" 
+                                             VerticalOptions="Center"
+                                             Padding="20">
+                            <Label Text="Нет друзей"
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+        <CollectionView ItemsSource="{Binding Requests}"
+                        SelectionMode="None">
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="friends:Friend">
+                            <Border StrokeShape="RoundRectangle 15"
+                                Stroke="Transparent"
+                                BackgroundColor="White"
+                                Padding="16"
+                                Margin="0,0,0,12">
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding Name}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="Black"/>
+                                    
+                                    <Button Text="Confirm"/>
+                                    
+                                    <Button Text="Delete"/>
+                                </HorizontalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" 
+                                             VerticalOptions="Center"
+                                             Padding="20">
+                            <Label Text="Нет запросов"
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+    </VerticalStackLayout>
+    
 </ContentPage>
