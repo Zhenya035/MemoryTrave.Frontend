@@ -6,7 +6,7 @@
              xmlns:friends="clr-namespace:MemoryTrave.Maui.Models.Friends"
              x:DataType="viewModel:FriendsViewModel"
              x:Class="MemoryTrave.Maui.View.FriendsPage"
-             x:Name="FriendsPageRoot">
+             x:Name="FriendPageRoot">
    
     <VerticalStackLayout>
         <SearchBar Placeholder="Поиск друзей"/>
@@ -82,39 +82,53 @@
         </Border>
         
         <CollectionView ItemsSource="{Binding Friends}"
-                        SelectionMode="None">
+                        SelectionMode="None"
+                        IsVisible="{Binding InFriendship}">
                     
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="friends:Friend">
-                            <Border StrokeShape="RoundRectangle 15"
-                                Stroke="Transparent"
-                                BackgroundColor="White"
-                                Padding="16"
-                                Margin="0,0,0,12">
-                                <HorizontalStackLayout>
-                                    <Label Text="{Binding Name}"
-                                           FontSize="18"
-                                           FontAttributes="Bold"
-                                           TextColor="Black"/>
-                                    
-                                    <Button Text="Delete"/>
-                                </HorizontalStackLayout>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="friends:Friend">
+                    <Border StrokeShape="RoundRectangle 15"
+                        Stroke="Transparent"
+                        BackgroundColor="White"
+                        Padding="16"
+                        Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Column="0"
+                                   Text="{Binding FriendName}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"/>
+                            
+                            <Button Grid.Column="1"
+                                    Text="Delete"
+                                    HorizontalOptions="End"
+                                    Command="{Binding Source={x:Reference FriendPageRoot}, 
+                                    Path=BindingContext.DeleteFriendshipCommand}"
+                                    CommandParameter="{Binding Id}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
                     
-                    <CollectionView.EmptyView>
-                        <VerticalStackLayout HorizontalOptions="Center" 
-                                             VerticalOptions="Center"
-                                             Padding="20">
-                            <Label Text="Нет друзей"
-                                   TextColor="Gray"
-                                   HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                    </CollectionView.EmptyView>
-                </CollectionView>
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" 
+                                     VerticalOptions="Center"
+                                     Padding="20">
+                    <Label Text="Нет друзей"
+                           TextColor="Gray"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+        
         <CollectionView ItemsSource="{Binding Requests}"
-                        SelectionMode="None">
+                        SelectionMode="None"
+                        IsVisible="{Binding InRequests}">
                     
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="friends:Friend">
@@ -123,16 +137,33 @@
                                 BackgroundColor="White"
                                 Padding="16"
                                 Margin="0,0,0,12">
-                                <HorizontalStackLayout>
-                                    <Label Text="{Binding Name}"
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Label Grid.Column="0" 
+                                           Text="{Binding FriendName}"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="Black"/>
+                                           TextColor="Black"
+                                           HorizontalOptions="Start"/>
                                     
-                                    <Button Text="Confirm"/>
+                                    <HorizontalStackLayout Grid.Column="1"
+                                                           Spacing="10"
+                                                           HorizontalOptions="End">
+                                        <Button Text="Confirm"
+                                                Command="{Binding Source={x:Reference FriendPageRoot}, 
+                                                Path=BindingContext.ConfirmRequestCommand}"
+                                                CommandParameter="{Binding Id}"/>
                                     
-                                    <Button Text="Delete"/>
-                                </HorizontalStackLayout>
+                                        <Button Text="Delete"
+                                                Command="{Binding Source={x:Reference FriendPageRoot}, 
+                                                Path=BindingContext.CancelRequestCommand}"
+                                                CommandParameter="{Binding Id}"/>
+                                    </HorizontalStackLayout>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
