@@ -61,6 +61,26 @@ public class ApiRequestService(HttpClient client)
             return ApiResult<TResponse>.Failure(errorMessage);
         }
     }
+    
+    public async Task<ApiResult<bool>> PostRequest(string url)
+    {
+        try
+        {
+            using var response = await client.PostAsJsonAsync(url, new {});
+        
+            if (response.IsSuccessStatusCode)
+                return ApiResult<bool>.Success(true, (int)response.StatusCode);
+        
+            var errorMessage = await response.Content.ReadAsStringAsync();
+        
+            return ApiResult<bool>.Failure(errorMessage, (int)response.StatusCode);
+        }
+        catch (Exception e)
+        {
+            var errorMessage = e.Message;
+            return ApiResult<bool>.Failure(errorMessage);
+        }
+    }
 
     public async Task<ApiResult<bool>> PutRequest<TRequest>(string url, TRequest body)
     {
@@ -96,13 +116,9 @@ public class ApiRequestService(HttpClient client)
             using var response = await client.DeleteAsync(url);
         
             if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content.ReadFromJsonAsync<bool>();
-            
-                return ApiResult<bool>.Success(result, (int)response.StatusCode);
-            }
+                return ApiResult<bool>.Success(true, (int)response.StatusCode);
         
-            string errorMessage = await response.Content.ReadAsStringAsync();
+            var errorMessage = await response.Content.ReadAsStringAsync();
         
             return ApiResult<bool>.Failure(errorMessage, (int)response.StatusCode);
         }
