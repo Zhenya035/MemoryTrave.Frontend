@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MemoryTrave.Maui.ViewModel;
 
 namespace MemoryTrave.Maui.View;
 
 public partial class AddArticlePage : ContentPage
 {
-    public AddArticlePage()
+    public AddArticlePage(AddArticleViewModel viewModel)
     {
         InitializeComponent();
+        BindingContext = viewModel;
     }
 }

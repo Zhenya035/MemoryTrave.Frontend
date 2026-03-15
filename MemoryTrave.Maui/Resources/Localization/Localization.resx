@@ -126,4 +126,13 @@
     <data name="ThemeDark" xml:space="preserve">
         <value>Dark</value>
     </data>
+    <data name="PublicVisibility" xml:space="preserve">
+        <value>Public</value>
+    </data>
+    <data name="FriendVisibility" xml:space="preserve">
+        <value>For friends</value>
+    </data>
+    <data name="PrivateVisibility" xml:space="preserve">
+        <value>Private</value>
+    </data>
 </root>

@@ -150,6 +150,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For friends.
+        /// </summary>
+        internal static string FriendVisibility {
+            get {
+                return ResourceManager.GetString("FriendVisibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token cannot be null or empty.
         /// </summary>
         internal static string JwtError {
@@ -249,11 +258,29 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Private.
+        /// </summary>
+        internal static string PrivateVisibility {
+            get {
+                return ResourceManager.GetString("PrivateVisibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         internal static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public.
+        /// </summary>
+        internal static string PublicVisibility {
+            get {
+                return ResourceManager.GetString("PublicVisibility", resourceCulture);
             }
         }
         
