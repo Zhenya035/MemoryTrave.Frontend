@@ -21,7 +21,7 @@ public partial class FriendsViewModel(
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InRequests))]
-    private bool _inFriendship;
+    private bool _inFriendship = true;
 
     public bool InRequests => !InFriendship;
     

@@ -6,35 +6,86 @@
              x:DataType="viewModel:ArticleDetailViewModel"
              x:Class="MemoryTrave.Maui.View.ArticleDetailPage">
     
-    <VerticalStackLayout>
-        <Label Text="{Binding AuthorName}"/>
+    <Grid HorizontalOptions="Fill" 
+          VerticalOptions="Fill"
+          Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         
-        <Label Text="{Binding LocationName}"/>
+        <Border Grid.Row="0"
+                StrokeShape="RoundRectangle 12"
+                Stroke="#e5e7eb"
+                BackgroundColor="White"
+                Padding="16"
+                Margin="0,0,0,8">
+           
+            <VerticalStackLayout>
+                <Label Text="{Binding AuthorName}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="Black"
+                       VerticalTextAlignment="Center"/>
         
-        <HorizontalStackLayout>
-            <Label Text="{Binding LastChange}"/>
+                <Label Text="{Binding LocationName}"
+                       FontSize="16"
+                       TextColor="#374151"
+                       VerticalTextAlignment="Center"/>
             
-            <Label Text="{Binding Visibility}"/>
-        </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="20">
+                
+                    <Label Text="{Binding LastChange}"
+                           FontSize="14"
+                           TextColor="#6B7280"/>
+                
+                    <Label Text="{Binding Visibility}"
+                           FontSize="14"
+                           TextColor="#6B7280"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            
+        </Border>
         
-        <Label Text="{Binding Description}"/>
-        
-        <CollectionView ItemsSource="{Binding PhotosUrls}" 
-                        HeightRequest="200"
-                        ItemsLayout="HorizontalList">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
-                    <Border Padding="4" 
-                            Margin="4">
-                        <Image Source="{Binding .}" 
-                               Aspect="AspectFill"
-                               WidthRequest="150"
-                               HeightRequest="150">
-                        </Image>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
-    
+        <Border Grid.Row="1"
+                StrokeShape="RoundRectangle 12"
+                Stroke="#e5e7eb"
+                BackgroundColor="White"
+                Padding="20"
+                Margin="0,0,0,12">
+            
+            <VerticalStackLayout>
+                <Label Text="{Binding Description}"
+                       FontSize="15"
+                       TextColor="#1F2937"
+                       LineBreakMode="WordWrap"/>
+            
+                <CollectionView ItemsSource="{Binding PhotosUrls}" 
+                                HeightRequest="200"
+                                ItemsLayout="HorizontalList"
+                                HorizontalScrollBarVisibility="Never">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Border Padding="4" 
+                                    Margin="4"
+                                    StrokeShape="RoundRectangle 8"
+                                    Stroke="Transparent"
+                                    BackgroundColor="#F3F3F5">
+                                <Image Source="{Binding .}" 
+                                       Aspect="AspectFit"/>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                
+                    <CollectionView.EmptyView>
+                        <Label Text="Нет фотографий"
+                               TextColor="Gray"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               FontSize="15"/>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
 </ContentPage>

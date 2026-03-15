@@ -5,8 +5,7 @@
              xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
              xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
              x:Class="MemoryTrave.Maui.View.AuthPage"
-             x:DataType="viewModel:AuthViewModel"
-             BackgroundColor="#eff6ff">
+             x:DataType="viewModel:AuthViewModel">
     
     <Grid
           HorizontalOptions="Fill" 

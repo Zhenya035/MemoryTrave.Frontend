@@ -7,8 +7,7 @@
              xmlns:profile="clr-namespace:MemoryTrave.Maui.Models.Profile"
              x:DataType="viewModel:ProfileViewModel"
              x:Class="MemoryTrave.Maui.View.ProfilePage"
-             x:Name="ProfilePageRoot"
-             BackgroundColor="#eff6ff">
+             x:Name="ProfilePageRoot">
     
     <ScrollView>
         <Grid Padding="15" RowSpacing="12">

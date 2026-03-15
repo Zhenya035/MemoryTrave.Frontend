@@ -9,7 +9,18 @@
              x:Name="FriendPageRoot">
    
     <VerticalStackLayout>
-        <SearchBar Placeholder="Поиск друзей"/>
+        <Border HeightRequest="40" 
+                Padding="10, 0" 
+                StrokeShape="RoundRectangle 8" 
+                Stroke="Transparent"
+                Margin="0,0,0,10" 
+                BackgroundColor="#F3F3F5">
+            <SearchBar Placeholder="Поиск друзей" 
+                       TextColor="Black" 
+                       PlaceholderColor="#717182"
+                       VerticalOptions="Center"
+                       HeightRequest="10"/>
+        </Border>
         
         <Border StrokeShape="RoundRectangle 20"
                 Stroke="Transparent"

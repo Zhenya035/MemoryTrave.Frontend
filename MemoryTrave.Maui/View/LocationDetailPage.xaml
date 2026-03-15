@@ -10,18 +10,26 @@
              x:Name="LocationDetailPageRoot"
              Title="{Binding LocationName}">
     
-    <VerticalStackLayout>
-        <Button Text="Add Article"
-                Command="{Binding ToAddArticleCommand}"/>
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         
-        <Border StrokeShape="RoundRectangle 20"
+        <Button Grid.Row="0"
+                Text="Add Article"
+                Command="{Binding ToAddArticleCommand}"
+                HorizontalOptions="Start"/>
+        
+        <Border Grid.Row="1"
+                StrokeShape="RoundRectangle 20"
                 Stroke="#e5e7eb"
                 BackgroundColor="White"
-                Padding="10">
+                Padding="10"
+                Margin="0,10,0,0">
                 
             <CollectionView ItemsSource="{Binding Articles}"
-                            SelectionMode="None"
-                            Margin="0,5,0,0">
+                            SelectionMode="None">
                 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="articles:ArticleForLocation">
@@ -41,23 +49,27 @@
                             <VerticalStackLayout Spacing="10">
                                 
                                 <HorizontalStackLayout Spacing="5">
-                                    <Label Text="Author:"/>
+                                    <Label Text="Author:" FontAttributes="Bold"/>
                                     <Label Text="{Binding AuthorName}"/>
                                 </HorizontalStackLayout>
                                 
                                 <HorizontalStackLayout Spacing="5">
-                                    <Label Text="Last change:"/>
-                                    <Label Text="{Binding LastChange }"/>
+                                    <Label Text="Last change:" FontAttributes="Bold"/>
+                                    <Label Text="{Binding LastChange}"/>
                                 </HorizontalStackLayout>
                                 
                                 <HorizontalStackLayout Spacing="5">
-                                    <Label Text="Created at:"/>
-                                    <Label Text="{Binding CreatedAt }"/>
+                                    <Label Text="Created at:" FontAttributes="Bold"/>
+                                    <Label Text="{Binding CreatedAt}"/>
                                 </HorizontalStackLayout>
                                 
-                                <Image Source="{Binding PhotosUrl}"/>
+                                <Label Text="{Binding Description}"
+                                       LineBreakMode="WordWrap"/>
                                 
-                                <Label Text="{Binding Description}"/>
+                                <Image Source="{Binding PhotosUrl}"
+                                       Aspect="AspectFit"
+                                       HorizontalOptions="Fill"
+                                       VerticalOptions="Start"/>
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
@@ -74,13 +86,7 @@
                                HorizontalTextAlignment="Center"/>
                     </VerticalStackLayout>
                 </CollectionView.EmptyView>
-                
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
-                </CollectionView.ItemsLayout>
-                
             </CollectionView>
         </Border>
-    </VerticalStackLayout>
-
+    </Grid>
 </ContentPage>
