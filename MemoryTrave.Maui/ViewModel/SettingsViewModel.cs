@@ -1,7 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Resources.Localization;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Auth;
+using MemoryTrave.Maui.Services.Localization;
+using MemoryTrave.Maui.Services.Storage;
+using MemoryTrave.Maui.Services.Theme;
 using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;

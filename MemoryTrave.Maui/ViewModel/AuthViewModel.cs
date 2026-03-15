@@ -3,7 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Models.Authorization;
 using MemoryTrave.Maui.Resources.Localization;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Auth;
+using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Key;
+using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.Services.Storage;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -119,6 +123,7 @@ public partial class AuthViewModel(
         
         if (privateKeyResponse.IsSuccess && privateKeyResponse.Data != null)
         {
+            
             await storageService.LoadPrivateKeyAsync(privateKeyResponse.Data.EncryptedPrivateKey);
             await navigation.GoBack();
         }

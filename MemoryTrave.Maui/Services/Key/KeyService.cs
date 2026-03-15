@@ -2,9 +2,8 @@ using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Authorization;
 using MemoryTrave.Maui.Models.Service;
-using MemoryTrave.Maui.Services.Interfaces;
 
-namespace MemoryTrave.Maui.Services;
+namespace MemoryTrave.Maui.Services.Key;
 
 public class KeyService(ApiRequestService apiService) : IKeyService
 {

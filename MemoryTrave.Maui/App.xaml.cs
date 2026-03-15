@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using MemoryTrave.Maui.Infrastructure.Api;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Storage;
+using MemoryTrave.Maui.Services.Theme;
 
 namespace MemoryTrave.Maui;
 

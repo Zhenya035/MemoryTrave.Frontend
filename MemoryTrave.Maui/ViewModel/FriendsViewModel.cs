@@ -5,7 +5,7 @@ using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Friends;
 using MemoryTrave.Maui.Resources.Localization;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Dialog;
 
 namespace MemoryTrave.Maui.ViewModel;
 

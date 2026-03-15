@@ -1,4 +1,4 @@
-namespace MemoryTrave.Maui.Services.Interfaces;
+namespace MemoryTrave.Maui.Services.Dialog;
 
 public interface IDialogService
 {

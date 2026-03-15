@@ -6,7 +6,8 @@ using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Location;
 using MemoryTrave.Maui.Resources.Localization;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;

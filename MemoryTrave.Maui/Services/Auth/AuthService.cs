@@ -1,6 +1,4 @@
-using MemoryTrave.Maui.Services.Interfaces;
-
-namespace MemoryTrave.Maui.Services;
+namespace MemoryTrave.Maui.Services.Auth;
 
 public class AuthService : IAuthService
 {

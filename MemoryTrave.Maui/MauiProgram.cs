@@ -1,7 +1,11 @@
-﻿using System.Globalization;
-using MemoryTrave.Maui.Infrastructure.Api;
-using MemoryTrave.Maui.Services;
-using MemoryTrave.Maui.Services.Interfaces;
+﻿using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Services.Auth;
+using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Key;
+using MemoryTrave.Maui.Services.Localization;
+using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.Services.Storage;
+using MemoryTrave.Maui.Services.Theme;
 using MemoryTrave.Maui.View;
 using MemoryTrave.Maui.ViewModel;
 using Microsoft.Extensions.Logging;

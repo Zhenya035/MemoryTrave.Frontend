@@ -1,8 +1,8 @@
 using System.Globalization;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Storage;
 using MemoryTrave.Maui.ViewModel;
 
-namespace MemoryTrave.Maui.Services;
+namespace MemoryTrave.Maui.Services.Localization;
 
 public class LocalizationService(IStorageService service, AppShellViewModel viewModel) : ILocalizationService
 {

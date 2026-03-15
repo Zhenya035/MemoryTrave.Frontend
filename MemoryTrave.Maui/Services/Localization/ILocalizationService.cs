@@ -1,6 +1,4 @@
-using System.Globalization;
-
-namespace MemoryTrave.Maui.Services.Interfaces;
+namespace MemoryTrave.Maui.Services.Localization;
 
 public interface ILocalizationService
 {

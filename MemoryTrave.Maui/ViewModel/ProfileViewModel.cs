@@ -4,7 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Models.Profile;
 using MemoryTrave.Maui.Resources.Localization;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;

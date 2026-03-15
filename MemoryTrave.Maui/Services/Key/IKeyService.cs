@@ -1,6 +1,6 @@
 using MemoryTrave.Maui.Models.Service;
 
-namespace MemoryTrave.Maui.Services.Interfaces;
+namespace MemoryTrave.Maui.Services.Key;
 
 public interface IKeyService
 {

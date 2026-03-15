@@ -1,7 +1,4 @@
-using MemoryTrave.Maui.Resources.Localization;
-using MemoryTrave.Maui.Services.Interfaces;
-
-namespace MemoryTrave.Maui.Services;
+namespace MemoryTrave.Maui.Services.Storage;
 
 public class StorageService : IStorageService
 {
@@ -188,9 +185,9 @@ public class StorageService : IStorageService
     {
         try
         {
-            if(theme == Localization.ThemeLight)
+            if(theme == Resources.Localization.Localization.ThemeLight)
                 Preferences.Default.Set(ThemeName, "1");
-            else if(theme == Localization.ThemeDark)
+            else if(theme == Resources.Localization.Localization.ThemeDark)
                 Preferences.Default.Set(ThemeName, "2");
             else
                 Preferences.Default.Set(ThemeName, "0");

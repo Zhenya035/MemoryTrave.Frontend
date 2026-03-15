@@ -1,5 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using MemoryTrave.Maui.Services.Interfaces;
+using MemoryTrave.Maui.Services.Auth;
 
 namespace MemoryTrave.Maui.ViewModel;
 
