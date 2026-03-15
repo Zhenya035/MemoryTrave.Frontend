@@ -12,8 +12,6 @@ public partial class MapPage : ContentPage
     {
         InitializeComponent();
         BindingContext = _viewModel = viewModel;
-
-        MapControl.Info += OnMapInfo;
     }
 
     private async void OnMapInfo(object? sender, MapInfoEventArgs e)
@@ -37,6 +35,8 @@ public partial class MapPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        
+        MapControl.Info += OnMapInfo;
         await _viewModel.GetLocationsAsync();
     }
 
