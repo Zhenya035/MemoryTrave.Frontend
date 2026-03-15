@@ -44,13 +44,13 @@ public class EccP256
 
         engine.Init(true, ephKeyPair.Private, publicKey, iesParams);
 
-        byte[] cipher = engine.ProcessBlock(data, 0, data.Length);
+        var cipher = engine.ProcessBlock(data, 0, data.Length);
 
-        byte[] ephPubEncoded = ephKeyPair.Public is ECPublicKeyParameters pub
+        var ephPubEncoded = ephKeyPair.Public is ECPublicKeyParameters pub
             ? pub.Q.GetEncoded(false)
             : throw new Exception("Invalid ephemeral public key");
 
-        byte[] result = new byte[ephPubEncoded.Length + cipher.Length];
+        var result = new byte[ephPubEncoded.Length + cipher.Length];
         Buffer.BlockCopy(ephPubEncoded, 0, result, 0, ephPubEncoded.Length);
         Buffer.BlockCopy(cipher, 0, result, ephPubEncoded.Length, cipher.Length);
 
@@ -60,13 +60,13 @@ public class EccP256
     public static byte[] Decrypt(AsymmetricKeyParameter privateKey, byte[] cipherData)
     {
         var curve = ((ECPrivateKeyParameters)privateKey).Parameters;
-        int keySize = (curve.Curve.FieldSize + 7) / 8 * 2 + 1;
+        var keySize = (curve.Curve.FieldSize + 7) / 8 * 2 + 1;
 
-        byte[] ephPubEncoded = new byte[keySize];
+        var ephPubEncoded = new byte[keySize];
         Buffer.BlockCopy(cipherData, 0, ephPubEncoded, 0, keySize);
         var ephPubKey = new ECPublicKeyParameters(curve.Curve.DecodePoint(ephPubEncoded), curve);
 
-        byte[] cipher = new byte[cipherData.Length - keySize];
+        var cipher = new byte[cipherData.Length - keySize];
         Buffer.BlockCopy(cipherData, keySize, cipher, 0, cipher.Length);
 
         var agreement = new ECDHBasicAgreement();
@@ -81,21 +81,11 @@ public class EccP256
         return engine.ProcessBlock(cipher, 0, cipher.Length);
     }
     
-    public static byte[] PublicKeyToBytes(AsymmetricKeyParameter publicKey)
-    {
-        if (publicKey is not ECPublicKeyParameters pubKey)
-            throw new ArgumentException("Ключ не является публичным ECC-ключом");
-
-        return pubKey.Q.GetEncoded(false);
-    }
+    public static byte[]? PublicKeyToBytes(AsymmetricKeyParameter publicKey) =>
+        publicKey is not ECPublicKeyParameters pubKey ? null : pubKey.Q.GetEncoded(false);
     
-    public static byte[] PrivateKeyToBytes(AsymmetricKeyParameter privateKey)
-    {
-        if (privateKey is not ECPrivateKeyParameters privKey)
-            throw new ArgumentException("Ключ не является приватным ECC-ключом");
-
-        return privKey.D.ToByteArrayUnsigned();
-    }
+    public static byte[]? PrivateKeyToBytes(AsymmetricKeyParameter privateKey) =>
+        privateKey is not ECPrivateKeyParameters privKey ? null : privKey.D.ToByteArrayUnsigned();
     
     public static ECPublicKeyParameters BytesToPublicKey(byte[] publicKeyBytes)
     {

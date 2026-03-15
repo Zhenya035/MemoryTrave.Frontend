@@ -11,8 +11,7 @@ public class Pbkdf2
 
     public static Pbkdf2Result DeriveKey(string password, byte[]? salt = null)
     {
-        if(salt == null)
-            salt = RandomNumberGenerator.GetBytes(SaltSize);
+        salt ??= RandomNumberGenerator.GetBytes(SaltSize);
 
         using var pbkdf2 = new Rfc2898DeriveBytes(
             password,
@@ -20,7 +19,7 @@ public class Pbkdf2
             Iterations,
             HashAlgorithmName.SHA256);
 
-        byte[] key = pbkdf2.GetBytes(KeySize);
+        var key = pbkdf2.GetBytes(KeySize);
 
         return new Pbkdf2Result()
         {
