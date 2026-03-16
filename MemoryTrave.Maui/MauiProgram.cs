@@ -4,6 +4,7 @@ using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Key;
 using MemoryTrave.Maui.Services.Localization;
 using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.Services.Storage;
 using MemoryTrave.Maui.Services.Theme;
 using MemoryTrave.Maui.View;
@@ -37,6 +38,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
         builder.Services.AddSingleton<IStorageService, StorageService>();
         builder.Services.AddSingleton<IThemeService, ThemeService>();
+        builder.Services.AddSingleton<IPrivateKeyService, PrivateKeyService>();
 
         builder.Services.AddTransient<AddArticlePage>();
         builder.Services.AddTransient<AddArticleViewModel>();
