@@ -26,8 +26,9 @@ public class AesGcm256
         return Convert.ToBase64String(combined);
     }
 
-    public static string Decrypt(string base64String, byte[] key)
+    public static string Decrypt(string base64String, string key)
     {
+        var keyBytes = Convert.FromBase64String(key);
         var combined = Convert.FromBase64String(base64String);
         
         var nonce = new byte[NonceSize];
@@ -38,7 +39,7 @@ public class AesGcm256
         Buffer.BlockCopy(combined, NonceSize, tag, 0, TagSize);
         Buffer.BlockCopy(combined, NonceSize + TagSize, cipherText, 0, cipherText.Length);
         
-        using var aesGcm = new AesGcm(key);
+        using var aesGcm = new AesGcm(keyBytes);
         
         var plainData = new byte[cipherText.Length];
         
