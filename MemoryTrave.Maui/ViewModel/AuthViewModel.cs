@@ -26,11 +26,11 @@ public partial class AuthViewModel(
     private string? _username;
     
     [ObservableProperty]
-    private string? _email = storageService.GetEmail();
+    private string? _email;
     
     [ObservableProperty]
     private string? _password;
-
+    
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRegistration))]
     private bool _isLogin = true;
@@ -186,7 +186,8 @@ public partial class AuthViewModel(
 
         var encryptedStringFromServer = Convert.ToBase64String(encryptedData);
 
-        var dek = Pbkdf2.DeriveKey(Password, salt).Key;
+        var dekBytes = Pbkdf2.DeriveKey(Password, salt).Key;
+        var dek = Convert.ToBase64String(dekBytes);
             
         var privateKey = AesGcm256.Decrypt(encryptedStringFromServer, dek);
         

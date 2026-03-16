@@ -6,6 +6,6 @@ public class ProfileArticles
     public string? LocationName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime LastChange { get; set; }
-    public string IsPrivate { get; set; } = string.Empty;
+    public string Visibility { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 }

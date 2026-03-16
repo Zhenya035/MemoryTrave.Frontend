@@ -132,7 +132,7 @@
                                                VerticalOptions="Center"/>
                                         
                                         <Label Grid.Column="1"
-                                               Text="{Binding IsPrivate}"
+                                               Text="{Binding Visibility}"
                                                WidthRequest="22"
                                                HeightRequest="22"
                                                VerticalOptions="Center"

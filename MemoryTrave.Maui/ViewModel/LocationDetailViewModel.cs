@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Location;
@@ -69,12 +71,23 @@ public partial class LocationDetailViewModel(
                 if (article.Visibility == VisibilityEnum.Public)
                 {
                     newArticle.Description = article.Description;
-                    newArticle.PhotosUrl = article.PhotosUrls[0];
+                    newArticle.PhotoUrl = article.PhotosUrls[0];
                 }
                 else
                 {
-                    newArticle.Description = article.EncryptedData;
-                    newArticle.PhotosUrl = article.EncryptedData;
+                    string decryptString;
+                    
+                    if (article.EncryptedData != null && article.EncryptedKey != null)
+                    {
+                        decryptString = AesGcm256.Decrypt(article.EncryptedData, article.EncryptedKey);
+                    }
+                    else
+                        return;
+
+                    var decryptArticle = JsonSerializer.Deserialize<GetPrewievArticle>(decryptString);
+
+                    newArticle.Description = decryptArticle.Description;
+                    newArticle.PhotoUrl = decryptArticle.PhotoUrl;
                 }
                 articles.Add(newArticle);
             }

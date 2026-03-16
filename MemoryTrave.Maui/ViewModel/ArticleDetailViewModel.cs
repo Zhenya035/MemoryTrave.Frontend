@@ -1,6 +1,8 @@
 using System.Globalization;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Resources.Localization;
@@ -56,9 +58,24 @@ public partial class ArticleDetailViewModel(
             AuthorName = _article.AuthorName;
             LocationName = _article.LocationName;
             
-            if (_article.Visibility == VisibilityEnum.Private)
+            if (_article.Visibility == VisibilityEnum.Private && _article.EncryptedData != null &&
+                _article.EncryptedKey != null)
             {
                 Visibility = "Private";
+                string decryptString;
+                    
+                if (_article.EncryptedData != null && _article.EncryptedKey != null)
+                {
+                    decryptString = AesGcm256.Decrypt(_article.EncryptedData, _article.EncryptedKey);
+                }
+                else
+                    return;
+
+                var decryptArticle = JsonSerializer.Deserialize<GetFullPrivateArticle>(decryptString);
+
+                Description = decryptArticle.Description;
+                PhotosUrls = decryptArticle.PhotosUrls;
+                
             }
             else if (_article.Visibility == VisibilityEnum.Public && _article.Description != null &&
                      _article.PhotosUrls != null)

@@ -1,7 +1,10 @@
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Infrastructure.Security;
+using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Profile;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
@@ -46,17 +49,16 @@ public partial class ProfileViewModel(
     {
         var result = await apiService.GetRequest<MyProfile>(URL.GetProfile());
 
-        if (!result.IsSuccess && result.ErrorMessage != null)
+        switch (result.IsSuccess)
         {
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
-            return;
+            case false when result.ErrorMessage != null:
+                await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+                return;
+            case true when result.Data == null:
+                await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+                return;
         }
-        else if (result.IsSuccess && result.Data == null)
-        {
-            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
-            return;
-        }
-        
+
         var profile = result.Data;
 
         Username = profile.Username;
@@ -67,32 +69,36 @@ public partial class ProfileViewModel(
         var articles = new List<ProfileArticles>();
         foreach (var article in profile.Articles)
         {
+            var articleForAdd = new ProfileArticles
+            {
+                Id = article.Id,
+                LocationName = article.LocationName,
+                CreatedAt = article.CreatedAt,
+                LastChange = article.LastChange,
+            };
+            
             if (article.IsPrivate)
             {
-                var description = article.EncryptedPreviewData; //todo добавить расшифровку
-                
-                articles.Add(new ProfileArticles
+                string decryptString;
+                    
+                if (article.EncryptedPreviewData != null && article.EncryptedKey != null)
                 {
-                    Id = article.Id,
-                    LocationName = article.LocationName,
-                    CreatedAt =  article.CreatedAt,
-                    LastChange =  article.LastChange,
-                    IsPrivate = "Private",
-                    Description = description
-                });
+                    decryptString = AesGcm256.Decrypt(article.EncryptedPreviewData, article.EncryptedKey);
+                }
+                else
+                    return;
+                
+                var decryptArticle = JsonSerializer.Deserialize<GetPrewievArticle>(decryptString);
+
+                articleForAdd.Visibility = "Private";
+                articleForAdd.Description = decryptArticle.Description;
             }
             else
             {
-                articles.Add(new ProfileArticles
-                {
-                    Id = article.Id,
-                    LocationName = article.LocationName,
-                    CreatedAt =  article.CreatedAt,
-                    LastChange =  article.LastChange,
-                    IsPrivate = "Public",
-                    Description = article.Description
-                });
+                articleForAdd.Visibility = "Public";
+                articleForAdd.Description = article.Description;
             }
+            articles.Add(articleForAdd);
         }
 
         Articles = new ObservableCollection<ProfileArticles>(articles);
