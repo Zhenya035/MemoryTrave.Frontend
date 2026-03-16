@@ -1,12 +1,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Authorization;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Key;
 using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.Services.Storage;
 
 namespace MemoryTrave.Maui.ViewModel;
@@ -17,13 +19,14 @@ public partial class AuthViewModel(
     INavigationService navigation,
     IDialogService dialogService,
     IKeyService keyService,
+    IPrivateKeyService privateKeyService,
     IStorageService storageService) : ObservableObject
 {
     [ObservableProperty] 
     private string? _username;
     
     [ObservableProperty]
-    private string? _email;
+    private string? _email = storageService.GetEmail();
     
     [ObservableProperty]
     private string? _password;
@@ -60,32 +63,36 @@ public partial class AuthViewModel(
             }
 
             var token =  authResponse.Data.JwtToken;
+
+            storageService.LoadEmail(Email);
             await storageService.LoadTokenAsync(token);
             await authService.Login();
             apiService.SetJwtToken(token);
             
-            var privateKey = await keyService.GenerateKeys(Password);
-            if(!privateKey.IsSuccess && privateKey.Error != null)
-            {
-                await dialogService.ShowMessage(Localization.Error, privateKey.Error);
-                return;
-            }
+            var keys = await keyService.GenerateKeys(Password);
 
-            if (privateKey.IsSuccess && privateKey.EncryptedPrivateKey != null &&
-                privateKey.EncryptedPasswordKey != null)
+            var encryptedPrivateKey = GetEncryptedPrivateKey(keys.PrivateKey);
+            
+            var addKeyRequest = new AddKeyRequest
             {
-                await storageService.LoadPrivateKeyAsync(privateKey.EncryptedPrivateKey);
-                await storageService.LoadPasswordDekAsync(privateKey.EncryptedPasswordKey);
+                PublicKey = keys.PublicKey,
+                EncryptedPrivateKey = encryptedPrivateKey
+            };
+    
+            var response = await apiService.PutRequest(URL.AddKeys(), addKeyRequest);
+            if (response.IsSuccess)
+            {
+                privateKeyService.SetKey(keys.PrivateKey);
             }
             else
             {
-                dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+                await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
             }
 
             await navigation.GoBack();
         }
         else
-            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);//todo создать сервис ответов на коды
+            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);
 
     }
     
@@ -109,6 +116,8 @@ public partial class AuthViewModel(
         if (authResponse.IsSuccess && authResponse.Data != null)
         {
             var token = authResponse.Data.JwtToken;
+           
+            storageService.LoadEmail(Email);
             await storageService.LoadTokenAsync(token);
             await authService.Login();
             apiService.SetJwtToken(token);
@@ -123,8 +132,9 @@ public partial class AuthViewModel(
         
         if (privateKeyResponse.IsSuccess && privateKeyResponse.Data != null)
         {
+            var privateKey = DecryptPrivateKey(privateKeyResponse.Data.EncryptedPrivateKey);
+            privateKeyService.SetKey(privateKey);
             
-            await storageService.LoadPrivateKeyAsync(privateKeyResponse.Data.EncryptedPrivateKey);
             await navigation.GoBack();
         }
         else
@@ -138,4 +148,48 @@ public partial class AuthViewModel(
     [RelayCommand]
     private void OnLoginTapped() =>
         IsLogin = true;
+
+    private string GetEncryptedPrivateKey(string privateKey)
+    {
+        var pbkdf2Data = Pbkdf2.DeriveKey(Password);
+    
+        var encryptedPrivateKey = AesGcm256.Encrypt(privateKey, pbkdf2Data.Key);
+        var encryptedBytes = Convert.FromBase64String(encryptedPrivateKey);
+        
+        var saltLength = BitConverter.GetBytes(pbkdf2Data.Salt.Length);
+        var saltSize = saltLength.Length;
+        
+        var combined = new byte[saltSize + pbkdf2Data.Salt.Length + encryptedBytes.Length];
+        Buffer.BlockCopy(saltLength, 0, combined, 0, saltSize);
+        Buffer.BlockCopy(pbkdf2Data.Salt, 0, combined, saltSize, 
+            pbkdf2Data.Salt.Length);
+        Buffer.BlockCopy(encryptedBytes, 0, combined, 
+            saltSize + pbkdf2Data.Salt.Length,encryptedBytes.Length);
+    
+        encryptedPrivateKey = Convert.ToBase64String(combined);
+        return encryptedPrivateKey;
+    }
+
+    private string DecryptPrivateKey(string privateKeyFromServer)
+    {
+        var combined = Convert.FromBase64String(privateKeyFromServer);
+            
+        var saltLength = BitConverter.ToInt32(combined, 0);
+        var saltLengthSize = sizeof(int);
+            
+        var salt = new byte[saltLength];
+        Buffer.BlockCopy(combined, saltLengthSize, salt, 0, saltLength);
+
+        var encryptedData = new byte[combined.Length - saltLengthSize - saltLength];
+        Buffer.BlockCopy(combined, saltLengthSize + saltLength, encryptedData, 0,
+            encryptedData.Length);
+
+        var encryptedStringFromServer = Convert.ToBase64String(encryptedData);
+
+        var dek = Pbkdf2.DeriveKey(Password, salt).Key;
+            
+        var privateKey = AesGcm256.Decrypt(encryptedStringFromServer, dek);
+        
+        return privateKey;
+    }
 }

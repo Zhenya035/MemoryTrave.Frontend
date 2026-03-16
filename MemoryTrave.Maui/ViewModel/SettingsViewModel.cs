@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Localization;
+using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.Services.Storage;
 using MemoryTrave.Maui.Services.Theme;
 using MemoryTrave.Maui.View;
@@ -14,6 +15,7 @@ public partial class SettingsViewModel(
     IStorageService storageService,
     IAuthService authService,
     IThemeService themeService,
+    IPrivateKeyService  privateKeyService,
     AppShellViewModel appShellViewModel) : ObservableObject
 {
     public List<string> Languages { get; } = ["en", "ru"];
@@ -50,8 +52,8 @@ public partial class SettingsViewModel(
     [RelayCommand]
     private void LogOut()
     {
-        storageService.DeletePassword();
-        storageService.DeletePrivateKey();
+        privateKeyService.Clear();
+        storageService.DeleteEmail();
         storageService.DeleteToken();
         authService.Logout();
     }

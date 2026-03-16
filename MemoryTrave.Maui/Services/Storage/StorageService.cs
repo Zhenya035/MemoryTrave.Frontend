@@ -2,8 +2,7 @@ namespace MemoryTrave.Maui.Services.Storage;
 
 public class StorageService : IStorageService
 {
-    private const string KeyName = "EncryptedPrivateKey";
-    private const string PasswordDekName = "PasswordDek";
+    private const string EmailName = "Email";
     private const string TokenName = "JwtToken";
     private const string CultureName = "Culture";
     private const string ThemeName = "Theme";
@@ -51,26 +50,26 @@ public class StorageService : IStorageService
         }
     }
 
-    public async Task<string?> GetPasswordAsync()
+    public string GetEmail()
     {
         try
         {
-            var password = await SecureStorage.Default.GetAsync(PasswordDekName);
+            var email = Preferences.Default.Get(EmailName, string.Empty);
             
-            return password ?? null;
+            return email;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            return string.Empty;
         }
     }
 
-    public async Task<bool> LoadPasswordDekAsync(string password)
+    public bool LoadEmail(string email)
     {
         try
         {
-            await SecureStorage.Default.SetAsync(PasswordDekName, password);
+            Preferences.Default.Set(EmailName, email);
             return true;
         }
         catch (Exception e)
@@ -80,11 +79,11 @@ public class StorageService : IStorageService
         }
     }
 
-    public bool DeletePassword()
+    public bool DeleteEmail()
     {
         try
         {
-            SecureStorage.Default.Remove(PasswordDekName);
+            Preferences.Default.Remove(EmailName);
             return true;
         }
         catch (Exception e)
@@ -94,49 +93,6 @@ public class StorageService : IStorageService
         }
     }
     
-    public async Task<string?> GetPrivateKeyAsync()
-    {
-        try
-        {
-            var key = await SecureStorage.Default.GetAsync(KeyName);
-            
-            return key ?? null;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return null;
-        }
-    }
-
-    public async Task<bool> LoadPrivateKeyAsync(string key)
-    {
-        try
-        {
-            await SecureStorage.Default.SetAsync(KeyName, key);
-            return true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return false;
-        }
-    }
-
-    public bool DeletePrivateKey()
-    {
-        try
-        {
-            SecureStorage.Default.Remove(KeyName);
-            return true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return false;
-        }
-    }
-
     public string GetCulture()
     {
         try
