@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
-using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Services.Auth;
+using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.Services.Storage;
 using MemoryTrave.Maui.Services.Theme;
 
@@ -8,39 +9,43 @@ namespace MemoryTrave.Maui;
 public partial class App : Application
 {
     private readonly IServiceProvider _services;
-    private readonly ApiRequestService _apiService;
     private readonly IStorageService _storageService;
     private readonly IThemeService _themeService;
+    private readonly IPrivateKeyService _privateKeyService;
+    private readonly IAuthService _authService;
 
-    public App(IServiceProvider services, 
-        ApiRequestService apiService, 
+    public App(IServiceProvider services,
         IStorageService storageService,
-        IThemeService themeService)
+        IThemeService themeService, 
+        IPrivateKeyService privateKeyService, 
+        IAuthService authService)
     {
         InitializeComponent();
         _services = services;
-        _apiService = apiService;
         _storageService = storageService;
         _themeService = themeService;
+        _privateKeyService = privateKeyService;
+        _authService = authService;
+    }
+
+    protected override void OnSleep()
+    {
+        base.OnSleep();
+        
+        _privateKeyService.Clear();
+        _storageService.DeleteToken();
+        _authService.Logout();
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        CheckToken();
         CheckCulture();
         CheckTheme();
         
         var appShell = _services.GetRequiredService<View.AppShell>();
         return new Window(appShell);
     }
-
-    private async void CheckToken()
-    {
-        var token = await _storageService.GetTokenAsync();
-        if (!string.IsNullOrWhiteSpace(token))
-            _apiService.SetJwtToken(token);
-    }
-
+    
     private void CheckCulture()
     {
         var cultureCode = _storageService.GetCulture();
