@@ -8,29 +8,6 @@ public class AuthService : IAuthService
     public bool IsAuthorized => _isAuthorized;
     public event Action AuthStateChanged;
 
-    public AuthService()
-    {
-        _ = CheckAuth();
-    }
-    
-    public async Task<bool> CheckAuth()
-    {
-        try
-        {
-            var token = await SecureStorage.Default.GetAsync(JwtTokenKey);
-            _isAuthorized = !string.IsNullOrEmpty(token);
-            
-            MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
-            return _isAuthorized;
-        }
-        catch (Exception ex)
-        {
-            _isAuthorized = false;
-            MainThread.BeginInvokeOnMainThread(() => AuthStateChanged?.Invoke());
-            return false;
-        }
-    }
-
     public async Task Login()
     { 
         _isAuthorized = true;
