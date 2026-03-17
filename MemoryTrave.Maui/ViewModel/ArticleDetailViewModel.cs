@@ -9,12 +9,14 @@ using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Photo;
 
 namespace MemoryTrave.Maui.ViewModel;
 
 [QueryProperty(nameof(ArticleId), "id")]
 public partial class ArticleDetailViewModel(
     ApiRequestService apiService,
+    IPhotoService photoService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -73,7 +75,7 @@ public partial class ArticleDetailViewModel(
                 else
                     return;
 
-                var decryptArticle = JsonSerializer.Deserialize<GetFullPrivateArticle>(decryptString);
+                var decryptArticle = JsonSerializer.Deserialize<FullPrivateArticle>(decryptString);
 
                 Description = decryptArticle.Description;
                 
@@ -97,38 +99,33 @@ public partial class ArticleDetailViewModel(
                     return;
                 }
                 
-                await LoadPhotosAsync(photos.Data.Photos);
+                await GetPhotosAsync(photos.Data.Photos);
             }
         }
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
     }
-    
-    private async Task LoadPhotosAsync(List<string> photoSting)
+
+    private async Task GetPhotosAsync(List<string> photos)
     {
-        if (photoSting.Count == 0)
+        if (photos.Count == 0)
             return;
 
         try
         {
-            foreach (var base64 in photoSting)
-            {
-                if (string.IsNullOrEmpty(base64))
-                    continue;
-
-                var photoBytes = Convert.FromBase64String(base64);
-            
-                var fileName = $"{Guid.NewGuid()}.jpg";
-                var localPath = Path.Combine(FileSystem.CacheDirectory, fileName);
-            
-                await File.WriteAllBytesAsync(localPath, photoBytes);
-            
-                Photos.Add(localPath);
-            }
+            var photosList = await photoService.AddPhotosToLocalAsync(photos);
+            Photos = new ObservableCollection<string>(photosList);
         }
         catch (Exception ex)
         {
             await dialogService.ShowMessage(Localization.Error, $"Ошибка загрузки фото: {ex.Message}");
         }
+    }
+
+    public void ClearCache()
+    {
+        if(Photos.Count == 0)
+            return;
+        photoService.RemovePhotosFromLocal(Photos.ToList());
     }
 }
