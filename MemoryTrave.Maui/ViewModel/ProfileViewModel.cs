@@ -88,7 +88,7 @@ public partial class ProfileViewModel(
                 else
                     return;
                 
-                var decryptArticle = JsonSerializer.Deserialize<GetPrewievArticle>(decryptString);
+                var decryptArticle = JsonSerializer.Deserialize<PreviewPrivateArticle>(decryptString);
 
                 articleForAdd.Visibility = "Private";
                 articleForAdd.Description = decryptArticle.Description;

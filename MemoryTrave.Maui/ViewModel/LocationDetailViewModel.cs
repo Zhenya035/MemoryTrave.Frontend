@@ -10,6 +10,8 @@ using MemoryTrave.Maui.Models.Location;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.Services.Photo;
+using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;
@@ -18,6 +20,7 @@ namespace MemoryTrave.Maui.ViewModel;
 public partial class LocationDetailViewModel(
     INavigationService navigation,
     IDialogService dialogService,
+    IPrivateKeyService  privateKeyService,
     ApiRequestService apiService) : ObservableObject
 {
     [ObservableProperty]
@@ -46,7 +49,7 @@ public partial class LocationDetailViewModel(
         Task.Run(async () => await GetLocationAsync());
     }
 
-    public async Task GetLocationAsync()
+    private async Task GetLocationAsync()
     {
         var result = await apiService.GetRequest<LocationForDetail>(URL.GetLocationById(LocationId));
         if(!result.IsSuccess && result.ErrorMessage != null)
@@ -71,7 +74,6 @@ public partial class LocationDetailViewModel(
                 if (article.Visibility == VisibilityEnum.Public)
                 {
                     newArticle.Description = article.Description;
-                    newArticle.PhotoUrl = article.PhotosUrls[0];
                 }
                 else
                 {
@@ -79,15 +81,21 @@ public partial class LocationDetailViewModel(
                     
                     if (article.EncryptedData != null && article.EncryptedKey != null)
                     {
-                        decryptString = AesGcm256.Decrypt(article.EncryptedData, article.EncryptedKey);
+                        var privateKeyString = privateKeyService.GetKey();
+                        var privateKey = EccP256.StringToPrivateKey(privateKeyString);
+                        
+                        var encryptedDekBytes = Convert.FromBase64String(article.EncryptedKey);
+                        var dekBytes = EccP256.Decrypt(privateKey, encryptedDekBytes);
+                        var dek = Convert.ToBase64String(dekBytes);
+                        
+                        decryptString = AesGcm256.Decrypt(article.EncryptedData, dek);
                     }
                     else
                         return;
 
-                    var decryptArticle = JsonSerializer.Deserialize<GetPrewievArticle>(decryptString);
+                    var decryptArticle = JsonSerializer.Deserialize<PreviewPrivateArticle>(decryptString);
 
                     newArticle.Description = decryptArticle.Description;
-                    newArticle.PhotoUrl = decryptArticle.PhotoUrl;
                 }
                 articles.Add(newArticle);
             }

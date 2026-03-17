@@ -68,23 +68,33 @@ public class ApiRequestService(HttpClient client)
         }
     }
     
-    public async Task<ApiResult<bool>> PostRequest(string url)
+    public async Task<ApiResult<TResponse>> PostRequest<TResponse>(string url)
     {
         try
         {
             using var response = await client.PostAsJsonAsync(url, new {});
-        
+
             if (response.IsSuccessStatusCode)
-                return ApiResult<bool>.Success(true, (int)response.StatusCode);
+            {
+                var contentLength = response.Content.Headers.ContentLength;
+    
+                if (contentLength > 0)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<TResponse>();
+                    return ApiResult<TResponse>.Success(result, (int)response.StatusCode);
+                }
+                
+                return ApiResult<TResponse>.Success(default, (int)response.StatusCode);
+            }
         
             var errorMessage = await response.Content.ReadAsStringAsync();
         
-            return ApiResult<bool>.Failure(errorMessage, (int)response.StatusCode);
+            return ApiResult<TResponse>.Failure(errorMessage, (int)response.StatusCode);
         }
         catch (Exception e)
         {
             var errorMessage = e.Message;
-            return ApiResult<bool>.Failure(errorMessage);
+            return ApiResult<TResponse>.Failure(errorMessage);
         }
     }
 

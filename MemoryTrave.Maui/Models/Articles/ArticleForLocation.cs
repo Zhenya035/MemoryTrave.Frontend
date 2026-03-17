@@ -11,5 +11,4 @@ public class ArticleForLocation
     public string AuthorName { get; set; } = string.Empty;
     
     public string Description { get; set; }
-    public string PhotoUrl { get; set; }
 }

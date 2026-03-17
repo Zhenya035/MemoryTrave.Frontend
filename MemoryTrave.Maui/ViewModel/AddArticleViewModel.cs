@@ -1,13 +1,17 @@
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models;
 using MemoryTrave.Maui.Models.Articles;
+using MemoryTrave.Maui.Models.Articles.Access;
 using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.Services.Photo;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -15,6 +19,7 @@ namespace MemoryTrave.Maui.ViewModel;
 public partial class AddArticleViewModel(
     IDialogService dialogService,
     INavigationService navigation,
+    IPhotoService photoService,
     ApiRequestService apiService) : ObservableObject
 {
     [ObservableProperty]
@@ -56,13 +61,7 @@ public partial class AddArticleViewModel(
 
             if (result != null)
             {
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(result.FileName)}";
-                var localPath = Path.Combine(FileSystem.CacheDirectory, fileName);
-
-                await using var stream = await result.OpenReadAsync();
-                await using var localStream = File.OpenWrite(localPath);
-                await stream.CopyToAsync(localStream);
-
+                var localPath = await photoService.AddPhotoToLocalFromMediaPickerAsync(result);
                 Photos.Add(localPath);
             }
         }
@@ -84,8 +83,7 @@ public partial class AddArticleViewModel(
 
         try
         {
-            if (File.Exists(photoPath))
-                File.Delete(photoPath);
+            photoService.RemovePhotoFromLocal(photoPath);
         }
         catch
         {
@@ -117,13 +115,7 @@ public partial class AddArticleViewModel(
                 var articleId = addArticleResponse.Data.Id;
                 
                 var addPhotoRequest = new PhotoList();
-                foreach (var path in Photos)
-                {
-                    if (!File.Exists(path)) continue;
-                    var photoBytes = await File.ReadAllBytesAsync(path);
-                    var photoString = Convert.ToBase64String(photoBytes);
-                    addPhotoRequest.Photos.Add(photoString);
-                }
+                addPhotoRequest.Photos = await photoService.GetPhotoFromLocalAsync(Photos.ToList());
                 
                 var addPhotoResponse = await apiService.PostRequest<PhotoList, PhotoList>
                     (URL.UploadPhoto(articleId.ToString()), addPhotoRequest);
@@ -137,13 +129,85 @@ public partial class AddArticleViewModel(
                 if (!addPhotoToArticleResponse.IsSuccess && addPhotoToArticleResponse.ErrorMessage != null)
                     await dialogService.ShowMessage(Localization.Error, addPhotoToArticleResponse.ErrorMessage);
             }
-            else if (SelectedVisibility == Localization.FriendVisibility)
+            else
             {
+                var addArticleResponse = await apiService.PostRequest<GetId>
+                    (URL.AddPrivateArticle(LocationId));
+                if(!addArticleResponse.IsSuccess && addArticleResponse.ErrorMessage != null)
+                {
+                    await dialogService.ShowMessage(Localization.Error, addArticleResponse.ErrorMessage);
+                    return;
+                }
 
-            }
-            else if (SelectedVisibility == Localization.PrivateVisibility)
-            {
+                var articleId = addArticleResponse.Data.Id;
+                
+                var dek = AesGcm256.GenerateKey();
+                var photos = await photoService.GetPhotoFromLocalAsync(Photos.ToList());
+                
+                var addPhotoRequest = new PhotoList();
+                addPhotoRequest.Photos = photos.Select(photo => AesGcm256.Encrypt(photo, dek)).ToList();
+                
+                var addPhotoResponse = await apiService.PostRequest<PhotoList, PhotoList>
+                    (URL.UploadPhoto(articleId.ToString()), addPhotoRequest);
+                
+                if (!addPhotoResponse.IsSuccess && addPhotoResponse.ErrorMessage != null)
+                    await dialogService.ShowMessage(Localization.Error, addPhotoResponse.ErrorMessage);
+                
+                var preview = new PreviewPrivateArticle()
+                {
+                    Description = Description
+                };
+                var previewJson = JsonSerializer.Serialize(preview);
+                var encryptedPreview = AesGcm256.Encrypt(previewJson, dek);
 
+                var full = new FullPrivateArticle()
+                {
+                    Description = Description,
+                    Photos = addPhotoResponse.Data.Photos
+                };
+                var fullJson = JsonSerializer.Serialize(full);
+                var encryptedFull = AesGcm256.Encrypt(fullJson , dek);
+
+                var myPublicKeyResult = await apiService.GetRequest<GetPublicKey>(URL.GetPublicKey());
+                if (!myPublicKeyResult.IsSuccess && myPublicKeyResult.ErrorMessage != null)
+                {
+                    await dialogService.ShowMessage(Localization.Error, myPublicKeyResult.ErrorMessage);
+                    return;
+                }
+
+                var acess = new List<AddEncryptedKeys>();
+                var encryptedKey = GetEncryptedKeys(myPublicKeyResult.Data.PublicKey, myPublicKeyResult.Data.UserId, dek);
+                acess.Add(encryptedKey);
+
+                if (SelectedVisibility == Localization.FriendVisibility)
+                {
+                    var friendsPublicKeyResult =
+                        await apiService.GetRequest<List<GetPublicKey>>(URL.GetFriendsPublicKeys());
+                    if (!friendsPublicKeyResult.IsSuccess && friendsPublicKeyResult.ErrorMessage != null)
+                    {
+                        await dialogService.ShowMessage(Localization.Error, friendsPublicKeyResult.ErrorMessage);
+                        return;
+                    }
+                    
+                    foreach (var key in friendsPublicKeyResult.Data)
+                    {
+                        encryptedKey = GetEncryptedKeys(key.PublicKey, key.UserId, dek);
+                        acess.Add(encryptedKey);
+                    }
+                }
+
+                var addRequest = new AddPrivateArticleData
+                {
+                    EncryptedPreviewData = encryptedPreview,
+                    EncryptedData = encryptedFull,
+                    EncryptedKeys = acess
+                };
+
+                var result = await apiService.PostRequest<AddPrivateArticleData, bool>
+                    (URL.AddPhotoToPrivateArticle(articleId.ToString()), addRequest);
+
+                if (!result.IsSuccess && result.ErrorMessage != null)
+                    await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
             }
 
             await navigation.GoBack();
@@ -152,5 +216,22 @@ public partial class AddArticleViewModel(
         {
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
         }
+    }
+
+    private static AddEncryptedKeys GetEncryptedKeys(string publicKeyString, Guid userId, byte[] dek)
+    {
+        var publicKey = EccP256.StringToPublicKey(publicKeyString);
+
+        var encryptedKeyBytes = EccP256.Encrypt(publicKey, dek);
+        var encryptedKey = Convert.ToBase64String(encryptedKeyBytes);
+
+        return new AddEncryptedKeys { EncryptedKey = encryptedKey, UserId = userId };
+    }
+    
+    public void ClearCache()
+    {
+        if(Photos.Count == 0)
+            return;
+        photoService.RemovePhotosFromLocal(Photos.ToList());
     }
 }

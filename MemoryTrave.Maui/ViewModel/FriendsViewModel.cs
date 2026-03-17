@@ -36,7 +36,7 @@ public partial class FriendsViewModel(
     [RelayCommand]
     private async Task ConfirmRequestAsync(Guid id)
     {
-        var result = await apiService.PostRequest(URL.ConfirmRequest(id.ToString()));
+        var result = await apiService.PostRequest<bool>(URL.ConfirmRequest(id.ToString()));
         if (!result.IsSuccess && result.ErrorMessage != null)
             await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
         else if (result.IsSuccess)

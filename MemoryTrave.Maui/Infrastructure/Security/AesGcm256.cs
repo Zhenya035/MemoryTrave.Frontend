@@ -7,6 +7,13 @@ public class AesGcm256
 {
     private const int NonceSize = 12;
     private const int TagSize = 16;
+    private const int KeySize = 32;
+
+    public static byte[] GenerateKey()
+    {
+        var key = RandomNumberGenerator.GetBytes(KeySize);
+        return key;
+    }
     
     public static string Encrypt(string text, byte[] key)
     {
@@ -26,10 +33,10 @@ public class AesGcm256
         return Convert.ToBase64String(combined);
     }
 
-    public static string Decrypt(string base64String, string key)
+    public static string Decrypt(string encryptedText, string key)
     {
         var keyBytes = Convert.FromBase64String(key);
-        var combined = Convert.FromBase64String(base64String);
+        var combined = Convert.FromBase64String(encryptedText);
         
         var nonce = new byte[NonceSize];
         var tag = new byte[TagSize];

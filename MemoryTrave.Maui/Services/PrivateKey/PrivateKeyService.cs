@@ -8,11 +8,11 @@ public class PrivateKeyService : IPrivateKeyService
     public void SetKey(string key)
     {
         Clear(); 
-        _privateKey = System.Text.Encoding.UTF8.GetBytes(key);
+        _privateKey = Convert.FromBase64String(key);
     }
 
     public string? GetKey() =>
-        _privateKey != null ? System.Text.Encoding.UTF8.GetString(_privateKey) : null;
+        _privateKey != null ? Convert.ToBase64String(_privateKey) : null;
 
     public void Clear()
     {

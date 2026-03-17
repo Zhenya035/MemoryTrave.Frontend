@@ -87,14 +87,16 @@ public class EccP256
     public static byte[]? PrivateKeyToBytes(AsymmetricKeyParameter privateKey) =>
         privateKey is not ECPrivateKeyParameters privKey ? null : privKey.D.ToByteArrayUnsigned();
     
-    public static ECPublicKeyParameters BytesToPublicKey(byte[] publicKeyBytes)
+    public static ECPublicKeyParameters StringToPublicKey(string publicKeyString)
     {
+        var publicKeyBytes = Convert.FromBase64String(publicKeyString);
         var q = DomainParams.Curve.DecodePoint(publicKeyBytes);
         return new ECPublicKeyParameters(q, DomainParams);
     }
     
-    public static ECPrivateKeyParameters BytesToPrivateKey(byte[] privateKeyBytes)
+    public static ECPrivateKeyParameters StringToPrivateKey(string privateKeyString)
     {
+        var privateKeyBytes = Convert.FromBase64String(privateKeyString);
         var d = new Org.BouncyCastle.Math.BigInteger(1, privateKeyBytes);
         return new ECPrivateKeyParameters(d, DomainParams);
     }
