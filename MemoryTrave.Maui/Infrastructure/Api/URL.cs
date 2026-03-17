@@ -2,13 +2,15 @@
 
 public static class URL
 {
-    private const string BaseUrl = "https://localhost:7196";
+    private const string BaseUrl = "https://memorytrave.somee.com";
     
     //Article
     private const string ArticleUrl = $"{BaseUrl}/articles";
     public static string GetArticleById(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
     public static string AddPrivateArticle() => $"{ArticleUrl}/private";
     public static string AddPublicArticle() => $"{ArticleUrl}/public";
+    public static string AddPhotoToPrivateArticle(string articleId) => $"{ArticleUrl}/private/{articleId}/photo";
+    public static string AddPhotoToPublicArticle(string articleId) => $"{ArticleUrl}/public/{articleId}/photo";
     public static string UpdateArticle(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
     public static string DeleteArticle(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
     
@@ -50,4 +52,12 @@ public static class URL
     public static string BlockUserPersonally() => $"{UserUrl}/block"; 
     public static string UnblockUserPersonally() => $"{UserUrl}/unblock";
     public static string DeleteUser() => $"{UserUrl}";
+    
+    //Photo
+    private const string PhotoUrl = $"{BaseUrl}/photos";
+    public static string GetPhotosFromArticle() => $"{PhotoUrl}/download";
+    public static string GetPhotoByKey() => $"{PhotoUrl}/file";
+    public static string UploadPhoto(string articleId) => $"{PhotoUrl}/{articleId}/upload";
+    public static string DeletePhotosByArticle(string articleId) => $"{PhotoUrl}/{articleId}/all";
+    public static string DeletePhotosByKeys(string articleId) => $"{PhotoUrl}/{articleId}/all";
 }

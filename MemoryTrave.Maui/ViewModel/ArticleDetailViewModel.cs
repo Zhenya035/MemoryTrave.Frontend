@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -5,6 +6,7 @@ using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Enums;
+using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
 
@@ -31,7 +33,7 @@ public partial class ArticleDetailViewModel(
     private string _description = string.Empty;
 
     [ObservableProperty] 
-    private List<string> _photosUrls = []; 
+    private ObservableCollection<string> _photos = []; 
    
     [ObservableProperty] 
     private string _articleId = string.Empty;
@@ -74,7 +76,6 @@ public partial class ArticleDetailViewModel(
                 var decryptArticle = JsonSerializer.Deserialize<GetFullPrivateArticle>(decryptString);
 
                 Description = decryptArticle.Description;
-                PhotosUrls = decryptArticle.PhotosUrls;
                 
             }
             else if (_article.Visibility == VisibilityEnum.Public && _article.Description != null &&
@@ -82,10 +83,52 @@ public partial class ArticleDetailViewModel(
             {
                 Visibility = "Public";
                 Description = _article.Description;
-                PhotosUrls = _article.PhotosUrls;
+
+                var getPhotoRequest = new GetPhotosByArticle
+                {
+                    ArticleId = _article.Id,
+                    Author = AuthorName
+                };
+                var photos = await apiService.PostRequest<GetPhotosByArticle, PhotoList>
+                    (URL.GetPhotosFromArticle(), getPhotoRequest);
+                if (!photos.IsSuccess && photos.ErrorMessage != null)
+                {
+                    await dialogService.ShowMessage(Localization.Error, photos.ErrorMessage);
+                    return;
+                }
+                
+                await LoadPhotosAsync(photos.Data.Photos);
             }
         }
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+    }
+    
+    private async Task LoadPhotosAsync(List<string> photoSting)
+    {
+        if (photoSting.Count == 0)
+            return;
+
+        try
+        {
+            foreach (var base64 in photoSting)
+            {
+                if (string.IsNullOrEmpty(base64))
+                    continue;
+
+                var photoBytes = Convert.FromBase64String(base64);
+            
+                var fileName = $"{Guid.NewGuid()}.jpg";
+                var localPath = Path.Combine(FileSystem.CacheDirectory, fileName);
+            
+                await File.WriteAllBytesAsync(localPath, photoBytes);
+            
+                Photos.Add(localPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            await dialogService.ShowMessage(Localization.Error, $"Ошибка загрузки фото: {ex.Message}");
+        }
     }
 }

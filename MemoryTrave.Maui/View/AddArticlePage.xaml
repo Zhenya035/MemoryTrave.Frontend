@@ -22,25 +22,6 @@
                     Stroke="#e5e7eb"
                     Padding="20">
                 <VerticalStackLayout Spacing="16">
-                    
-                    <VerticalStackLayout Spacing="4">
-                        <Label Text="Название места"
-                               TextColor="Black"
-                               FontAttributes="Bold"
-                               FontSize="14"/>
-                        <Border HeightRequest="40" 
-                                Padding="10,0" 
-                                StrokeShape="RoundRectangle 8" 
-                                Stroke="Transparent"
-                                BackgroundColor="#F3F3F5">
-                            <Entry Text="{Binding LocationName}" 
-                                   Placeholder="Введите название места" 
-                                   TextColor="Black" 
-                                   PlaceholderColor="#717182" 
-                                   VerticalTextAlignment="Center"/>
-                        </Border>
-                    </VerticalStackLayout>
-                    
                     <VerticalStackLayout Spacing="4">
                         <Label Text="Описание"
                                TextColor="Black"

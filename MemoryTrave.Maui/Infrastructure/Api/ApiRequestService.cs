@@ -46,9 +46,15 @@ public class ApiRequestService(HttpClient client)
         
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadFromJsonAsync<TResponse>();
-            
-                return ApiResult<TResponse>.Success(result, (int)response.StatusCode);
+                var contentLength = response.Content.Headers.ContentLength;
+    
+                if (contentLength > 0)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<TResponse>();
+                    return ApiResult<TResponse>.Success(result, (int)response.StatusCode);
+                }
+                
+                return ApiResult<TResponse>.Success(default, (int)response.StatusCode);
             }
         
             string errorMessage = await response.Content.ReadAsStringAsync();

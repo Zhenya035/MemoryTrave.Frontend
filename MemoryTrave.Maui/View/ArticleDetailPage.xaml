@@ -60,7 +60,7 @@
                        TextColor="#1F2937"
                        LineBreakMode="WordWrap"/>
             
-                <CollectionView ItemsSource="{Binding PhotosUrls}" 
+                <CollectionView ItemsSource="{Binding Photos}" 
                                 HeightRequest="200"
                                 ItemsLayout="HorizontalList"
                                 HorizontalScrollBarVisibility="Never">
