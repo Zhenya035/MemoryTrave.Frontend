@@ -9,6 +9,7 @@ using MemoryTrave.Maui.Models.Profile;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;
@@ -16,6 +17,7 @@ namespace MemoryTrave.Maui.ViewModel;
 public partial class ProfileViewModel(
     ApiRequestService apiService,
     IDialogService dialogService,
+    IPrivateKeyService privateKeyService,
     INavigationService navigation) : ObservableObject
 {
     [ObservableProperty] 
@@ -81,14 +83,21 @@ public partial class ProfileViewModel(
             {
                 string decryptString;
                     
-                if (article.EncryptedPreviewData != null && article.EncryptedKey != null)
+                if (article.EncryptedDescription != null && article.EncryptedKey != null)
                 {
-                    decryptString = AesGcm256.Decrypt(article.EncryptedPreviewData, article.EncryptedKey);
+                    var privateKeyString = privateKeyService.GetKey();
+                    var privateKey = EccP256.StringToPrivateKey(privateKeyString);
+                        
+                    var encryptedDekBytes = Convert.FromBase64String(article.EncryptedKey);
+                    var dekBytes = EccP256.Decrypt(privateKey, encryptedDekBytes);
+                    var dek = Convert.ToBase64String(dekBytes);
+                        
+                    decryptString = AesGcm256.Decrypt(article.EncryptedDescription, dek);
                 }
                 else
                     return;
                 
-                var decryptArticle = JsonSerializer.Deserialize<PreviewPrivateArticle>(decryptString);
+                var decryptArticle = JsonSerializer.Deserialize<PrivateArticle>(decryptString);
 
                 articleForAdd.Visibility = "Private";
                 articleForAdd.Description = decryptArticle.Description;
