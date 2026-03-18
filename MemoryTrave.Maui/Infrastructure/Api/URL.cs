@@ -7,10 +7,9 @@ public static class URL
     //Article
     private const string ArticleUrl = $"{BaseUrl}/articles";
     public static string GetArticleById(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
-    public static string AddPrivateArticle() => $"{ArticleUrl}/private";
+    public static string AddPrivateArticle(string locationId) => $"{ArticleUrl}/private/{locationId}/create";
     public static string AddPublicArticle() => $"{ArticleUrl}/public";
-    public static string AddPhotoToPrivateArticle(string articleId) => $"{ArticleUrl}/private/{articleId}/photo";
-    public static string AddPhotoToPublicArticle(string articleId) => $"{ArticleUrl}/public/{articleId}/photo";
+    public static string AddDataToPrivateArticle(string articleId) => $"{ArticleUrl}/private/{articleId}/data";
     public static string UpdateArticle(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
     public static string DeleteArticle(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
     
@@ -25,6 +24,7 @@ public static class URL
     //Friendship
     private const string FriendshipUrl = $"{BaseUrl}/friends";
     public static string GetFriends() => $"{FriendshipUrl}";
+    public static string GetFriendsPublicKeys() => $"{FriendshipUrl}/keys";
     public static string DeleteFriendship(string friendshipId) => $"{FriendshipUrl}/{friendshipId.ToString()}";
     
     //Friend Request
@@ -49,6 +49,7 @@ public static class URL
     //User
     private const string UserUrl = $"{BaseUrl}/users";
     public static string GetUsersWithoutMe() => $"{UserUrl}/available";
+    public static string GetPublicKey() => $"{UserUrl}/keys/public";
     public static string BlockUserPersonally() => $"{UserUrl}/block"; 
     public static string UnblockUserPersonally() => $"{UserUrl}/unblock";
     public static string DeleteUser() => $"{UserUrl}";
