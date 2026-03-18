@@ -96,7 +96,7 @@ public partial class AddArticleViewModel(
     {
         try
         {
-            if (SelectedVisibility == Localization.PublicVisibility)
+                if (SelectedVisibility == Localization.PublicVisibility)
             {
                 var addArticleRequest = new AddPublicArticle()
                 {
@@ -122,12 +122,6 @@ public partial class AddArticleViewModel(
                 
                 if (!addPhotoResponse.IsSuccess && addPhotoResponse.ErrorMessage != null)
                     await dialogService.ShowMessage(Localization.Error, addPhotoResponse.ErrorMessage);
-                
-                var addPhotoToArticleResponse = await apiService.PostRequest<PhotoList, bool>
-                    (URL.AddPhotoToPublicArticle(articleId.ToString()), addPhotoResponse.Data);
-                
-                if (!addPhotoToArticleResponse.IsSuccess && addPhotoToArticleResponse.ErrorMessage != null)
-                    await dialogService.ShowMessage(Localization.Error, addPhotoToArticleResponse.ErrorMessage);
             }
             else
             {
@@ -152,21 +146,14 @@ public partial class AddArticleViewModel(
                 
                 if (!addPhotoResponse.IsSuccess && addPhotoResponse.ErrorMessage != null)
                     await dialogService.ShowMessage(Localization.Error, addPhotoResponse.ErrorMessage);
-                
-                var preview = new PreviewPrivateArticle()
+
+                var description = new PrivateArticle
                 {
                     Description = Description
                 };
-                var previewJson = JsonSerializer.Serialize(preview);
-                var encryptedPreview = AesGcm256.Encrypt(previewJson, dek);
-
-                var full = new FullPrivateArticle()
-                {
-                    Description = Description,
-                    Photos = addPhotoResponse.Data.Photos
-                };
-                var fullJson = JsonSerializer.Serialize(full);
-                var encryptedFull = AesGcm256.Encrypt(fullJson , dek);
+                var json = JsonSerializer.Serialize(description);
+                
+                var encryptedPrivate = AesGcm256.Encrypt(json, dek);
 
                 var myPublicKeyResult = await apiService.GetRequest<GetPublicKey>(URL.GetPublicKey());
                 if (!myPublicKeyResult.IsSuccess && myPublicKeyResult.ErrorMessage != null)
@@ -198,13 +185,12 @@ public partial class AddArticleViewModel(
 
                 var addRequest = new AddPrivateArticleData
                 {
-                    EncryptedPreviewData = encryptedPreview,
-                    EncryptedData = encryptedFull,
+                    EncryptedDescription = encryptedPrivate,
                     EncryptedKeys = acess
                 };
 
                 var result = await apiService.PostRequest<AddPrivateArticleData, bool>
-                    (URL.AddPhotoToPrivateArticle(articleId.ToString()), addRequest);
+                    (URL.AddDataToPrivateArticle(articleId.ToString()), addRequest);
 
                 if (!result.IsSuccess && result.ErrorMessage != null)
                     await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);

@@ -10,6 +10,7 @@ using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Photo;
+using MemoryTrave.Maui.Services.PrivateKey;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -17,6 +18,7 @@ namespace MemoryTrave.Maui.ViewModel;
 public partial class ArticleDetailViewModel(
     ApiRequestService apiService,
     IPhotoService photoService,
+    IPrivateKeyService privateKeyService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -62,26 +64,51 @@ public partial class ArticleDetailViewModel(
             AuthorName = _article.AuthorName;
             LocationName = _article.LocationName;
             
-            if (_article.Visibility == VisibilityEnum.Private && _article.EncryptedData != null &&
+            if (_article.Visibility == VisibilityEnum.Private && _article.EncryptedDescription != null &&
                 _article.EncryptedKey != null)
             {
                 Visibility = "Private";
-                string decryptString;
-                    
-                if (_article.EncryptedData != null && _article.EncryptedKey != null)
-                {
-                    decryptString = AesGcm256.Decrypt(_article.EncryptedData, _article.EncryptedKey);
-                }
-                else
-                    return;
 
-                var decryptArticle = JsonSerializer.Deserialize<FullPrivateArticle>(decryptString);
+                var privateKeyString = privateKeyService.GetKey();
+                if (privateKeyString == null)
+                {
+                    await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+                    return;
+                }
+                
+                var privateKey = EccP256.StringToPrivateKey(privateKeyString);
+                var encryptedDek = Convert.FromBase64String(_article.EncryptedKey);
+
+                var dekBytes = EccP256.Decrypt(privateKey, encryptedDek);
+                var dek = Convert.ToBase64String(dekBytes);
+                
+                var decryptString = AesGcm256.Decrypt(_article.EncryptedDescription, dek);
+
+                var decryptArticle = JsonSerializer.Deserialize<PrivateArticle>(decryptString);
 
                 Description = decryptArticle.Description;
                 
+                var getPhotoRequest = new GetPhotosByArticle
+                {
+                    ArticleId = _article.Id,
+                    Author = AuthorName
+                };
+
+                var photos = await apiService.PostRequest<GetPhotosByArticle, PhotoList>
+                    (URL.GetPhotosFromArticle(), getPhotoRequest);
+
+                if (!photos.IsSuccess && photos.ErrorMessage != null)
+                {
+                    await dialogService.ShowMessage(Localization.Error, photos.ErrorMessage);
+                    return;
+                }
+                
+                var decryptedPhotos = photos.Data.Photos.Select(photo => 
+                    AesGcm256.Decrypt(photo, dek)).ToList();
+
+                await GetPhotosAsync(decryptedPhotos);
             }
-            else if (_article.Visibility == VisibilityEnum.Public && _article.Description != null &&
-                     _article.PhotosUrls != null)
+            else if (_article.Visibility == VisibilityEnum.Public && _article.Description != null)
             {
                 Visibility = "Public";
                 Description = _article.Description;

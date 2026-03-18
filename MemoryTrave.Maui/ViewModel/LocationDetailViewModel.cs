@@ -79,7 +79,7 @@ public partial class LocationDetailViewModel(
                 {
                     string decryptString;
                     
-                    if (article.EncryptedData != null && article.EncryptedKey != null)
+                    if (article.EncryptedDescription != null && article.EncryptedKey != null)
                     {
                         var privateKeyString = privateKeyService.GetKey();
                         var privateKey = EccP256.StringToPrivateKey(privateKeyString);
@@ -88,12 +88,12 @@ public partial class LocationDetailViewModel(
                         var dekBytes = EccP256.Decrypt(privateKey, encryptedDekBytes);
                         var dek = Convert.ToBase64String(dekBytes);
                         
-                        decryptString = AesGcm256.Decrypt(article.EncryptedData, dek);
+                        decryptString = AesGcm256.Decrypt(article.EncryptedDescription, dek);
                     }
                     else
                         return;
 
-                    var decryptArticle = JsonSerializer.Deserialize<PreviewPrivateArticle>(decryptString);
+                    var decryptArticle = JsonSerializer.Deserialize<PrivateArticle>(decryptString);
 
                     newArticle.Description = decryptArticle.Description;
                 }

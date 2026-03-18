@@ -12,8 +12,7 @@ public class Article
     public string LocationName { get; set; } = string.Empty;
     
     public string? Description { get; set; }
-    public List<string>? PhotosUrls { get; set; }
     
-    public string? EncryptedData { get; set; }
+    public string? EncryptedDescription { get; set; }
     public string? EncryptedKey { get; set; }
 }
