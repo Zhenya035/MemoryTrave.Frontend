@@ -135,4 +135,46 @@
     <data name="PrivateVisibility" xml:space="preserve">
         <value>Private</value>
     </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="InputDescription" xml:space="preserve">
+        <value>Enter a description</value>
+    </data>
+    <data name="Visibility" xml:space="preserve">
+        <value>Visibility</value>
+    </data>
+    <data name="Photos" xml:space="preserve">
+        <value>Photos</value>
+    </data>
+    <data name="AddPhoto" xml:space="preserve">
+        <value>Add a photo</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="SearchFriends" xml:space="preserve">
+        <value>Search for friends</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="Requests" xml:space="preserve">
+        <value>Requests</value>
+    </data>
+    <data name="NoFriends" xml:space="preserve">
+        <value>No friends</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="NoRequests" xml:space="preserve">
+        <value>No requests</value>
+    </data>
+    <data name="AddArticle" xml:space="preserve">
+        <value>Add an article</value>
+    </data>
+    <data name="Author" xml:space="preserve">
+        <value>Author:</value>
+    </data>
 </root>

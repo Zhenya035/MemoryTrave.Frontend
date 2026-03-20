@@ -82,7 +82,7 @@
         <value>Статей</value>
     </data>
     <data name="Friends" xml:space="preserve">
-        <value>Друзей</value>
+        <value>Друзья</value>
     </data>
     <data name="VisitedPlaces" xml:space="preserve">
         <value>Посещенные места</value>
@@ -134,5 +134,47 @@
     </data>
     <data name="PrivateVisibility" xml:space="preserve">
         <value>Приватный</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="InputDescription" xml:space="preserve">
+        <value>Введите описание</value>
+    </data>
+    <data name="Visibility" xml:space="preserve">
+        <value>Видимость</value>
+    </data>
+    <data name="Photos" xml:space="preserve">
+        <value>Фотографии</value>
+    </data>
+    <data name="AddPhoto" xml:space="preserve">
+        <value>Добавить фото</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Сохранить</value>
+    </data>
+    <data name="SearchFriends" xml:space="preserve">
+        <value>Поиск друзей</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Удалить</value>
+    </data>
+    <data name="Requests" xml:space="preserve">
+        <value>Запросы</value>
+    </data>
+    <data name="NoFriends" xml:space="preserve">
+        <value>Нет друзей</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Принять</value>
+    </data>
+    <data name="NoRequests" xml:space="preserve">
+        <value>Нет запросов</value>
+    </data>
+    <data name="AddArticle" xml:space="preserve">
+        <value>Добавить статью</value>
+    </data>
+    <data name="Author" xml:space="preserve">
+        <value>Автор:</value>
     </data>
 </root>

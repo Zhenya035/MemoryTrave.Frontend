@@ -60,6 +60,24 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add an article.
+        /// </summary>
+        internal static string AddArticle {
+            get {
+                return ResourceManager.GetString("AddArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a photo.
+        /// </summary>
+        internal static string AddPhoto {
+            get {
+                return ResourceManager.GetString("AddPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keep memories of your travels alive.
         /// </summary>
         internal static string AppDescription {
@@ -87,6 +105,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author:.
+        /// </summary>
+        internal static string Author {
+            get {
+                return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changed:.
         /// </summary>
         internal static string ChangeAt {
@@ -96,11 +123,38 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        internal static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created:.
         /// </summary>
         internal static string CreatedAt {
             get {
                 return ResourceManager.GetString("CreatedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -155,6 +209,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string FriendVisibility {
             get {
                 return ResourceManager.GetString("FriendVisibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a description.
+        /// </summary>
+        internal static string InputDescription {
+            get {
+                return ResourceManager.GetString("InputDescription", resourceCulture);
             }
         }
         
@@ -231,6 +294,24 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No friends.
+        /// </summary>
+        internal static string NoFriends {
+            get {
+                return ResourceManager.GetString("NoFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No requests.
+        /// </summary>
+        internal static string NoRequests {
+            get {
+                return ResourceManager.GetString("NoRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No places visited.
         /// </summary>
         internal static string NoVisitedPlaces {
@@ -254,6 +335,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photos.
+        /// </summary>
+        internal static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
             }
         }
         
@@ -317,6 +407,33 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Registration3 {
             get {
                 return ResourceManager.GetString("Registration3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requests.
+        /// </summary>
+        internal static string Requests {
+            get {
+                return ResourceManager.GetString("Requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for friends.
+        /// </summary>
+        internal static string SearchFriends {
+            get {
+                return ResourceManager.GetString("SearchFriends", resourceCulture);
             }
         }
         
@@ -398,6 +515,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility.
+        /// </summary>
+        internal static string Visibility {
+            get {
+                return ResourceManager.GetString("Visibility", resourceCulture);
             }
         }
         

@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
              xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
              xmlns:friends="clr-namespace:MemoryTrave.Maui.Models.Friends"
              x:DataType="viewModel:FriendsViewModel"
@@ -38,7 +39,7 @@
                         Stroke="Transparent"
                         Margin="3"
                         IsVisible="{Binding InFriendship}">
-                    <Label Text="Друзья"
+                    <Label Text="{x:Static localization:Localization.Friends}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center" 
                            TextColor="Black"
@@ -54,7 +55,7 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding FriendshipTappedCommand}"/>
                     </Border.GestureRecognizers>
-                    <Label Text="Друзья"
+                    <Label Text="{x:Static localization:Localization.Friends}"
                            HorizontalOptions="Center" 
                            VerticalOptions="Center" 
                            TextColor="Gray"
@@ -69,7 +70,7 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding RequestsTappedCommand}"/>
                     </Border.GestureRecognizers>
-                    <Label Text="Запросы"
+                    <Label Text="{x:Static localization:Localization.Requests}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center" 
                            TextColor="Gray"
@@ -82,7 +83,7 @@
                         BackgroundColor="White" 
                         Margin="3"
                         IsVisible="{Binding InRequests}">
-                    <Label Text="Запросы" 
+                    <Label Text="{x:Static localization:Localization.Requests}" 
                            HorizontalOptions="Center" 
                            VerticalOptions="Center" 
                            TextColor="Black" 
@@ -116,7 +117,7 @@
                                    TextColor="Black"/>
                             
                             <Button Grid.Column="1"
-                                    Text="Delete"
+                                    Text="{x:Static localization:Localization.Delete}"
                                     HorizontalOptions="End"
                                     Command="{Binding Source={x:Reference FriendPageRoot}, 
                                     Path=BindingContext.DeleteFriendshipCommand}"
@@ -130,7 +131,7 @@
                 <VerticalStackLayout HorizontalOptions="Center" 
                                      VerticalOptions="Center"
                                      Padding="20">
-                    <Label Text="Нет друзей"
+                    <Label Text="{x:Static localization:Localization.NoFriends}"
                            TextColor="Gray"
                            HorizontalOptions="Center"/>
                 </VerticalStackLayout>
@@ -164,12 +165,12 @@
                                     <HorizontalStackLayout Grid.Column="1"
                                                            Spacing="10"
                                                            HorizontalOptions="End">
-                                        <Button Text="Confirm"
+                                        <Button Text="{x:Static localization:Localization.Confirm}"
                                                 Command="{Binding Source={x:Reference FriendPageRoot}, 
                                                 Path=BindingContext.ConfirmRequestCommand}"
                                                 CommandParameter="{Binding Id}"/>
                                     
-                                        <Button Text="Delete"
+                                        <Button Text="{x:Static localization:Localization.Delete}"
                                                 Command="{Binding Source={x:Reference FriendPageRoot}, 
                                                 Path=BindingContext.CancelRequestCommand}"
                                                 CommandParameter="{Binding Id}"/>
@@ -183,7 +184,7 @@
                         <VerticalStackLayout HorizontalOptions="Center" 
                                              VerticalOptions="Center"
                                              Padding="20">
-                            <Label Text="Нет запросов"
+                            <Label Text="{x:Static localization:Localization.NoRequests}"
                                    TextColor="Gray"
                                    HorizontalOptions="Center"/>
                         </VerticalStackLayout>
