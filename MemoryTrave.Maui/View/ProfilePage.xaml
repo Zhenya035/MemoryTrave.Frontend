@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:profile="clr-namespace:MemoryTrave.Maui.Models.Profile"
+             x:DataType="viewModel:ProfileViewModel"
+             x:Class="MemoryTrave.Maui.View.ProfilePage"
+             x:Name="ProfilePageRoot">
+    
+    <ScrollView>
+        <Grid Padding="15" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+        
+            <Border Grid.Row="0" 
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#e5e7eb"
+                    BackgroundColor="White"
+                    Padding="20,25">
+                
+                <VerticalStackLayout Spacing="10">
+                    
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                        <Label Text="{Binding Username}"
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               FontSize="22"
+                               HorizontalTextAlignment="Center"/>
+                        
+                        <Label Text="{Binding Email}"
+                               TextColor="Gray"
+                               FontSize="14"
+                               HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                    
+                    <Grid ColumnSpacing="30" Margin="0,15,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" 
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#F3F3F5"
+                                Padding="16,10"
+                                Stroke="Transparent">
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                                <Label Text="{Binding ArticleCount}" 
+                                       FontSize="24" 
+                                       FontAttributes="Bold"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Center"/>
+                                <Label Text="{x:Static localization:Localization.Articles}" 
+                                       FontSize="13" 
+                                       TextColor="Gray"
+                                       HorizontalTextAlignment="Center"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Grid.Column="1" 
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#F3F3F5"
+                                Padding="16,10"
+                                Stroke="Transparent">
+                            
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference ProfilePageRoot}, Path=BindingContext.ToFriendsCommand}"/>
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                                <Label Text="{Binding FriendsCount}"
+                                       FontSize="24"
+                                       FontAttributes="Bold"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Center"/>
+                                <Label Text="{x:Static localization:Localization.Friends}"
+                                       FontSize="13"
+                                       TextColor="Gray"
+                                       HorizontalTextAlignment="Center"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                    
+                </VerticalStackLayout>
+            </Border>
+            
+            <Label Grid.Row="1"
+                   Text="{x:Static localization:Localization.VisitedPlaces}"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   TextColor="Black"
+                   Margin="5,10,0,5"/>
+            
+            <Border Grid.Row="2"
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#e5e7eb"
+                    BackgroundColor="White"
+                    Padding="10">
+                
+                <CollectionView ItemsSource="{Binding Articles}"
+                                SelectionMode="None"
+                                Margin="0,5,0,0">
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="profile:ProfileArticles">
+                            <Border StrokeShape="RoundRectangle 15"
+                                    Stroke="#e5e7eb"
+                                    BackgroundColor="#F3F3F5"
+                                    Padding="16"
+                                    Margin="0,0,0,10">
+                                
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={x:Reference ProfilePageRoot}, 
+                                        Path=BindingContext.ToArticleCommand}"
+                                        CommandParameter="{Binding Id}"/>
+                                </Border.GestureRecognizers>
+                                
+                                <VerticalStackLayout Spacing="10">
+                                    
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding LocationName}"
+                                               FontSize="17"
+                                               FontAttributes="Bold"
+                                               TextColor="Black"
+                                               VerticalOptions="Center"/>
+                                        
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Visibility}"
+                                               WidthRequest="22"
+                                               HeightRequest="22"
+                                               VerticalOptions="Center"
+                                               Margin="8,0,0,0"/>
+                                    </Grid>
+                                    
+                                    <Label Text="{Binding Description}"
+                                           FontSize="14"
+                                           TextColor="#666666"
+                                           LineBreakMode="WordWrap"
+                                           MaxLines="3"/>
+                                    
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <VerticalStackLayout Grid.Column="0">
+                                            <Label Text="{x:Static localization:Localization.ChangeAt}"
+                                                   FontSize="11"
+                                                   TextColor="Gray"/>
+                                            <Label Text="{Binding LastChange}"
+                                                   FontSize="13"
+                                                   TextColor="Black"
+                                                   FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+                                            
+                                        <VerticalStackLayout Grid.Column="1">
+                                            <Label Text="{x:Static localization:Localization.CreatedAt}"
+                                                   FontSize="11"
+                                                   TextColor="Gray"/>
+                                            <Label Text="{Binding CreatedAt}"
+                                                   FontSize="13"
+                                                   TextColor="Black"
+                                                   FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                    
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" 
+                                             VerticalOptions="Center"
+                                             Padding="30,50"
+                                             Spacing="12">
+                            <Label Text="{x:Static localization:Localization.NoVisitedPlaces}"
+                                   TextColor="Gray"
+                                   FontSize="15"
+                                   HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                    
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                    </CollectionView.ItemsLayout>
+                    
+                </CollectionView>
+            </Border>
+        </Grid>
+    </ScrollView>
+    
+</ContentPage>

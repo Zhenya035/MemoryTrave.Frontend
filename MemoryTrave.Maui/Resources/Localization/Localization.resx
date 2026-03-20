@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AppDescription" xml:space="preserve">
+        <value>Keep memories of your travels alive</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Registration" xml:space="preserve">
+        <value>Registration</value>
+    </data>
+    <data name="Login1" xml:space="preserve">
+        <value>Log in to your account</value>
+    </data>
+    <data name="Registration1" xml:space="preserve">
+        <value>Create an account</value>
+    </data>
+    <data name="Login2" xml:space="preserve">
+        <value>Enter your login information</value>
+    </data>
+    <data name="Registration2" xml:space="preserve">
+        <value>Fill out the registration form</value>
+    </data>
+    <data name="UserName" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="Login3" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Registration3" xml:space="preserve">
+        <value>Register</value>
+    </data>
+    <data name="Map" xml:space="preserve">
+        <value>Map</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Profile</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="FillError" xml:space="preserve">
+        <value>Please fill in all fields</value>
+    </data>
+    <data name="JwtError" xml:space="preserve">
+        <value>Token cannot be null or empty</value>
+    </data>
+    <data name="Ok" xml:space="preserve">
+        <value>OK</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="UnexpectedError" xml:space="preserve">
+        <value>Unexpected error</value>
+    </data>
+    <data name="Articles" xml:space="preserve">
+        <value>Articles</value>
+    </data>
+    <data name="Friends" xml:space="preserve">
+        <value>Friends</value>
+    </data>
+    <data name="VisitedPlaces" xml:space="preserve">
+        <value>Places visited</value>
+    </data>
+    <data name="ChangeAt" xml:space="preserve">
+        <value>Changed:</value>
+    </data>
+    <data name="CreatedAt" xml:space="preserve">
+        <value>Created:</value>
+    </data>
+    <data name="NoVisitedPlaces" xml:space="preserve">
+        <value>No places visited</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="SelectLanguage" xml:space="preserve">
+        <value>Select the application language</value>
+    </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Apply</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>Theme</value>
+    </data>
+    <data name="SelectTheme" xml:space="preserve">
+        <value>Choose a design theme</value>
+    </data>
+    <data name="Exit" xml:space="preserve">
+        <value>Log out</value>
+    </data>
+    <data name="ExitFromAccount" xml:space="preserve">
+        <value>Log out of your current account</value>
+    </data>
+    <data name="ThemeSystem" xml:space="preserve">
+        <value>System</value>
+    </data>
+    <data name="ThemeLight" xml:space="preserve">
+        <value>Light</value>
+    </data>
+    <data name="ThemeDark" xml:space="preserve">
+        <value>Dark</value>
+    </data>
+    <data name="PublicVisibility" xml:space="preserve">
+        <value>Public</value>
+    </data>
+    <data name="FriendVisibility" xml:space="preserve">
+        <value>For friends</value>
+    </data>
+    <data name="PrivateVisibility" xml:space="preserve">
+        <value>Private</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="InputDescription" xml:space="preserve">
+        <value>Enter a description</value>
+    </data>
+    <data name="Visibility" xml:space="preserve">
+        <value>Visibility</value>
+    </data>
+    <data name="Photos" xml:space="preserve">
+        <value>Photos</value>
+    </data>
+    <data name="AddPhoto" xml:space="preserve">
+        <value>Add a photo</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="SearchFriends" xml:space="preserve">
+        <value>Search for friends</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="Requests" xml:space="preserve">
+        <value>Requests</value>
+    </data>
+    <data name="NoFriends" xml:space="preserve">
+        <value>No friends</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="NoRequests" xml:space="preserve">
+        <value>No requests</value>
+    </data>
+    <data name="AddArticle" xml:space="preserve">
+        <value>Add an article</value>
+    </data>
+    <data name="Author" xml:space="preserve">
+        <value>Author:</value>
+    </data>
+</root>

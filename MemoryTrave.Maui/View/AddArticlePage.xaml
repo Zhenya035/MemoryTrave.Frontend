@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             x:DataType="viewModel:AddArticleViewModel"
+             x:Class="MemoryTrave.Maui.View.AddArticlePage"
+             x:Name="AddArticlePageRoot">
+    
+    <ScrollView>
+        <Grid HorizontalOptions="Fill" 
+              VerticalOptions="Fill"
+              Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Border Grid.Row="0" 
+                    StrokeShape="RoundRectangle 12" 
+                    BackgroundColor="White" 
+                    Stroke="#e5e7eb"
+                    Padding="20">
+                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{x:Static localization:Localization.Description}"
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               FontSize="14"/>
+                        <Border StrokeShape="RoundRectangle 8" 
+                                Stroke="Transparent"
+                                BackgroundColor="#F3F3F5"
+                                Padding="10,0">
+                            <Editor Text="{Binding Description}"
+                                    Placeholder="{x:Static localization:Localization.InputDescription}"
+                                    TextColor="Black"
+                                    PlaceholderColor="#717182"
+                                    AutoSize="TextChanges"
+                                    VerticalOptions="Start"
+                                    HeightRequest="100"/>
+                        </Border>
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{x:Static localization:Localization.Visibility}"
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               FontSize="14"/>
+                        <Border HeightRequest="40" 
+                                Padding="10,0" 
+                                StrokeShape="RoundRectangle 8" 
+                                Stroke="Transparent"
+                                BackgroundColor="#F3F3F5">
+                            <Picker ItemsSource="{Binding VisibilityLevels}"
+                                    SelectedItem="{Binding SelectedVisibility}"
+                                    TextColor="Black"
+                                    TitleColor="#717182"
+                                    VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="{x:Static localization:Localization.Photos}"
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               FontSize="14"/>
+                        
+                       <CollectionView x:Name="PhotosCollection" 
+                                        ItemsSource="{Binding Photos}"
+                                        HeightRequest="130"
+                                        HorizontalScrollBarVisibility="Never"
+                                        ItemSizingStrategy="MeasureAllItems">
+                            
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+                            
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <AbsoluteLayout WidthRequest="100" HeightRequest="100">
+                                        
+                                        <Border AbsoluteLayout.LayoutBounds="0,0,100,100"
+                                                StrokeShape="RoundRectangle 10"
+                                                Stroke="Transparent"
+                                                BackgroundColor="#F3F3F5"
+                                                Padding="2">
+                                            <Image Source="{Binding .}" 
+                                                   Aspect="AspectFill"
+                                                   WidthRequest="96"
+                                                   HeightRequest="96"/>
+                                        </Border>
+                                        
+                                        <Border AbsoluteLayout.LayoutBounds="80,-10,24,24"
+                                                StrokeShape="RoundRectangle 12"
+                                                BackgroundColor="#EF4444"
+                                                WidthRequest="24" 
+                                                HeightRequest="24">
+                                            
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                    Command="{Binding Source={x:Reference AddArticlePageRoot}, 
+                                                    Path=BindingContext.RemovePhotoCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+                                            
+                                            <Label Text="×" 
+                                                   TextColor="White" 
+                                                   FontSize="18"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   LineBreakMode="NoWrap"/>
+                                        </Border>
+                                    </AbsoluteLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                       </CollectionView>
+                        
+                       <Button Text="{x:Static localization:Localization.AddPhoto}" 
+                               BackgroundColor="#F3F3F5"
+                               TextColor="Black"
+                               FontSize="13"
+                               Padding="16,8"
+                               HorizontalOptions="Center"
+                               Command="{Binding AddPhotoCommand}"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+            
+            <Button Grid.Row="1"
+                    Text="{x:Static localization:Localization.Save}" 
+                    BackgroundColor="Black" 
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Padding="24,12"
+                    HorizontalOptions="Center"
+                    Margin="0,20,0,0"
+                    Command="{Binding SaveCommand}"/>
+        </Grid>
+    </ScrollView>
+</ContentPage>

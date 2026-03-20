@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AppDescription" xml:space="preserve">
+        <value>Сохраняйте воспоминания о ваших путешествиях</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Вход</value>
+    </data>
+    <data name="Registration" xml:space="preserve">
+        <value>Регистрация</value>
+    </data>
+    <data name="Login1" xml:space="preserve">
+        <value>Вход в аккаунт</value>
+    </data>
+    <data name="Registration1" xml:space="preserve">
+        <value>Создать аккаунт</value>
+    </data>
+    <data name="Login2" xml:space="preserve">
+        <value>Введите ваши данные для входа</value>
+    </data>
+    <data name="Registration2" xml:space="preserve">
+        <value>Заполните форму для регистрации</value>
+    </data>
+    <data name="UserName" xml:space="preserve">
+        <value>Имя пользователя</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Пароль</value>
+    </data>
+    <data name="Login3" xml:space="preserve">
+        <value>Войти</value>
+    </data>
+    <data name="Registration3" xml:space="preserve">
+        <value>Зарегистрироваться</value>
+    </data>
+    <data name="Map" xml:space="preserve">
+        <value>Карта</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Профиль</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Выйти</value>
+    </data>
+    <data name="FillError" xml:space="preserve">
+        <value>Пожалуйста заполните все поля</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Ошибка</value>
+    </data>
+    <data name="JwtError" xml:space="preserve">
+        <value>Токен не может быть нулевым или пустым</value>
+    </data>
+    <data name="Ok" xml:space="preserve">
+        <value>ОК</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Настройки</value>
+    </data>
+    <data name="UnexpectedError" xml:space="preserve">
+        <value>Непредвиденная ошибка</value>
+    </data>
+    <data name="Articles" xml:space="preserve">
+        <value>Статей</value>
+    </data>
+    <data name="Friends" xml:space="preserve">
+        <value>Друзья</value>
+    </data>
+    <data name="VisitedPlaces" xml:space="preserve">
+        <value>Посещенные места</value>
+    </data>
+    <data name="ChangeAt" xml:space="preserve">
+        <value>Изменено:</value>
+    </data>
+    <data name="CreatedAt" xml:space="preserve">
+        <value>Создано:</value>
+    </data>
+    <data name="NoVisitedPlaces" xml:space="preserve">
+        <value>Нет посещенных мест</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Применить</value>
+    </data>
+    <data name="SelectLanguage" xml:space="preserve">
+        <value>Выберите язык приложения</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>Тема</value>
+    </data>
+    <data name="SelectTheme" xml:space="preserve">
+        <value>Выберите тему оформления</value>
+    </data>
+    <data name="Exit" xml:space="preserve">
+        <value>Выход</value>
+    </data>
+    <data name="ExitFromAccount" xml:space="preserve">
+        <value>Выйти из текущего аккаунта</value>
+    </data>
+    <data name="ThemeSystem" xml:space="preserve">
+        <value>Системная</value>
+    </data>
+    <data name="ThemeLight" xml:space="preserve">
+        <value>Светлая</value>
+    </data>
+    <data name="ThemeDark" xml:space="preserve">
+        <value>Тёмная</value>
+    </data>
+    <data name="PublicVisibility" xml:space="preserve">
+        <value>Публичный</value>
+    </data>
+    <data name="FriendVisibility" xml:space="preserve">
+        <value>Для друзей</value>
+    </data>
+    <data name="PrivateVisibility" xml:space="preserve">
+        <value>Приватный</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="InputDescription" xml:space="preserve">
+        <value>Введите описание</value>
+    </data>
+    <data name="Visibility" xml:space="preserve">
+        <value>Видимость</value>
+    </data>
+    <data name="Photos" xml:space="preserve">
+        <value>Фотографии</value>
+    </data>
+    <data name="AddPhoto" xml:space="preserve">
+        <value>Добавить фото</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Сохранить</value>
+    </data>
+    <data name="SearchFriends" xml:space="preserve">
+        <value>Поиск друзей</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Удалить</value>
+    </data>
+    <data name="Requests" xml:space="preserve">
+        <value>Запросы</value>
+    </data>
+    <data name="NoFriends" xml:space="preserve">
+        <value>Нет друзей</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Принять</value>
+    </data>
+    <data name="NoRequests" xml:space="preserve">
+        <value>Нет запросов</value>
+    </data>
+    <data name="AddArticle" xml:space="preserve">
+        <value>Добавить статью</value>
+    </data>
+    <data name="Author" xml:space="preserve">
+        <value>Автор:</value>
+    </data>
+</root>

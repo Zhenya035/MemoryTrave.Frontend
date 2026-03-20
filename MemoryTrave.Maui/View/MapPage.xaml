@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mapsui="clr-namespace:Mapsui.UI.Maui;assembly=Mapsui.UI.Maui"
+             xmlns:viewModel="using:MemoryTrave.Maui.ViewModel"
+             x:DataType="viewModel:MapViewModel"
+             x:Class="MemoryTrave.Maui.View.MapPage">
+    
+    <Grid>
+        <mapsui:MapControl x:Name="MapControl" 
+                           Map="{Binding Map}"/>
+        
+        <Frame CornerRadius="25"
+               Padding="0"
+               HasShadow="True"
+               BorderColor="#007AFF"
+               BackgroundColor="White"
+               HorizontalOptions="Start"
+               VerticalOptions="Start"
+               Margin="20,50,20,0"
+               HeightRequest="50"
+               WidthRequest="50"
+               IsVisible="{Binding IsAuthButVisible}">
+            
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding LoginTappedCommand}" />
+            </Frame.GestureRecognizers>
+            
+            <Image Source="login_icon.png" 
+                   WidthRequest="24" 
+                   HeightRequest="24"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center"/>
+        </Frame>
+    </Grid>
+</ContentPage>
