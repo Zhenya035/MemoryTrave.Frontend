@@ -19,7 +19,8 @@
         <Button Grid.Row="0"
                 Text="{x:Static localization:Localization.AddArticle}"
                 Command="{Binding ToAddArticleCommand}"
-                HorizontalOptions="Start"/>
+                HorizontalOptions="Start"
+                IsVisible="{Binding IsAuthorized}"/>
         
         <Border Grid.Row="1"
                 StrokeShape="RoundRectangle 20"
@@ -61,7 +62,6 @@
                                 </HorizontalStackLayout>
                                 
                                 <HorizontalStackLayout Spacing="5">
-                                    <Label Text="Created at:" FontAttributes="Bold"/>
                                     <Label Text="{x:Static localization:Localization.CreatedAt}"
                                            FontAttributes="Bold"/>
                                     <Label Text="{Binding CreatedAt}"/>

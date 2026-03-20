@@ -8,9 +8,9 @@ using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Location;
 using MemoryTrave.Maui.Resources.Localization;
+using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Navigation;
-using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.View;
 
@@ -20,7 +20,8 @@ namespace MemoryTrave.Maui.ViewModel;
 public partial class LocationDetailViewModel(
     INavigationService navigation,
     IDialogService dialogService,
-    IPrivateKeyService  privateKeyService,
+    IPrivateKeyService privateKeyService,
+    IAuthService authService,
     ApiRequestService apiService) : ObservableObject
 {
     [ObservableProperty]
@@ -31,6 +32,9 @@ public partial class LocationDetailViewModel(
     
     [ObservableProperty]
     private ObservableCollection<ArticleForLocation> _articles;
+    
+    [ObservableProperty]
+    private bool _isAuthorized = authService.IsAuthorized;
     
     [RelayCommand]
     private async Task ToArticleAsync(Guid articleId)
