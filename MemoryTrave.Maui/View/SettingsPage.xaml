@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
+             x:Class="MemoryTrave.Maui.View.SettingsPage"
+             x:DataType="viewModel:SettingsViewModel">
+    
+    <VerticalStackLayout Padding="20" 
+                         Spacing="15">
+       
+        <Border StrokeShape="RoundRectangle 20"
+                Stroke="#e5e7eb"
+                Padding="10"
+                BackgroundColor="White">
+            
+            <VerticalStackLayout>
+                <Label Text="{x:Static localization:Localization.Language}"
+                       TextColor="Black"
+                       FontAttributes="Bold"/>
+                
+                <Picker Title="{x:Static localization:Localization.SelectLanguage}"
+                        ItemsSource="{Binding Languages}"
+                        SelectedItem="{Binding SelectedLanguage}"/>
+        
+                <Button Text="{x:Static localization:Localization.Apply}" 
+                        Command="{Binding ChangeLanguageCommand}"/>
+
+            </VerticalStackLayout>
+        </Border>
+        
+        <Border StrokeShape="RoundRectangle 20"
+                Stroke="#e5e7eb"
+                Padding="10"
+                BackgroundColor="White">
+            <VerticalStackLayout>
+                <Label Text="{x:Static localization:Localization.Theme}"
+                       TextColor="Black"
+                       FontAttributes="Bold"/>
+        
+                <Picker Title="{x:Static localization:Localization.SelectTheme}"
+                        ItemsSource="{Binding Themes}"
+                        SelectedItem="{Binding SelectedTheme}"/>
+        
+                <Button Text="{x:Static localization:Localization.Apply}" Command="{Binding ChangeThemeCommand}"/>
+
+            </VerticalStackLayout>
+        </Border>
+        
+        <Border StrokeShape="RoundRectangle 20"
+                Stroke="#e5e7eb"
+                Padding="10"
+                BackgroundColor="White">
+            <VerticalStackLayout>
+                <Label Text="{x:Static localization:Localization.Exit}"
+                       TextColor="Red"
+                       FontAttributes="Bold"/>
+                
+                <Label Text="{x:Static localization:Localization.ExitFromAccount}"
+                       TextColor="Gray"/>
+                
+                <Button Text="{x:Static localization:Localization.Logout}" 
+                        TextColor="White"
+                        Command="{Binding LogOutCommand}"
+                        BackgroundColor="Red"/>
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+    
+</ContentPage>

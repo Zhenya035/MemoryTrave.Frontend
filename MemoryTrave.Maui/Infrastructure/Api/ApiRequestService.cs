@@ -46,12 +46,48 @@ public class ApiRequestService(HttpClient client)
         
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadFromJsonAsync<TResponse>();
-            
-                return ApiResult<TResponse>.Success(result, (int)response.StatusCode);
+                var contentLength = response.Content.Headers.ContentLength;
+    
+                if (contentLength > 0)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<TResponse>();
+                    return ApiResult<TResponse>.Success(result, (int)response.StatusCode);
+                }
+                
+                return ApiResult<TResponse>.Success(default, (int)response.StatusCode);
             }
         
             string errorMessage = await response.Content.ReadAsStringAsync();
+        
+            return ApiResult<TResponse>.Failure(errorMessage, (int)response.StatusCode);
+        }
+        catch (Exception e)
+        {
+            var errorMessage = e.Message;
+            return ApiResult<TResponse>.Failure(errorMessage);
+        }
+    }
+    
+    public async Task<ApiResult<TResponse>> PostRequest<TResponse>(string url)
+    {
+        try
+        {
+            using var response = await client.PostAsJsonAsync(url, new {});
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentLength = response.Content.Headers.ContentLength;
+    
+                if (contentLength > 0)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<TResponse>();
+                    return ApiResult<TResponse>.Success(result, (int)response.StatusCode);
+                }
+                
+                return ApiResult<TResponse>.Success(default, (int)response.StatusCode);
+            }
+        
+            var errorMessage = await response.Content.ReadAsStringAsync();
         
             return ApiResult<TResponse>.Failure(errorMessage, (int)response.StatusCode);
         }
@@ -96,13 +132,9 @@ public class ApiRequestService(HttpClient client)
             using var response = await client.DeleteAsync(url);
         
             if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content.ReadFromJsonAsync<bool>();
-            
-                return ApiResult<bool>.Success(result, (int)response.StatusCode);
-            }
+                return ApiResult<bool>.Success(true, (int)response.StatusCode);
         
-            string errorMessage = await response.Content.ReadAsStringAsync();
+            var errorMessage = await response.Content.ReadAsStringAsync();
         
             return ApiResult<bool>.Failure(errorMessage, (int)response.StatusCode);
         }

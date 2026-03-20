@@ -3,13 +3,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
              x:Class="MemoryTrave.Maui.View.AuthPage"
-             x:DataType="viewModel:AuthViewModel"
-             BackgroundColor="#eff6ff">
+             x:DataType="viewModel:AuthViewModel">
     
     <Grid
-          HorizontalOptions="Center" 
-          VerticalOptions="Center"
+          HorizontalOptions="Fill" 
+          VerticalOptions="Fill"
           Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -25,7 +25,7 @@
                TextColor="Black"
                Margin="0,0,0,15"/>
         
-        <Label Grid.Row="1" Text="Сохраняйте воспоминания о ваших путешествиях"
+        <Label Grid.Row="1" Text="{x:Static localization:Localization.AppDescription}"
                FontSize="15"
                TextColor="Gray"
                HorizontalOptions="Center"
@@ -49,7 +49,7 @@
                         Stroke="Transparent"
                         Margin="3"
                         IsVisible="{Binding IsLogin}">
-                    <Label Text="Вход"
+                    <Label Text="{x:Static localization:Localization.Login}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center" 
                            TextColor="Black"
@@ -65,7 +65,7 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding LoginTappedCommand}"/>
                     </Border.GestureRecognizers>
-                    <Label Text="Вход"
+                    <Label Text="{x:Static localization:Localization.Login}"
                            HorizontalOptions="Center" 
                            VerticalOptions="Center" 
                            TextColor="Gray"
@@ -80,7 +80,7 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding RegisterTappedCommand}"/>
                     </Border.GestureRecognizers>
-                    <Label Text="Регистрация"
+                    <Label Text="{x:Static localization:Localization.Registration}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center" 
                            TextColor="Gray"
@@ -93,7 +93,7 @@
                         BackgroundColor="White" 
                         Margin="3"
                         IsVisible="{Binding IsRegistration}">
-                    <Label Text="Регистрация" 
+                    <Label Text="{x:Static localization:Localization.Registration}" 
                            HorizontalOptions="Center" 
                            VerticalOptions="Center" 
                            TextColor="Black" 
@@ -109,31 +109,31 @@
                 Margin="0,10,0,0"
                 Stroke="#e5e7eb">
             <VerticalStackLayout Padding="20">
-                <Label Text="Вход в аккаунт"
+                <Label Text="{x:Static localization:Localization.Login1}"
                        TextColor="Black"
                        FontAttributes="Bold"
                        Margin="0,0,0,2.5"
                        Padding="0"
                        IsVisible="{Binding IsLogin}"/>
                 
-                <Label Text="Создать аккаунт"
+                <Label Text="{x:Static localization:Localization.Registration1}"
                        TextColor="Black"
                        FontAttributes="Bold"
                        Margin="0,0,0,2.5"
                        Padding="0"
                        IsVisible="{Binding IsRegistration}"/>
                 
-                <Label Text="Введите ваши данные для входа"
+                <Label Text="{x:Static localization:Localization.Login2}"
                        TextColor="Gray"
                        Margin="0,2.5,0,10"
                        IsVisible="{Binding IsLogin}"/>
                 
-                <Label Text="Заполните форму для регистрации"
+                <Label Text="{x:Static localization:Localization.Registration2}"
                        TextColor="Gray"
                        Margin="0,2.5,0,10"
                        IsVisible="{Binding IsRegistration}"/>
                 
-                <Label Text="Имя пользователя"
+                <Label Text="{x:Static localization:Localization.UserName}"
                        TextColor="Black"
                        FontAttributes="Bold"
                        Margin="0,10,0,2.5"
@@ -173,7 +173,7 @@
                            VerticalTextAlignment="Center"/>
                 </Border>
                    
-                <Label Text="Пароль"
+                <Label Text="{x:Static localization:Localization.Password}"
                        TextColor="Black"
                        FontAttributes="Bold"
                        Margin="0,5,0,2.5"/>
@@ -192,13 +192,13 @@
                            VerticalOptions="Center"/>
                 </Border>
                     
-                <Button Text="Войти" 
+                <Button Text="{x:Static localization:Localization.Login3}" 
                         BackgroundColor="Black" 
                         TextColor="White"
                         Command="{Binding LoginCommand}"
                         IsVisible="{Binding IsLogin}"/>
                 
-                <Button Text="Зарегистрироваться" 
+                <Button Text="{x:Static localization:Localization.Registration3}" 
                         BackgroundColor="Black" 
                         TextColor="White"
                         Command="{Binding RegistrationCommand}"
