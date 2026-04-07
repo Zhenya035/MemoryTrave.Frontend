@@ -6,6 +6,7 @@ using Mapsui.Projections;
 using Mapsui.Styles;
 using Mapsui.Tiling;
 using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
@@ -108,8 +109,25 @@ public partial class MapViewModel : ObservableObject
                 Geometry = new NetTopologySuite.Geometries.Point(mapPoint.x, mapPoint.y),
                 ["Id"] = loc.Id.ToString()
             };
-            
-            feature.Styles.Add(CreatePinStyle());
+
+            switch (loc.LocationContentState)
+            {
+                case LocationContentState.Empty:
+                    feature.Styles.Add(CreatePinStyle("#969696"));
+                    break;
+                case LocationContentState.MyArticles:
+                    feature.Styles.Add(CreatePinStyle("#4285F4"));
+                    break;
+                case LocationContentState.FriendsArticles:
+                    feature.Styles.Add(CreatePinStyle("#34A853"));
+                    break;
+                case LocationContentState.MyAndFriendsArticles:
+                    feature.Styles.Add(CreatePinStyle("#EA4335"));
+                    break;
+                default:
+                    feature.Styles.Add(CreatePinStyle("#FBBC04"));
+                    break;
+            }
             
             features.Add(feature);
         }
@@ -119,12 +137,12 @@ public partial class MapViewModel : ObservableObject
         Map.Refresh();
     }
 
-    private SymbolStyle CreatePinStyle()
+    private SymbolStyle CreatePinStyle(string color)
     {
         return new SymbolStyle
         {
             SymbolScale = 0.8,
-            Fill = new Brush { Color = Color.FromRgba(66, 133, 244, 255) },
+            Fill = new Brush { Color = Color.FromString(color) },
             Outline = new Pen { Color = Color.White, Width = 2 }
         };
     }

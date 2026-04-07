@@ -10,6 +10,42 @@
         <mapsui:MapControl x:Name="MapControl" 
                            Map="{Binding Map}"/>
         
+        <VerticalStackLayout 
+            Margin="16" 
+            Padding="12" 
+            BackgroundColor="White" 
+            Opacity="0.92"
+            HorizontalOptions="Start" 
+            VerticalOptions="End"
+            Spacing="8"
+            MaximumWidthRequest="200">
+        
+            <HorizontalStackLayout Spacing="10">
+                <BoxView WidthRequest="18" HeightRequest="18" CornerRadius="4" Color="#4285F4" VerticalOptions="Center"/>
+                <Label Text="My" FontSize="13" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <BoxView WidthRequest="18" HeightRequest="18" CornerRadius="4" Color="#34A853" VerticalOptions="Center"/>
+                <Label Text="Friends" FontSize="13" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <BoxView WidthRequest="18" HeightRequest="18" CornerRadius="4" Color="#EA4335" VerticalOptions="Center"/>
+                <Label Text="My+Friends" FontSize="13" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <BoxView WidthRequest="18" HeightRequest="18" CornerRadius="4" Color="#FBBC04" VerticalOptions="Center"/>
+                <Label Text="Other" FontSize="13" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <BoxView WidthRequest="18" HeightRequest="18" CornerRadius="4" Color="#969696" VerticalOptions="Center"/>
+                <Label Text="Empty" FontSize="13" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        
         <Frame CornerRadius="25"
                Padding="0"
                HasShadow="True"
