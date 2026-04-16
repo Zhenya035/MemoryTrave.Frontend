@@ -7,6 +7,8 @@ public static class URL
     //Article
     private const string ArticleUrl = $"{BaseUrl}/articles";
     public static string GetArticleById(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
+    public static string GetMyPrivate() => $"{ArticleUrl}/private";
+    public static string AddAccessForUser(string userId) => $"{ArticleUrl}/access/{userId}";
     public static string AddPrivateArticle(string locationId) => $"{ArticleUrl}/private/{locationId}/create";
     public static string AddPublicArticle() => $"{ArticleUrl}/public";
     public static string AddDataToPrivateArticle(string articleId) => $"{ArticleUrl}/private/{articleId}/data";
@@ -50,6 +52,7 @@ public static class URL
     private const string UserUrl = $"{BaseUrl}/users";
     public static string GetUsersWithoutMe() => $"{UserUrl}/available";
     public static string GetPublicKey() => $"{UserUrl}/keys/public";
+    public static string GetPublicKeyById(string userId) => $"{UserUrl}/{userId}/keys/public";
     public static string BlockUserPersonally() => $"{UserUrl}/block"; 
     public static string UnblockUserPersonally() => $"{UserUrl}/unblock";
     public static string DeleteUser() => $"{UserUrl}";
