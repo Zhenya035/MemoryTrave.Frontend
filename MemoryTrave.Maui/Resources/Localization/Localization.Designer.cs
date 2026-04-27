@@ -69,6 +69,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add as friend.
+        /// </summary>
+        internal static string AddFriend {
+            get {
+                return ResourceManager.GetString("AddFriend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a photo.
         /// </summary>
         internal static string AddPhoto {
@@ -191,6 +200,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string FillError {
             get {
                 return ResourceManager.GetString("FillError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find friends.
+        /// </summary>
+        internal static string FindFriends {
+            get {
+                return ResourceManager.GetString("FindFriends", resourceCulture);
             }
         }
         
@@ -429,11 +447,11 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search for friends.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
-        internal static string SearchFriends {
+        internal static string Search {
             get {
-                return ResourceManager.GetString("SearchFriends", resourceCulture);
+                return ResourceManager.GetString("Search", resourceCulture);
             }
         }
         
