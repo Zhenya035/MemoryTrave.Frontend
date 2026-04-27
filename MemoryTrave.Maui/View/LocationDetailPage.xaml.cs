@@ -16,6 +16,6 @@ public partial class LocationDetailPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.GetLocationAsync();
+        //await _viewModel.GetLocationAsync();
     }
 }

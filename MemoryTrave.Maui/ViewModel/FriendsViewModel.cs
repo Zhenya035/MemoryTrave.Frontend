@@ -10,20 +10,23 @@ using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Friends;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.PrivateKey;
+using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;
 
 public partial class FriendsViewModel(
     ApiRequestService apiService,
-    IPrivateKeyService privateKeyService,
+    IPrivateKeyService privateKeyService, 
+    INavigationService navigation,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<Friend> _friends = [];
+    private ObservableCollection<User> _friends = [];
 
     [ObservableProperty]
-    private ObservableCollection<Friend> _requests = [];
+    private ObservableCollection<User> _requests = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InRequests))]
@@ -143,11 +146,17 @@ public partial class FriendsViewModel(
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
     }
 
+    [RelayCommand]
+    private async Task GoToFindFriends()
+    {
+        await navigation.GoTo(nameof(FindFriendsPage));
+    }
+    
     public async Task GetFriendsAsync()
     {
-        var friendsResult = await apiService.GetRequest<List<Friend>>(URL.GetFriends());
+        var friendsResult = await apiService.GetRequest<List<User>>(URL.GetFriends());
         var toMeRequestResult =
-            await apiService.GetRequest<List<Friend>>(URL.GetRequests((int)DirectionRequestEnum.Incoming));
+            await apiService.GetRequest<List<User>>(URL.GetRequests((int)DirectionRequestEnum.Incoming));
         
         if(!friendsResult.IsSuccess && friendsResult.ErrorMessage != null)
             await dialogService.ShowMessage(Localization.Error, friendsResult.ErrorMessage);
@@ -156,8 +165,8 @@ public partial class FriendsViewModel(
         else if (friendsResult.IsSuccess && friendsResult.Data != null && 
                  toMeRequestResult.IsSuccess && toMeRequestResult.Data != null)
         {
-            Friends = new ObservableCollection<Friend>(friendsResult.Data);
-            Requests = new ObservableCollection<Friend>(toMeRequestResult.Data);
+            Friends = new ObservableCollection<User>(friendsResult.Data);
+            Requests = new ObservableCollection<User>(toMeRequestResult.Data);
         }
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);

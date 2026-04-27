@@ -153,8 +153,8 @@
     <data name="Save" xml:space="preserve">
         <value>Save</value>
     </data>
-    <data name="SearchFriends" xml:space="preserve">
-        <value>Search for friends</value>
+    <data name="Search" xml:space="preserve">
+        <value>Search</value>
     </data>
     <data name="Delete" xml:space="preserve">
         <value>Delete</value>
@@ -176,5 +176,11 @@
     </data>
     <data name="Author" xml:space="preserve">
         <value>Author:</value>
+    </data>
+    <data name="FindFriends" xml:space="preserve">
+        <value>Find friends</value>
+    </data>
+    <data name="AddFriend" xml:space="preserve">
+        <value>Add as friend</value>
     </data>
 </root>

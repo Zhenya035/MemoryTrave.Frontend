@@ -153,8 +153,8 @@
     <data name="Save" xml:space="preserve">
         <value>Сохранить</value>
     </data>
-    <data name="SearchFriends" xml:space="preserve">
-        <value>Поиск друзей</value>
+    <data name="Search" xml:space="preserve">
+        <value>Поиск</value>
     </data>
     <data name="Delete" xml:space="preserve">
         <value>Удалить</value>
@@ -176,5 +176,11 @@
     </data>
     <data name="Author" xml:space="preserve">
         <value>Автор:</value>
+    </data>
+    <data name="FindFriends" xml:space="preserve">
+        <value>Найти друзей</value>
+    </data>
+    <data name="AddFriend" xml:space="preserve">
+        <value>Добавить в друзья</value>
     </data>
 </root>
