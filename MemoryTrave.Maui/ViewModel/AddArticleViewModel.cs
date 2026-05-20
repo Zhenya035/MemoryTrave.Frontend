@@ -7,6 +7,7 @@ using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models;
 using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Articles.Access;
+using MemoryTrave.Maui.Models.Friends;
 using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
@@ -22,6 +23,16 @@ public partial class AddArticleViewModel(
     IPhotoService photoService,
     ApiRequestService apiService) : ObservableObject
 {
+    [ObservableProperty] 
+    private ObservableCollection<User> _friends = [];
+    
+    
+    [ObservableProperty] 
+    private ObservableCollection<object> _selectedFriends = [];
+
+    [ObservableProperty] 
+    private bool _isFriendsSelectorVisible;
+    
     [ObservableProperty]
     private string _locationId = string.Empty;
     
@@ -34,16 +45,60 @@ public partial class AddArticleViewModel(
     public ObservableCollection<string> VisibilityLevels { get; } =
     [
         Localization.PublicVisibility,
-        Localization.FriendVisibility,
         Localization.PrivateVisibility
     ];
     
     [ObservableProperty]
     private string _selectedVisibility = Localization.PublicVisibility;
+
+    async partial void OnSelectedVisibilityChanged(string value)
+    {
+        try
+        {
+            IsFriendsSelectorVisible = (value == Localization.PrivateVisibility);
+
+            if (!IsFriendsSelectorVisible)
+                SelectedFriends.Clear();
+        }
+        catch (Exception e)
+        {
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+        }
+    }
     
     [ObservableProperty]
     private bool _isBusy;
 
+    [RelayCommand]
+    private void SelectAllFriends()
+    {
+        SelectedFriends.Clear();
+        foreach (var friend in Friends)
+        {
+            SelectedFriends.Add(friend);
+        }
+        
+        OnPropertyChanged(nameof(SelectedFriends));
+    }
+
+    [RelayCommand]
+    private void ClearSelected() =>
+        SelectedFriends.Clear();
+
+    public async Task GetFriendsAsync()
+    {
+        var result = await apiService.GetRequest<List<User>>(URL.GetFriendsWithFriendId());
+        if (result.IsSuccess && result.Data != null)
+        {
+            var friends = result.Data;
+            Friends = new ObservableCollection<User>(friends);
+        }
+        else if (!result.IsSuccess && result.ErrorMessage != null)
+            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        else
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+    }
+    
     [RelayCommand]
     [Obsolete("Obsolete")]
     private async Task AddPhoto()
@@ -96,8 +151,8 @@ public partial class AddArticleViewModel(
     {
         try
         {
-                if (SelectedVisibility == Localization.PublicVisibility)
-            {
+            if (SelectedVisibility == Localization.PublicVisibility) 
+            { 
                 var addArticleRequest = new AddPublicArticle()
                 {
                     Description = Description,
@@ -166,10 +221,12 @@ public partial class AddArticleViewModel(
                 var encryptedKey = GetEncryptedKeys(myPublicKeyResult.Data.PublicKey, myPublicKeyResult.Data.UserId, dek);
                 acess.Add(encryptedKey);
 
-                if (SelectedVisibility == Localization.FriendVisibility)
+                if (SelectedFriends.Count > 0)
                 {
+                    var ids = SelectedFriends.Cast<User>().Select(u => u.Id).ToList();
+                    
                     var friendsPublicKeyResult =
-                        await apiService.GetRequest<List<GetPublicKey>>(URL.GetFriendsPublicKeys());
+                        await apiService.PostRequest<List<Guid>, List<GetPublicKey>>(URL.GetUsersPublicKeys(), ids);
                     if (!friendsPublicKeyResult.IsSuccess && friendsPublicKeyResult.ErrorMessage != null)
                     {
                         await dialogService.ShowMessage(Localization.Error, friendsPublicKeyResult.ErrorMessage);
