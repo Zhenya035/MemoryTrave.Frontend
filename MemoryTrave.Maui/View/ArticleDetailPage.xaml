@@ -3,6 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:localization="clr-namespace:MemoryTrave.Maui.Resources.Localization"
              x:DataType="viewModel:ArticleDetailViewModel"
              x:Class="MemoryTrave.Maui.View.ArticleDetailPage">
     
@@ -78,7 +79,7 @@
                     </CollectionView.ItemTemplate>
                 
                     <CollectionView.EmptyView>
-                        <Label Text="Нет фотографий"
+                        <Label Text="{x:Static localization:Localization.NoPhotos}"
                                TextColor="Gray"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"
