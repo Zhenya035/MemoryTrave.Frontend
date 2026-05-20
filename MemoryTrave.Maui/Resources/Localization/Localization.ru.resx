@@ -129,8 +129,8 @@
     <data name="PublicVisibility" xml:space="preserve">
         <value>Публичный</value>
     </data>
-    <data name="FriendVisibility" xml:space="preserve">
-        <value>Для друзей</value>
+    <data name="PartiallyPrivateVisibility" xml:space="preserve">
+        <value>Частично приватный</value>
     </data>
     <data name="PrivateVisibility" xml:space="preserve">
         <value>Приватный</value>
@@ -182,5 +182,20 @@
     </data>
     <data name="AddFriend" xml:space="preserve">
         <value>Добавить в друзья</value>
+    </data>
+    <data name="SelectFriends" xml:space="preserve">
+        <value>Выберите, кому дать доступ</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Выбрать всё</value>
+    </data>
+    <data name="Clear" xml:space="preserve">
+        <value>Очистить</value>
+    </data>
+    <data name="NoPhotos" xml:space="preserve">
+        <value>Нет фото</value>
+    </data>
+    <data name="NoPeople" xml:space="preserve">
+        <value>Нет людей</value>
     </data>
 </root>

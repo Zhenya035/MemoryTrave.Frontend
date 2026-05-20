@@ -129,8 +129,8 @@
     <data name="PublicVisibility" xml:space="preserve">
         <value>Public</value>
     </data>
-    <data name="FriendVisibility" xml:space="preserve">
-        <value>For friends</value>
+    <data name="PartiallyPrivateVisibility" xml:space="preserve">
+        <value>Partially private</value>
     </data>
     <data name="PrivateVisibility" xml:space="preserve">
         <value>Private</value>
@@ -182,5 +182,20 @@
     </data>
     <data name="AddFriend" xml:space="preserve">
         <value>Add as friend</value>
+    </data>
+    <data name="SelectFriends" xml:space="preserve">
+        <value>Select who to grant access to</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Select all</value>
+    </data>
+    <data name="Clear" xml:space="preserve">
+        <value>Clear</value>
+    </data>
+    <data name="NoPhotos" xml:space="preserve">
+        <value>No photo</value>
+    </data>
+    <data name="NoPeople" xml:space="preserve">
+        <value>No peoples</value>
     </data>
 </root>

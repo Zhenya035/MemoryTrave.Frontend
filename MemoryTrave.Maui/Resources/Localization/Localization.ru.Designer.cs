@@ -132,6 +132,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Очистить.
+        /// </summary>
+        internal static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Принять.
         /// </summary>
         internal static string Confirm {
@@ -218,15 +227,6 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Friends {
             get {
                 return ResourceManager.GetString("Friends", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Для друзей.
-        /// </summary>
-        internal static string FriendVisibility {
-            get {
-                return ResourceManager.GetString("FriendVisibility", resourceCulture);
             }
         }
         
@@ -321,6 +321,24 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Нет людей.
+        /// </summary>
+        internal static string NoPeople {
+            get {
+                return ResourceManager.GetString("NoPeople", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нет фото.
+        /// </summary>
+        internal static string NoPhotos {
+            get {
+                return ResourceManager.GetString("NoPhotos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нет запросов.
         /// </summary>
         internal static string NoRequests {
@@ -344,6 +362,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Частично приватный.
+        /// </summary>
+        internal static string PartiallyPrivateVisibility {
+            get {
+                return ResourceManager.GetString("PartiallyPrivateVisibility", resourceCulture);
             }
         }
         
@@ -452,6 +479,24 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выбрать всё.
+        /// </summary>
+        internal static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выберите, кому дать доступ.
+        /// </summary>
+        internal static string SelectFriends {
+            get {
+                return ResourceManager.GetString("SelectFriends", resourceCulture);
             }
         }
         
