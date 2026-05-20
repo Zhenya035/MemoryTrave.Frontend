@@ -8,6 +8,7 @@ using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Profile;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.View;
@@ -18,6 +19,7 @@ public partial class ProfileViewModel(
     ApiRequestService apiService,
     IDialogService dialogService,
     IPrivateKeyService privateKeyService,
+    IConvertErrorService errorService,
     INavigationService navigation) : ObservableObject
 {
     [ObservableProperty] 
@@ -53,8 +55,8 @@ public partial class ProfileViewModel(
 
         switch (result.IsSuccess)
         {
-            case false when result.ErrorMessage != null:
-                await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+            case false when result.ErrorMessage != null && result.StatusCode != null:
+                await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
                 return;
             case true when result.Data == null:
                 await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);

@@ -6,11 +6,13 @@ using MemoryTrave.Maui.Models;
 using MemoryTrave.Maui.Models.Friends;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 
 namespace MemoryTrave.Maui.ViewModel;
 
 public partial class FindFriendsViewModel(
     ApiRequestService apiService,
+    IConvertErrorService errorService,
     IDialogService dialogService) : ObservableObject
 {
     private List<User> _allUsers = [];
@@ -29,8 +31,8 @@ public partial class FindFriendsViewModel(
             _allUsers = response.Data;
             Users = new ObservableCollection<User>(_allUsers);
         }
-        else if (!response.IsSuccess && response.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, response.ErrorMessage);
+        else if (!response.IsSuccess && response.ErrorMessage != null && response.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error,errorService.ConvertError(response.StatusCode));
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
     }
@@ -50,8 +52,8 @@ public partial class FindFriendsViewModel(
                 Users.Remove(userToRemove);
             }
         }
-        else if (!response.IsSuccess && response.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, response.ErrorMessage);
+        else if (!response.IsSuccess && response.ErrorMessage != null && response.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(response.StatusCode));
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
     }

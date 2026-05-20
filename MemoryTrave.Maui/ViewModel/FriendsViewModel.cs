@@ -2,16 +2,13 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
-using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models;
-using MemoryTrave.Maui.Models.Articles;
-using MemoryTrave.Maui.Models.Articles.Access;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Friends;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Navigation;
-using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;
@@ -19,6 +16,7 @@ namespace MemoryTrave.Maui.ViewModel;
 public partial class FriendsViewModel(
     ApiRequestService apiService,
     INavigationService navigation,
+    IConvertErrorService errorService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -45,8 +43,8 @@ public partial class FriendsViewModel(
     private async Task ConfirmRequestAsync(Guid id)
     {
         var result = await apiService.PostRequest<GetId>(URL.ConfirmRequest(id.ToString()));
-        if (!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
         else if (result.IsSuccess && result.Data != null)
         {
             await GetFriendsAsync();
@@ -59,8 +57,8 @@ public partial class FriendsViewModel(
     private async Task CancelRequest(Guid id)
     {
         var result = await apiService.DeleteRequest(URL.CancelRequest(id.ToString()));
-        if (!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
         else if (result.IsSuccess)
         {
             var deleteObject = Requests.First(f => f.Id == id);
@@ -74,8 +72,8 @@ public partial class FriendsViewModel(
     private async Task DeleteFriendship(Guid id)
     {
         var result = await apiService.DeleteRequest(URL.DeleteFriendship(id.ToString()));
-        if (!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
         else if (result.IsSuccess)
         {
             var deleteObject = Friends.First(f => f.Id == id);
@@ -97,10 +95,10 @@ public partial class FriendsViewModel(
         var toMeRequestResult =
             await apiService.GetRequest<List<User>>(URL.GetRequests((int)DirectionRequestEnum.Incoming));
         
-        if(!friendsResult.IsSuccess && friendsResult.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, friendsResult.ErrorMessage);
-        else if(!toMeRequestResult.IsSuccess && toMeRequestResult.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, toMeRequestResult.ErrorMessage);
+        if(!friendsResult.IsSuccess && friendsResult.ErrorMessage != null && friendsResult.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(friendsResult.StatusCode));
+        else if(!toMeRequestResult.IsSuccess && toMeRequestResult.ErrorMessage != null && toMeRequestResult.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(toMeRequestResult.StatusCode));
         else if (friendsResult.IsSuccess && friendsResult.Data != null && 
                  toMeRequestResult.IsSuccess && toMeRequestResult.Data != null)
         {

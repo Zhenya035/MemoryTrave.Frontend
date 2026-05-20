@@ -10,6 +10,7 @@ using MemoryTrave.Maui.Models.Location;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.View;
@@ -22,6 +23,7 @@ public partial class LocationDetailViewModel(
     IDialogService dialogService,
     IPrivateKeyService privateKeyService,
     IAuthService authService,
+    IConvertErrorService errorService,
     ApiRequestService apiService) : ObservableObject
 {
     [ObservableProperty]
@@ -56,8 +58,8 @@ public partial class LocationDetailViewModel(
     private async Task GetLocationAsync()
     {
         var result = await apiService.GetRequest<LocationForDetail>(URL.GetLocationById(LocationId));
-        if(!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        if(!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
         else if (result.IsSuccess && result.Data != null)
         {
             var location = result.Data;

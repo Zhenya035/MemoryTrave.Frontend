@@ -6,6 +6,7 @@ using MemoryTrave.Maui.Models.Authorization;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Key;
 using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.PrivateKey;
@@ -20,6 +21,7 @@ public partial class AuthViewModel(
     IDialogService dialogService,
     IKeyService keyService,
     IPrivateKeyService privateKeyService,
+    IConvertErrorService errorService,
     IStorageService storageService) : ObservableObject
 {
     [ObservableProperty] 
@@ -92,7 +94,7 @@ public partial class AuthViewModel(
             await navigation.GoBack();
         }
         else
-            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(authResponse.StatusCode));
 
     }
     
@@ -124,7 +126,7 @@ public partial class AuthViewModel(
         }
         else
         {
-            await dialogService.ShowMessage(Localization.Error, authResponse.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(authResponse.StatusCode));
             return;
         }
         
@@ -138,7 +140,8 @@ public partial class AuthViewModel(
             await navigation.GoBack();
         }
         else
-            await dialogService.ShowMessage(Localization.Error, privateKeyResponse.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error,
+                errorService.ConvertError(privateKeyResponse.StatusCode));
     }
     
     [RelayCommand]
