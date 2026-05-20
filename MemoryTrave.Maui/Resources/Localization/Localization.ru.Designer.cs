@@ -60,6 +60,51 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Данные введены неверно.
+        /// </summary>
+        internal static string _400Error {
+            get {
+                return ResourceManager.GetString("400Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Время сессии истекло. Пожалуйста, войдите в аккаунт заново..
+        /// </summary>
+        internal static string _401Error {
+            get {
+                return ResourceManager.GetString("401Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Недостаточно прав для выполнения этого действия..
+        /// </summary>
+        internal static string _403Error {
+            get {
+                return ResourceManager.GetString("403Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Запрашиваемые данные не найдены..
+        /// </summary>
+        internal static string _404Error {
+            get {
+                return ResourceManager.GetString("404Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошел конфликт данных. Возможно, эта запись уже существует..
+        /// </summary>
+        internal static string _409Error {
+            get {
+                return ResourceManager.GetString("409Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Добавить статью.
         /// </summary>
         internal static string AddArticle {
@@ -155,6 +200,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string CreatedAt {
             get {
                 return ResourceManager.GetString("CreatedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Что-то пошло не так. Проверьте подключение и повторите попытку..
+        /// </summary>
+        internal static string DefaultError {
+            get {
+                return ResourceManager.GetString("DefaultError", resourceCulture);
             }
         }
         
@@ -389,6 +443,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Photos {
             get {
                 return ResourceManager.GetString("Photos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ошибка загрузки фото.
+        /// </summary>
+        internal static string PhotoUploadError {
+            get {
+                return ResourceManager.GetString("PhotoUploadError", resourceCulture);
             }
         }
         

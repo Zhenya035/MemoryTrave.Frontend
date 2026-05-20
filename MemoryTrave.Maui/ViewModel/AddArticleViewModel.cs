@@ -11,6 +11,7 @@ using MemoryTrave.Maui.Models.Friends;
 using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.Photo;
 
@@ -21,6 +22,7 @@ public partial class AddArticleViewModel(
     IDialogService dialogService,
     INavigationService navigation,
     IPhotoService photoService,
+    IConvertErrorService errorService,
     ApiRequestService apiService) : ObservableObject
 {
     [ObservableProperty] 
@@ -93,8 +95,8 @@ public partial class AddArticleViewModel(
             var friends = result.Data;
             Friends = new ObservableCollection<User>(friends);
         }
-        else if (!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        else if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
     }
@@ -122,7 +124,7 @@ public partial class AddArticleViewModel(
         }
         catch (Exception ex)
         {
-            await dialogService.ShowMessage(Localization.Error, ex.Message);
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
         }
         finally
         {
@@ -161,9 +163,11 @@ public partial class AddArticleViewModel(
                 
                 var addArticleResponse = await apiService.PostRequest<AddPublicArticle, GetId>
                     (URL.AddPublicArticle(), addArticleRequest);
-                if(!addArticleResponse.IsSuccess && addArticleResponse.ErrorMessage != null)
+                if (!addArticleResponse.IsSuccess && addArticleResponse.ErrorMessage != null &&
+                    addArticleResponse.StatusCode != null)
                 {
-                    await dialogService.ShowMessage(Localization.Error, addArticleResponse.ErrorMessage);
+                    await dialogService.ShowMessage(Localization.Error,
+                        errorService.ConvertError(addArticleResponse.StatusCode));
                     return;
                 }
 
@@ -175,16 +179,20 @@ public partial class AddArticleViewModel(
                 var addPhotoResponse = await apiService.PostRequest<PhotoList, PhotoList>
                     (URL.UploadPhoto(articleId.ToString()), addPhotoRequest);
                 
-                if (!addPhotoResponse.IsSuccess && addPhotoResponse.ErrorMessage != null)
-                    await dialogService.ShowMessage(Localization.Error, addPhotoResponse.ErrorMessage);
+                if (!addPhotoResponse.IsSuccess && addPhotoResponse.ErrorMessage != null &&
+                    addPhotoResponse.StatusCode != null)
+                    await dialogService.ShowMessage(Localization.Error,
+                        errorService.ConvertError(addPhotoResponse.StatusCode));
             }
             else
             {
                 var addArticleResponse = await apiService.PostRequest<GetId>
                     (URL.AddPrivateArticle(LocationId));
-                if(!addArticleResponse.IsSuccess && addArticleResponse.ErrorMessage != null)
+                if (!addArticleResponse.IsSuccess && addArticleResponse.ErrorMessage != null &&
+                    addArticleResponse.StatusCode != null)
                 {
-                    await dialogService.ShowMessage(Localization.Error, addArticleResponse.ErrorMessage);
+                    await dialogService.ShowMessage(Localization.Error,
+                        errorService.ConvertError(addArticleResponse.StatusCode));
                     return;
                 }
 
@@ -199,8 +207,10 @@ public partial class AddArticleViewModel(
                 var addPhotoResponse = await apiService.PostRequest<PhotoList, PhotoList>
                     (URL.UploadPhoto(articleId.ToString()), addPhotoRequest);
                 
-                if (!addPhotoResponse.IsSuccess && addPhotoResponse.ErrorMessage != null)
-                    await dialogService.ShowMessage(Localization.Error, addPhotoResponse.ErrorMessage);
+                if (!addPhotoResponse.IsSuccess && addPhotoResponse.ErrorMessage != null &&
+                    addPhotoResponse.StatusCode != null)
+                    await dialogService.ShowMessage(Localization.Error,
+                        errorService.ConvertError(addPhotoResponse.StatusCode));
 
                 var description = new PrivateArticle
                 {
@@ -211,9 +221,11 @@ public partial class AddArticleViewModel(
                 var encryptedPrivate = AesGcm256.Encrypt(json, dek);
 
                 var myPublicKeyResult = await apiService.GetRequest<GetPublicKey>(URL.GetPublicKey());
-                if (!myPublicKeyResult.IsSuccess && myPublicKeyResult.ErrorMessage != null)
+                if (!myPublicKeyResult.IsSuccess && myPublicKeyResult.ErrorMessage != null &&
+                    myPublicKeyResult.StatusCode != null)
                 {
-                    await dialogService.ShowMessage(Localization.Error, myPublicKeyResult.ErrorMessage);
+                    await dialogService.ShowMessage(Localization.Error,
+                        errorService.ConvertError(myPublicKeyResult.StatusCode));
                     return;
                 }
 
@@ -227,9 +239,11 @@ public partial class AddArticleViewModel(
                     
                     var friendsPublicKeyResult =
                         await apiService.PostRequest<List<Guid>, List<GetPublicKey>>(URL.GetUsersPublicKeys(), ids);
-                    if (!friendsPublicKeyResult.IsSuccess && friendsPublicKeyResult.ErrorMessage != null)
+                    if (!friendsPublicKeyResult.IsSuccess && friendsPublicKeyResult.ErrorMessage != null && 
+                        friendsPublicKeyResult.StatusCode != null)
                     {
-                        await dialogService.ShowMessage(Localization.Error, friendsPublicKeyResult.ErrorMessage);
+                        await dialogService.ShowMessage(Localization.Error,
+                            errorService.ConvertError(friendsPublicKeyResult.StatusCode));
                         return;
                     }
                     
@@ -249,8 +263,8 @@ public partial class AddArticleViewModel(
                 var result = await apiService.PostRequest<AddPrivateArticleData, bool>
                     (URL.AddDataToPrivateArticle(articleId.ToString()), addRequest);
 
-                if (!result.IsSuccess && result.ErrorMessage != null)
-                    await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+                if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+                    await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
             }
 
             await navigation.GoBack();

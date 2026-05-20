@@ -9,6 +9,7 @@ using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
 
@@ -19,6 +20,7 @@ public partial class ArticleDetailViewModel(
     ApiRequestService apiService,
     IPhotoService photoService,
     IPrivateKeyService privateKeyService,
+    IConvertErrorService errorService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -52,9 +54,9 @@ public partial class ArticleDetailViewModel(
     private async Task GetArticleAsync()
     {
         var article = await apiService.GetRequest<Article>(URL.GetArticleById(ArticleId));
-        if (!article.IsSuccess && article.ErrorMessage != null)
+        if (!article.IsSuccess && article.ErrorMessage != null && article.StatusCode != null)
         {
-            await dialogService.ShowMessage(Localization.Error, article.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(article.StatusCode));
         }
         else if (article.IsSuccess && article.Data != null)
         {
@@ -97,9 +99,9 @@ public partial class ArticleDetailViewModel(
                 var photos = await apiService.PostRequest<GetPhotosByArticle, PhotoList>
                     (URL.GetPhotosFromArticle(), getPhotoRequest);
 
-                if (!photos.IsSuccess && photos.ErrorMessage != null)
+                if (!photos.IsSuccess && photos.ErrorMessage != null && photos.StatusCode != null)
                 {
-                    await dialogService.ShowMessage(Localization.Error, photos.ErrorMessage);
+                    await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(photos.StatusCode));
                     return;
                 }
                 
@@ -120,9 +122,9 @@ public partial class ArticleDetailViewModel(
                 };
                 var photos = await apiService.PostRequest<GetPhotosByArticle, PhotoList>
                     (URL.GetPhotosFromArticle(), getPhotoRequest);
-                if (!photos.IsSuccess && photos.ErrorMessage != null)
+                if (!photos.IsSuccess && photos.ErrorMessage != null && photos.StatusCode != null)
                 {
-                    await dialogService.ShowMessage(Localization.Error, photos.ErrorMessage);
+                    await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(photos.StatusCode));
                     return;
                 }
                 
@@ -145,7 +147,7 @@ public partial class ArticleDetailViewModel(
         }
         catch (Exception ex)
         {
-            await dialogService.ShowMessage(Localization.Error, $"Ошибка загрузки фото: {ex.Message}");
+            await dialogService.ShowMessage(Localization.Error, Localization.PhotoUploadError);
         }
     }
 
