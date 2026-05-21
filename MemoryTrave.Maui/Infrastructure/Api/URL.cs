@@ -26,6 +26,7 @@ public static class URL
     //Friendship
     private const string FriendshipUrl = $"{BaseUrl}/friends";
     public static string GetFriends() => $"{FriendshipUrl}";
+    public static string GetFriendsWithFriendId() => $"{FriendshipUrl}/id";
     public static string GetFriendsPublicKeys() => $"{FriendshipUrl}/keys";
     public static string DeleteFriendship(string friendshipId) => $"{FriendshipUrl}/{friendshipId.ToString()}";
     
@@ -52,6 +53,7 @@ public static class URL
     private const string UserUrl = $"{BaseUrl}/users";
     public static string GetUsersWithoutMe() => $"{UserUrl}/available";
     public static string GetPublicKey() => $"{UserUrl}/keys/public";
+    public static string GetUsersPublicKeys() => $"{UserUrl}/users/keys/public";
     public static string GetPublicKeyById(string userId) => $"{UserUrl}/{userId}/keys/public";
     public static string BlockUserPersonally() => $"{UserUrl}/block"; 
     public static string UnblockUserPersonally() => $"{UserUrl}/unblock";
