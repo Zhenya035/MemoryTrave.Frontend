@@ -73,11 +73,18 @@
                                     Stroke="Transparent"
                                     BackgroundColor="#F3F3F5">
                                 <Image Source="{Binding .}" 
-                                       Aspect="AspectFit"/>
+                                       Aspect="AspectFit">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding BindingContext.OpenPhotoCommand, 
+                                      Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                
+    
                     <CollectionView.EmptyView>
                         <Label Text="{x:Static localization:Localization.NoPhotos}"
                                TextColor="Gray"

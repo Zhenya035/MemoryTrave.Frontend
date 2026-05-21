@@ -13,10 +13,4 @@ public partial class ArticleDetailPage : ContentPage
         
         _viewModel = viewModel;
     }
-
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-        _viewModel.ClearCache();
-    }
 }
