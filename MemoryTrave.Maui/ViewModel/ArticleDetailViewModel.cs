@@ -13,6 +13,7 @@ using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
+using MemoryTrave.Maui.Services.SavePhoto;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -22,6 +23,7 @@ public partial class ArticleDetailViewModel(
     IPhotoService photoService,
     IPrivateKeyService privateKeyService,
     IConvertErrorService errorService,
+    IPhotoSaveService  photoSaveService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -40,7 +42,10 @@ public partial class ArticleDetailViewModel(
     private string _description = string.Empty;
 
     [ObservableProperty] 
-    private ObservableCollection<string> _photos = []; 
+    private ObservableCollection<string> _photos = [];
+
+    [ObservableProperty] 
+    private ObservableCollection<object> _selectedPhotos = [];
    
     [ObservableProperty] 
     private string _articleId = string.Empty;
@@ -152,13 +157,6 @@ public partial class ArticleDetailViewModel(
         }
     }
 
-    public void ClearCache()
-    {
-        if(Photos.Count == 0)
-            return;
-        photoService.RemovePhotosFromLocal(Photos.ToList());
-    }
-
     [RelayCommand]
     private async Task OpenPhotoAsync(string photoPath)
     {
@@ -214,6 +212,28 @@ public partial class ArticleDetailViewModel(
         {
             System.Diagnostics.Debug.WriteLine($"Error opening photo: {ex.Message}");
             await dialogService.ShowMessage(Localization.Error, "Не удалось открыть изображение");
+        }
+    }
+
+    [RelayCommand]
+    private async Task DownloadSelectedPhotosAsync()
+    {
+        if (SelectedPhotos.Count == 0)
+        {
+            await dialogService.ShowMessage(Localization.Error, "Выберите фото");
+            return;
+        }
+
+        try
+        {
+            var paths = SelectedPhotos.Cast<string>().ToList();
+            await photoSaveService.DownloadPhotoAsync(paths);
+            
+            await dialogService.ShowMessage("Успех", "Все фотографии успешно сохранены");
+        }
+        catch (Exception e)
+        {
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
         }
     }
 }
