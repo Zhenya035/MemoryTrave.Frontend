@@ -27,7 +27,8 @@
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="Black"
-                       VerticalTextAlignment="Center"/>
+                       VerticalTextAlignment="Center"
+                       IsVisible="{Binding IsAuthor}"/>
         
                 <Label Text="{Binding LocationName}"
                        FontSize="16"

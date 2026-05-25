@@ -14,6 +14,7 @@ using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.Services.SavePhoto;
+using MemoryTrave.Maui.Services.Storage;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -24,6 +25,7 @@ public partial class ArticleDetailViewModel(
     IPrivateKeyService privateKeyService,
     IConvertErrorService errorService,
     IPhotoSaveService  photoSaveService,
+    IStorageService storageService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -52,6 +54,9 @@ public partial class ArticleDetailViewModel(
     
     private Article _article = new();
 
+    [ObservableProperty] 
+    private bool _isAuthor;
+
     partial void OnArticleIdChanged(string value)
     {
         Task.Run(async () => await GetArticleAsync());
@@ -71,6 +76,10 @@ public partial class ArticleDetailViewModel(
             LastChange = _article.LastChange.ToString(CultureInfo.InvariantCulture);
             AuthorName = _article.AuthorName;
             LocationName = _article.LocationName;
+            
+            var userId = await storageService.GetUserIdAsync();
+            if (_article.AuthorId.ToString() == userId)
+                IsAuthor = true;
             
             if (_article.Visibility == VisibilityEnum.Private && _article.EncryptedDescription != null &&
                 _article.EncryptedKey != null)
