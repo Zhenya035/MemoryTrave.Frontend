@@ -17,18 +17,8 @@ using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;
 
-[QueryProperty(nameof(LocationId), "id")]
-public partial class LocationDetailViewModel(
-    INavigationService navigation,
-    IDialogService dialogService,
-    IPrivateKeyService privateKeyService,
-    IAuthService authService,
-    IConvertErrorService errorService,
-    ApiRequestService apiService) : ObservableObject
+public partial class LocationDetailViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _locationId;
-    
     [ObservableProperty]
     private string _locationName;
     
@@ -36,34 +26,57 @@ public partial class LocationDetailViewModel(
     private ObservableCollection<ArticleForLocation> _articles;
     
     [ObservableProperty]
-    private bool _isAuthorized = authService.IsAuthorized;
-    
+    private bool _isAuthorized;
+
+    private readonly INavigationService _navigation;
+    private readonly IDialogService _dialogService;
+    private readonly IPrivateKeyService _privateKeyService;
+    private readonly IAuthService _authService;
+    private readonly IConvertErrorService _errorService;
+    private readonly ApiRequestService _apiService;
+
+    private string _currentLocationId;
+
+    public LocationDetailViewModel(
+        INavigationService navigation,
+        IDialogService dialogService,
+        IPrivateKeyService privateKeyService,
+        IAuthService authService,
+        IConvertErrorService errorService,
+        ApiRequestService apiService)
+    {
+        _navigation = navigation;
+        _dialogService = dialogService;
+        _privateKeyService = privateKeyService;
+        _authService = authService;
+        _errorService = errorService;
+        _apiService = apiService;
+        _isAuthorized = authService.IsAuthorized;
+    }
+
     [RelayCommand]
     private async Task ToArticleAsync(Guid articleId)
     {
-        await navigation.GoTo($"{nameof(ArticleDetailPage)}?id={articleId.ToString()}");
+        await _navigation.GoTo($"{nameof(ArticleDetailPage)}?id={articleId.ToString()}");
     }
 
     [RelayCommand]
     private async Task ToAddArticleAsync()
     {
-        await navigation.GoTo($"{nameof(AddArticlePage)}?id={LocationId}");
+        await _navigation.GoTo($"{nameof(AddArticlePage)}?id={_currentLocationId}");
     }
 
-    partial void OnLocationIdChanged(string value)
+    public async Task LoadLocationAsync(string locationId)
     {
-        Task.Run(async () => await GetLocationAsync());
-    }
+        if (string.IsNullOrEmpty(locationId)) return;
+        
+        _currentLocationId = locationId;
 
-    private async Task GetLocationAsync()
-    {
-        var result = await apiService.GetRequest<LocationForDetail>(URL.GetLocationById(LocationId));
-        if(!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
-            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
-        else if (result.IsSuccess && result.Data != null)
+        var result = await _apiService.GetRequest<LocationForDetail>(URL.GetLocationById(locationId));
+
+        if (result.IsSuccess && result.Data != null)
         {
             var location = result.Data;
-            LocationName =  location.Name;
             var articles = new List<ArticleForLocation>();
 
             foreach (var article in location.Articles)
@@ -76,39 +89,40 @@ public partial class LocationDetailViewModel(
                     CreatedAt = article.CreatedAt,
                     AuthorName = article.AuthorName,
                 };
-                
+
                 if (article.Visibility == VisibilityEnum.Public)
                 {
                     newArticle.Description = article.Description;
                 }
-                else
+                else if (article.EncryptedDescription != null && article.EncryptedKey != null)
                 {
-                    string decryptString;
-                    
-                    if (article.EncryptedDescription != null && article.EncryptedKey != null)
+                    try
                     {
-                        var privateKeyString = privateKeyService.GetKey();
+                        var privateKeyString = _privateKeyService.GetKey();
                         var privateKey = EccP256.StringToPrivateKey(privateKeyString);
-                        
                         var encryptedDekBytes = Convert.FromBase64String(article.EncryptedKey);
                         var dekBytes = EccP256.Decrypt(privateKey, encryptedDekBytes);
                         var dek = Convert.ToBase64String(dekBytes);
-                        
-                        decryptString = AesGcm256.Decrypt(article.EncryptedDescription, dek);
+                        var decryptString = AesGcm256.Decrypt(article.EncryptedDescription, dek);
+                        var decryptArticle = JsonSerializer.Deserialize<PrivateArticle>(decryptString);
+                        if (decryptArticle != null)
+                            newArticle.Description = decryptArticle.Description;
                     }
-                    else
-                        return;
-
-                    var decryptArticle = JsonSerializer.Deserialize<PrivateArticle>(decryptString);
-
-                    newArticle.Description = decryptArticle.Description;
+                    catch { }
                 }
                 articles.Add(newArticle);
             }
-            
-            Articles = new ObservableCollection<ArticleForLocation>(articles);
+
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                LocationName = location.Name;
+                Articles = new ObservableCollection<ArticleForLocation>(articles);
+            });
         }
-        else
-            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+        else if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+        {
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+                await _dialogService.ShowMessage(Localization.Error, _errorService.ConvertError(result.StatusCode)));
+        }
     }
 }
