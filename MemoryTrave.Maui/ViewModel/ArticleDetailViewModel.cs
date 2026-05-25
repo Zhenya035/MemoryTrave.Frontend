@@ -11,6 +11,7 @@ using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Error;
+using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
 using MemoryTrave.Maui.Services.SavePhoto;
@@ -26,6 +27,7 @@ public partial class ArticleDetailViewModel(
     IConvertErrorService errorService,
     IPhotoSaveService  photoSaveService,
     IStorageService storageService,
+    INavigationService navigation,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -244,5 +246,19 @@ public partial class ArticleDetailViewModel(
         {
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
         }
+    }
+
+    [RelayCommand]
+    private async Task DeleteArticleAsync()
+    {
+        await apiService.DeleteRequest(URL.DeletePhotosByArticle(ArticleId));
+        await apiService.DeleteRequest(URL.DeleteArticle(ArticleId));
+        await dialogService.ShowMessage(Localization.Success, Localization.ArticleDelete);
+        await navigation.GoBack();
+    }
+    
+    [RelayCommand]
+    private async Task EditArticleAsync()
+    {
     }
 }
