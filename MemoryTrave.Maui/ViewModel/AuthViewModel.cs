@@ -65,9 +65,11 @@ public partial class AuthViewModel(
             }
 
             var token =  authResponse.Data.JwtToken;
+            var userId = authResponse.Data.UserId;
 
             storageService.LoadEmail(Email);
             await storageService.LoadTokenAsync(token);
+            await storageService.LoadUserIdAsync(userId.ToString());
             await authService.Login();
             apiService.SetJwtToken(token);
             
@@ -118,9 +120,11 @@ public partial class AuthViewModel(
         if (authResponse.IsSuccess && authResponse.Data != null)
         {
             var token = authResponse.Data.JwtToken;
+            var userId = authResponse.Data.UserId;
            
             storageService.LoadEmail(Email);
             await storageService.LoadTokenAsync(token);
+            await storageService.LoadUserIdAsync(userId.ToString());
             await authService.Login();
             apiService.SetJwtToken(token);
         }
