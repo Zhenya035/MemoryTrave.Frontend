@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Infrastructure.Security;
 using MemoryTrave.Maui.Models.Articles;
@@ -12,6 +13,7 @@ using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
+using MemoryTrave.Maui.Services.SavePhoto;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -21,6 +23,7 @@ public partial class ArticleDetailViewModel(
     IPhotoService photoService,
     IPrivateKeyService privateKeyService,
     IConvertErrorService errorService,
+    IPhotoSaveService  photoSaveService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
@@ -39,7 +42,10 @@ public partial class ArticleDetailViewModel(
     private string _description = string.Empty;
 
     [ObservableProperty] 
-    private ObservableCollection<string> _photos = []; 
+    private ObservableCollection<string> _photos = [];
+
+    [ObservableProperty] 
+    private ObservableCollection<object> _selectedPhotos = [];
    
     [ObservableProperty] 
     private string _articleId = string.Empty;
@@ -142,7 +148,7 @@ public partial class ArticleDetailViewModel(
 
         try
         {
-            var photosList = await photoService.AddPhotosToLocalAsync(photos);
+            var photosList = await photoService.AddPhotosToLocalAsync(photos, _article.Id.ToString());
             Photos = new ObservableCollection<string>(photosList);
         }
         catch (Exception ex)
@@ -151,10 +157,83 @@ public partial class ArticleDetailViewModel(
         }
     }
 
-    public void ClearCache()
+    [RelayCommand]
+    private async Task OpenPhotoAsync(string photoPath)
     {
-        if(Photos.Count == 0)
+        if (string.IsNullOrEmpty(photoPath))
             return;
-        photoService.RemovePhotosFromLocal(Photos.ToList());
+
+        try
+        {
+            var contentPage = new ContentPage
+            {
+                BackgroundColor = Colors.Black
+            };
+
+            var image = new Image
+            {
+                Aspect = Aspect.AspectFit,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill
+            };
+
+            var bytes = await File.ReadAllBytesAsync(photoPath);
+            image.Source = ImageSource.FromStream(() => new MemoryStream(bytes));
+
+            var closeButton = new Button
+            {
+                Text = "✕",
+                FontSize = 24,
+                TextColor = Colors.White,
+                BackgroundColor = Colors.Transparent,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Start,
+                Margin = new Thickness(20, 40, 20, 0),
+                WidthRequest = 50,
+                HeightRequest = 50,
+                ZIndex = 1
+            };
+
+            var grid = new Grid();
+            grid.Children.Add(image);
+            grid.Children.Add(closeButton);
+
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += async (s, e) => await contentPage.Navigation.PopModalAsync();
+            image.GestureRecognizers.Add(tapGesture);
+
+            closeButton.Clicked += async (s, e) => await contentPage.Navigation.PopModalAsync();
+
+            contentPage.Content = grid;
+
+            await Shell.Current.Navigation.PushModalAsync(contentPage);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error opening photo: {ex.Message}");
+            await dialogService.ShowMessage(Localization.Error, "Не удалось открыть изображение");
+        }
+    }
+
+    [RelayCommand]
+    private async Task DownloadSelectedPhotosAsync()
+    {
+        if (SelectedPhotos.Count == 0)
+        {
+            await dialogService.ShowMessage(Localization.Error, "Выберите фото");
+            return;
+        }
+
+        try
+        {
+            var paths = SelectedPhotos.Cast<string>().ToList();
+            await photoSaveService.DownloadPhotoAsync(paths);
+            
+            await dialogService.ShowMessage("Успех", "Все фотографии успешно сохранены");
+        }
+        catch (Exception e)
+        {
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+        }
     }
 }
