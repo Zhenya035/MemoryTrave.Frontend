@@ -23,27 +23,55 @@
                 Margin="0,0,0,8">
            
             <VerticalStackLayout>
-                <Label Text="{Binding AuthorName}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="Black"
-                       VerticalTextAlignment="Center"/>
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Grid.Column="0">
+                        <Label Text="{Binding AuthorName}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="Black"
+                               VerticalTextAlignment="Center"/>
         
-                <Label Text="{Binding LocationName}"
-                       FontSize="16"
-                       TextColor="#374151"
-                       VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding LocationName}"
+                               FontSize="16"
+                               TextColor="#374151"
+                               VerticalTextAlignment="Center"/>
             
-                <HorizontalStackLayout Spacing="20">
+                        <HorizontalStackLayout Spacing="20">
                 
-                    <Label Text="{Binding LastChange}"
-                           FontSize="14"
-                           TextColor="#6B7280"/>
+                            <Label Text="{Binding LastChange}"
+                                   FontSize="14"
+                                   TextColor="#6B7280"/>
                 
-                    <Label Text="{Binding Visibility}"
-                           FontSize="14"
-                           TextColor="#6B7280"/>
-                </HorizontalStackLayout>
+                            <Label Text="{Binding Visibility}"
+                                   FontSize="14"
+                                   TextColor="#6B7280"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                    
+                    <HorizontalStackLayout Grid.Column="1" 
+                                           Spacing="8"
+                                           VerticalOptions="Start"
+                                           IsVisible="{Binding IsAuthor}">
+    
+                        <Button Text="{x:Static localization:Localization.Edit}"
+                                Command="{Binding EditArticleCommand}"
+                                BackgroundColor="#3B82F6"
+                                TextColor="White"
+                                FontSize="13"
+                                Padding="14,8"
+                                CornerRadius="10"
+                                HeightRequest="36"/>
+    
+                        <Button Text="{x:Static localization:Localization.Delete}"
+                                Command="{Binding DeleteArticleCommand}"
+                                BackgroundColor="#EF4444"
+                                TextColor="White"
+                                FontSize="13"
+                                Padding="14,8"
+                                CornerRadius="10"
+                                HeightRequest="36"/>
+                    </HorizontalStackLayout>
+                </Grid>
             </VerticalStackLayout>
             
         </Border>

@@ -219,4 +219,13 @@
     <data name="DefaultError" xml:space="preserve">
         <value>Something went wrong. Check the connection and try again</value>
     </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="ArticleDelete" xml:space="preserve">
+        <value>Article deleted</value>
+    </data>
 </root>

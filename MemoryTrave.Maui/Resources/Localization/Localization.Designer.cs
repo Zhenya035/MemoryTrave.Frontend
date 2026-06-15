@@ -150,6 +150,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Article deleted.
+        /// </summary>
+        internal static string ArticleDelete {
+            get {
+                return ResourceManager.GetString("ArticleDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Articles.
         /// </summary>
         internal static string Articles {
@@ -227,6 +236,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -587,6 +605,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

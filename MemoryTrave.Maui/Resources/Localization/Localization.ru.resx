@@ -219,4 +219,13 @@
     <data name="DefaultError" xml:space="preserve">
         <value>Что-то пошло не так. Проверьте подключение и повторите попытку.</value>
     </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Изменить</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Успех</value>
+    </data>
+    <data name="ArticleDelete" xml:space="preserve">
+        <value>Статья удалена</value>
+    </data>
 </root>
