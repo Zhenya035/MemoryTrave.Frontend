@@ -129,8 +129,8 @@
     <data name="PublicVisibility" xml:space="preserve">
         <value>Публичный</value>
     </data>
-    <data name="FriendVisibility" xml:space="preserve">
-        <value>Для друзей</value>
+    <data name="PartiallyPrivateVisibility" xml:space="preserve">
+        <value>Частично приватный</value>
     </data>
     <data name="PrivateVisibility" xml:space="preserve">
         <value>Приватный</value>
@@ -153,8 +153,8 @@
     <data name="Save" xml:space="preserve">
         <value>Сохранить</value>
     </data>
-    <data name="SearchFriends" xml:space="preserve">
-        <value>Поиск друзей</value>
+    <data name="Search" xml:space="preserve">
+        <value>Поиск</value>
     </data>
     <data name="Delete" xml:space="preserve">
         <value>Удалить</value>
@@ -176,5 +176,56 @@
     </data>
     <data name="Author" xml:space="preserve">
         <value>Автор:</value>
+    </data>
+    <data name="FindFriends" xml:space="preserve">
+        <value>Найти друзей</value>
+    </data>
+    <data name="AddFriend" xml:space="preserve">
+        <value>Добавить в друзья</value>
+    </data>
+    <data name="SelectFriends" xml:space="preserve">
+        <value>Выберите, кому дать доступ</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Выбрать всё</value>
+    </data>
+    <data name="Clear" xml:space="preserve">
+        <value>Очистить</value>
+    </data>
+    <data name="NoPhotos" xml:space="preserve">
+        <value>Нет фото</value>
+    </data>
+    <data name="NoPeople" xml:space="preserve">
+        <value>Нет людей</value>
+    </data>
+    <data name="PhotoUploadError" xml:space="preserve">
+        <value>Ошибка загрузки фото</value>
+    </data>
+    <data name="400Error" xml:space="preserve">
+        <value>Данные введены неверно</value>
+    </data>
+    <data name="401Error" xml:space="preserve">
+        <value>Время сессии истекло. Пожалуйста, войдите в аккаунт заново.</value>
+    </data>
+    <data name="404Error" xml:space="preserve">
+        <value>Запрашиваемые данные не найдены.</value>
+    </data>
+    <data name="403Error" xml:space="preserve">
+        <value>Недостаточно прав для выполнения этого действия.</value>
+    </data>
+    <data name="409Error" xml:space="preserve">
+        <value>Произошел конфликт данных. Возможно, эта запись уже существует.</value>
+    </data>
+    <data name="DefaultError" xml:space="preserve">
+        <value>Что-то пошло не так. Проверьте подключение и повторите попытку.</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Изменить</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Успех</value>
+    </data>
+    <data name="ArticleDelete" xml:space="preserve">
+        <value>Статья удалена</value>
     </data>
 </root>

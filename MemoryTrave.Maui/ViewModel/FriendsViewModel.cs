@@ -2,22 +2,28 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
+using MemoryTrave.Maui.Models;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Friends;
 using MemoryTrave.Maui.Resources.Localization;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
+using MemoryTrave.Maui.Services.Navigation;
+using MemoryTrave.Maui.View;
 
 namespace MemoryTrave.Maui.ViewModel;
 
 public partial class FriendsViewModel(
     ApiRequestService apiService,
+    INavigationService navigation,
+    IConvertErrorService errorService,
     IDialogService dialogService) : ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<Friend> _friends = [];
+    private ObservableCollection<User> _friends = [];
 
     [ObservableProperty]
-    private ObservableCollection<Friend> _requests = [];
+    private ObservableCollection<User> _requests = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InRequests))]
@@ -36,14 +42,12 @@ public partial class FriendsViewModel(
     [RelayCommand]
     private async Task ConfirmRequestAsync(Guid id)
     {
-        var result = await apiService.PostRequest<bool>(URL.ConfirmRequest(id.ToString()));
-        if (!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
-        else if (result.IsSuccess)
+        var result = await apiService.PostRequest<GetId>(URL.ConfirmRequest(id.ToString()));
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
+        else if (result.IsSuccess && result.Data != null)
         {
-            var deleteObject = Requests.First(f => f.Id == id);
-            Requests.Remove(deleteObject);
-            Friends.Add(deleteObject);
+            await GetFriendsAsync();
         }
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
@@ -53,8 +57,8 @@ public partial class FriendsViewModel(
     private async Task CancelRequest(Guid id)
     {
         var result = await apiService.DeleteRequest(URL.CancelRequest(id.ToString()));
-        if (!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
         else if (result.IsSuccess)
         {
             var deleteObject = Requests.First(f => f.Id == id);
@@ -68,8 +72,8 @@ public partial class FriendsViewModel(
     private async Task DeleteFriendship(Guid id)
     {
         var result = await apiService.DeleteRequest(URL.DeleteFriendship(id.ToString()));
-        if (!result.IsSuccess && result.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, result.ErrorMessage);
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
         else if (result.IsSuccess)
         {
             var deleteObject = Friends.First(f => f.Id == id);
@@ -79,21 +83,27 @@ public partial class FriendsViewModel(
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
     }
 
+    [RelayCommand]
+    private async Task GoToFindFriends()
+    {
+        await navigation.GoTo(nameof(FindFriendsPage));
+    }
+    
     public async Task GetFriendsAsync()
     {
-        var friendsResult = await apiService.GetRequest<List<Friend>>(URL.GetFriends());
+        var friendsResult = await apiService.GetRequest<List<User>>(URL.GetFriends());
         var toMeRequestResult =
-            await apiService.GetRequest<List<Friend>>(URL.GetRequests((int)DirectionRequestEnum.Incoming));
+            await apiService.GetRequest<List<User>>(URL.GetRequests((int)DirectionRequestEnum.Incoming));
         
-        if(!friendsResult.IsSuccess && friendsResult.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, friendsResult.ErrorMessage);
-        else if(!toMeRequestResult.IsSuccess && toMeRequestResult.ErrorMessage != null)
-            await dialogService.ShowMessage(Localization.Error, toMeRequestResult.ErrorMessage);
+        if(!friendsResult.IsSuccess && friendsResult.ErrorMessage != null && friendsResult.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(friendsResult.StatusCode));
+        else if(!toMeRequestResult.IsSuccess && toMeRequestResult.ErrorMessage != null && toMeRequestResult.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(toMeRequestResult.StatusCode));
         else if (friendsResult.IsSuccess && friendsResult.Data != null && 
                  toMeRequestResult.IsSuccess && toMeRequestResult.Data != null)
         {
-            Friends = new ObservableCollection<Friend>(friendsResult.Data);
-            Requests = new ObservableCollection<Friend>(toMeRequestResult.Data);
+            Friends = new ObservableCollection<User>(friendsResult.Data);
+            Requests = new ObservableCollection<User>(toMeRequestResult.Data);
         }
         else
             await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);

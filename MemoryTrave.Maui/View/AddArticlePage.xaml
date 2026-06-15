@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:localization="using:MemoryTrave.Maui.Resources.Localization"
              xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:friends="clr-namespace:MemoryTrave.Maui.Models.Friends"
              x:DataType="viewModel:AddArticleViewModel"
              x:Class="MemoryTrave.Maui.View.AddArticlePage"
              x:Name="AddArticlePageRoot">
@@ -57,7 +58,70 @@
                                     TextColor="Black"
                                     TitleColor="#717182"
                                     VerticalOptions="Center"/>
+                            
                         </Border>
+                        
+                        <VerticalStackLayout Spacing="4"
+                                             IsVisible="{Binding IsFriendsSelectorVisible}">
+                            
+                            <Label Text="{x:Static localization:Localization.SelectFriends}"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="14"/>
+                            
+                            <HorizontalStackLayout Spacing="8" HorizontalOptions="End">
+                                <Button Text="{x:Static localization:Localization.SelectAll}"
+                                        FontSize="12"
+                                        Padding="8,4"
+                                        BackgroundColor="#E5E7EB"
+                                        TextColor="Black"
+                                        Command="{Binding SelectAllFriendsCommand}"/>
+                                <Button Text="{x:Static localization:Localization.Clear}"
+                                        FontSize="12"
+                                        Padding="8,4"
+                                        BackgroundColor="#E5E7EB"
+                                        TextColor="Black"
+                                        Command="{Binding ClearSelectedCommand}"/>
+                            </HorizontalStackLayout>
+                            
+                            <Border StrokeShape="RoundRectangle 8"
+                                    Stroke="Transparent"
+                                    BackgroundColor="#F3F3F5"
+                                    Padding="10"
+                                    HeightRequest="200">
+                                
+                                <CollectionView ItemsSource="{Binding Friends}"
+                                                SelectedItems="{Binding SelectedFriends, Mode=TwoWay}"
+                                                SelectionMode="Multiple"
+                                                HeightRequest="180">
+                                    
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="friends:User">
+                                            <VerticalStackLayout Padding="4" Spacing="10">
+                                                <Label Text="{Binding Name}"
+                                                       TextColor="Black"
+                                                       VerticalOptions="Center"
+                                                       FontSize="14"/>
+                                                <Label Text="{Binding Email}"
+                                                       TextColor="Black"
+                                                       VerticalOptions="Center"
+                                                       FontSize="14"/>
+                                            </VerticalStackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                    
+                                    <CollectionView.EmptyView>
+                                        <VerticalStackLayout HorizontalOptions="Center" 
+                                                             VerticalOptions="Center"
+                                                             Padding="20">
+                                            <Label Text="{x:Static localization:Localization.NoFriends}"
+                                                   TextColor="Gray"
+                                                   HorizontalOptions="Center"/>
+                                        </VerticalStackLayout>
+                                    </CollectionView.EmptyView>
+                                </CollectionView>
+                            </Border>
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
                     
                     <VerticalStackLayout Spacing="8">
@@ -114,6 +178,16 @@
                                     </AbsoluteLayout>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
+                           
+                           <CollectionView.EmptyView>
+                               <VerticalStackLayout HorizontalOptions="Center" 
+                                                    VerticalOptions="Center"
+                                                    Padding="20">
+                                   <Label Text="{x:Static localization:Localization.NoPhotos}"
+                                          TextColor="Gray"
+                                          HorizontalOptions="Center"/>
+                               </VerticalStackLayout>
+                           </CollectionView.EmptyView>
                        </CollectionView>
                         
                        <Button Text="{x:Static localization:Localization.AddPhoto}" 

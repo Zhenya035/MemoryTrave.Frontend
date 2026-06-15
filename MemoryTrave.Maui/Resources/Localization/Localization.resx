@@ -129,8 +129,8 @@
     <data name="PublicVisibility" xml:space="preserve">
         <value>Public</value>
     </data>
-    <data name="FriendVisibility" xml:space="preserve">
-        <value>For friends</value>
+    <data name="PartiallyPrivateVisibility" xml:space="preserve">
+        <value>Partially private</value>
     </data>
     <data name="PrivateVisibility" xml:space="preserve">
         <value>Private</value>
@@ -153,8 +153,8 @@
     <data name="Save" xml:space="preserve">
         <value>Save</value>
     </data>
-    <data name="SearchFriends" xml:space="preserve">
-        <value>Search for friends</value>
+    <data name="Search" xml:space="preserve">
+        <value>Search</value>
     </data>
     <data name="Delete" xml:space="preserve">
         <value>Delete</value>
@@ -176,5 +176,56 @@
     </data>
     <data name="Author" xml:space="preserve">
         <value>Author:</value>
+    </data>
+    <data name="FindFriends" xml:space="preserve">
+        <value>Find friends</value>
+    </data>
+    <data name="AddFriend" xml:space="preserve">
+        <value>Add as friend</value>
+    </data>
+    <data name="SelectFriends" xml:space="preserve">
+        <value>Select who to grant access to</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Select all</value>
+    </data>
+    <data name="Clear" xml:space="preserve">
+        <value>Clear</value>
+    </data>
+    <data name="NoPhotos" xml:space="preserve">
+        <value>No photo</value>
+    </data>
+    <data name="NoPeople" xml:space="preserve">
+        <value>No peoples</value>
+    </data>
+    <data name="PhotoUploadError" xml:space="preserve">
+        <value>Photo upload error</value>
+    </data>
+    <data name="400Error" xml:space="preserve">
+        <value>The data is entered incorrectly</value>
+    </data>
+    <data name="401Error" xml:space="preserve">
+        <value>The session time has expired. Please log in to your account again.</value>
+    </data>
+    <data name="403Error" xml:space="preserve">
+        <value>There are not enough permissions to perform this action.</value>
+    </data>
+    <data name="404Error" xml:space="preserve">
+        <value>The requested data was not found.</value>
+    </data>
+    <data name="409Error" xml:space="preserve">
+        <value>There was a data conflict. This entry may already exist.</value>
+    </data>
+    <data name="DefaultError" xml:space="preserve">
+        <value>Something went wrong. Check the connection and try again</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="ArticleDelete" xml:space="preserve">
+        <value>Article deleted</value>
     </data>
 </root>

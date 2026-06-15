@@ -55,6 +55,7 @@ public partial class SettingsViewModel(
         privateKeyService.Clear();
         storageService.DeleteEmail();
         storageService.DeleteToken();
+        storageService.DeleteUserId();
         authService.Logout();
     }
 }

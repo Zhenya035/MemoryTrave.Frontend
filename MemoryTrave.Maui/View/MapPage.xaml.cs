@@ -1,6 +1,5 @@
 ﻿using Mapsui;
 using MemoryTrave.Maui.ViewModel;
-using Location = MemoryTrave.Maui.Models.Location.Location;
 
 namespace MemoryTrave.Maui.View;
 

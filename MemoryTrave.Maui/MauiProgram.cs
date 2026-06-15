@@ -1,11 +1,14 @@
-﻿using MemoryTrave.Maui.Infrastructure.Api;
+﻿using CommunityToolkit.Maui;
+using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Key;
 using MemoryTrave.Maui.Services.Localization;
 using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
+using MemoryTrave.Maui.Services.SavePhoto;
 using MemoryTrave.Maui.Services.Storage;
 using MemoryTrave.Maui.Services.Theme;
 using MemoryTrave.Maui.View;
@@ -23,6 +26,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseSkiaSharp()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -41,6 +45,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IThemeService, ThemeService>();
         builder.Services.AddSingleton<IPrivateKeyService, PrivateKeyService>();
         builder.Services.AddSingleton<IPhotoService, PhotoService>();
+        builder.Services.AddSingleton<IConvertErrorService, ConvertErrorService>();
+        builder.Services.AddSingleton<IPhotoSaveService,  PhotoSaveService>();
 
         builder.Services.AddTransient<AddArticlePage>();
         builder.Services.AddTransient<AddArticleViewModel>();
@@ -54,6 +60,9 @@ public static class MauiProgram
         builder.Services.AddTransient<AuthPage>();
         builder.Services.AddTransient<AuthViewModel>();
             
+        builder.Services.AddTransient<FindFriendsPage>();
+        builder.Services.AddTransient<FindFriendsViewModel>();
+        
         builder.Services.AddTransient<FriendsPage>();
         builder.Services.AddTransient<FriendsViewModel>();
         

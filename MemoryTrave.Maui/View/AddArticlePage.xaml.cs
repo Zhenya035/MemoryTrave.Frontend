@@ -20,4 +20,11 @@ public partial class AddArticlePage : ContentPage
         
         _viewModel.ClearCache();
     }
+
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        await _viewModel.GetFriendsAsync();
+    }
 }

@@ -16,11 +16,12 @@
                 Stroke="Transparent"
                 Margin="0,0,0,10" 
                 BackgroundColor="#F3F3F5">
-            <SearchBar Placeholder="Поиск друзей" 
+            <Button Text="{x:Static localization:Localization.FindFriends}" 
                        TextColor="Black" 
-                       PlaceholderColor="#717182"
+                       BackgroundColor="Transparent"
                        VerticalOptions="Center"
-                       HeightRequest="10"/>
+                       HeightRequest="10"
+                       Command="{Binding GoToFindFriendsCommand}"/>
         </Border>
         
         <Border StrokeShape="RoundRectangle 20"
@@ -98,7 +99,7 @@
                         IsVisible="{Binding InFriendship}">
                     
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="friends:Friend">
+                <DataTemplate x:DataType="friends:User">
                     <Border StrokeShape="RoundRectangle 15"
                         Stroke="Transparent"
                         BackgroundColor="White"
@@ -110,11 +111,16 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
-                            <Label Grid.Column="0"
-                                   Text="{Binding FriendName}"
-                                   FontSize="18"
-                                   FontAttributes="Bold"
-                                   TextColor="Black"/>
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="{Binding Name}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="Black"/>
+                                
+                                <Label Text="{Binding Email}"
+                                       FontSize="13"
+                                       TextColor="Gray"/>
+                            </VerticalStackLayout>
                             
                             <Button Grid.Column="1"
                                     Text="{x:Static localization:Localization.Delete}"
@@ -143,7 +149,7 @@
                         IsVisible="{Binding InRequests}">
                     
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="friends:Friend">
+                        <DataTemplate x:DataType="friends:User">
                             <Border StrokeShape="RoundRectangle 15"
                                 Stroke="Transparent"
                                 BackgroundColor="White"
@@ -156,7 +162,7 @@
                                     </Grid.ColumnDefinitions>
                                     
                                     <Label Grid.Column="0" 
-                                           Text="{Binding FriendName}"
+                                           Text="{Binding Name}"
                                            FontSize="18"
                                            FontAttributes="Bold"
                                            TextColor="Black"

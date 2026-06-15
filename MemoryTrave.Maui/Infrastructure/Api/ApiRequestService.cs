@@ -14,6 +14,11 @@ public class ApiRequestService(HttpClient client)
             new AuthenticationHeaderValue("Bearer", token);
     }
     
+    public void ClearJwtToken()
+    {
+        client.DefaultRequestHeaders.Remove("Authorization");
+    }
+    
     public async Task<ApiResult<T>> GetRequest<T>(string url)
     {
         try

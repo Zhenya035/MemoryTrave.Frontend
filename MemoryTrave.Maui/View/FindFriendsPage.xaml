@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="clr-namespace:MemoryTrave.Maui.Resources.Localization"
+             xmlns:viewModel="clr-namespace:MemoryTrave.Maui.ViewModel"
+             xmlns:friends="clr-namespace:MemoryTrave.Maui.Models.Friends"
+             x:DataType="viewModel:FindFriendsViewModel"
+             x:Class="MemoryTrave.Maui.View.FindFriendsPage"
+             x:Name="FindFriendsRoot">
+    
+    <VerticalStackLayout>
+        <Border HeightRequest="40" 
+                Padding="10, 0" 
+                StrokeShape="RoundRectangle 8" 
+                Stroke="Transparent"
+                Margin="0,0,0,10" 
+                BackgroundColor="#F3F3F5">
+            <SearchBar Placeholder="{x:Static localization:Localization.Search}" 
+                       Text="{Binding SearchQuery, Mode=TwoWay}"
+                       TextColor="Black" 
+                       PlaceholderColor="#717182"
+                       VerticalOptions="Center"
+                       HeightRequest="10"
+                       SearchCommand="{Binding SearchUsersCommand}"/>
+        </Border>
+        
+         <CollectionView ItemsSource="{Binding Users}"
+                        SelectionMode="None"
+                        VerticalOptions="FillAndExpand">
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="friends:User">
+                    <Border StrokeShape="RoundRectangle 15"
+                            Stroke="Transparent"
+                            BackgroundColor="White"
+                            Padding="16"
+                            Margin="0,0,0,12">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                            
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Name}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   VerticalOptions="Center"/>
+                            
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Email}"
+                                   FontSize="13"
+                                   TextColor="Gray"
+                                   VerticalOptions="Center"/> 
+                            
+                            <Button Grid.Row="0" Grid.Column="1"
+                                    Grid.RowSpan="2"
+                                    Text="{x:Static localization:Localization.AddFriend}"
+                                    BackgroundColor="#5E5CE6"
+                                    TextColor="White"
+                                    FontSize="13"
+                                    Padding="12,6"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Center"
+                                    Command="{Binding Source={x:Reference FindFriendsRoot}, 
+                                            Path=BindingContext.AddFriendCommand}"
+                                    CommandParameter="{Binding Id}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+             <CollectionView.EmptyView>
+                 <VerticalStackLayout HorizontalOptions="Center" 
+                                      VerticalOptions="Center"
+                                      Padding="20">
+                     <Label Text="{x:Static localization:Localization.NoPeople}"
+                            TextColor="Gray"
+                            HorizontalOptions="Center"/>
+                 </VerticalStackLayout>
+             </CollectionView.EmptyView>
+         </CollectionView>
+    </VerticalStackLayout>
+    
+</ContentPage>

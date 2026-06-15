@@ -3,6 +3,7 @@ namespace MemoryTrave.Maui.Services.Storage;
 public class StorageService : IStorageService
 {
     private const string EmailName = "Email";
+    private const string UserIdName = "UserId";
     private const string TokenName = "JwtToken";
     private const string CultureName = "Culture";
     private const string ThemeName = "Theme";
@@ -41,6 +42,49 @@ public class StorageService : IStorageService
         try
         {
             SecureStorage.Default.Remove(TokenName);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
+
+    public async Task<string?> GetUserIdAsync()
+    {
+        try
+        {
+            var userId = await SecureStorage.Default.GetAsync(UserIdName);
+            
+            return userId ?? null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    public async Task<bool> LoadUserIdAsync(string userId)
+    {
+        try
+        {
+            await SecureStorage.Default.SetAsync(UserIdName, userId);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
+
+    public bool DeleteUserId()
+    {
+        try
+        {
+            SecureStorage.Default.Remove(UserIdName);
             return true;
         }
         catch (Exception e)

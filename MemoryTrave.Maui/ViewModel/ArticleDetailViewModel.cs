@@ -2,15 +2,22 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Infrastructure.Security;
+using MemoryTrave.Maui.Models;
 using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
+using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
+using MemoryTrave.Maui.Services.Error;
+using MemoryTrave.Maui.Services.Navigation;
 using MemoryTrave.Maui.Services.Photo;
 using MemoryTrave.Maui.Services.PrivateKey;
+using MemoryTrave.Maui.Services.SavePhoto;
+using MemoryTrave.Maui.Services.Storage;
 
 namespace MemoryTrave.Maui.ViewModel;
 
@@ -19,7 +26,12 @@ public partial class ArticleDetailViewModel(
     ApiRequestService apiService,
     IPhotoService photoService,
     IPrivateKeyService privateKeyService,
-    IDialogService dialogService) : ObservableObject
+    IConvertErrorService errorService,
+    IPhotoSaveService  photoSaveService,
+    IStorageService storageService,
+    INavigationService navigation,
+    IDialogService dialogService,
+    IAuthService authService) : ObservableObject
 {
     [ObservableProperty]
     private string _visibility = string.Empty;
@@ -37,12 +49,21 @@ public partial class ArticleDetailViewModel(
     private string _description = string.Empty;
 
     [ObservableProperty] 
-    private ObservableCollection<string> _photos = []; 
+    private ObservableCollection<string> _photos = [];
+
+    [ObservableProperty] 
+    private ObservableCollection<object> _selectedPhotos = [];
    
     [ObservableProperty] 
     private string _articleId = string.Empty;
+
+    [ObservableProperty] 
+    private bool _canDownload = authService.IsAuthorized;
     
     private Article _article = new();
+
+    [ObservableProperty] 
+    private bool _isAuthor;
 
     partial void OnArticleIdChanged(string value)
     {
@@ -52,9 +73,9 @@ public partial class ArticleDetailViewModel(
     private async Task GetArticleAsync()
     {
         var article = await apiService.GetRequest<Article>(URL.GetArticleById(ArticleId));
-        if (!article.IsSuccess && article.ErrorMessage != null)
+        if (!article.IsSuccess && article.ErrorMessage != null && article.StatusCode != null)
         {
-            await dialogService.ShowMessage(Localization.Error, article.ErrorMessage);
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(article.StatusCode));
         }
         else if (article.IsSuccess && article.Data != null)
         {
@@ -64,10 +85,13 @@ public partial class ArticleDetailViewModel(
             AuthorName = _article.AuthorName;
             LocationName = _article.LocationName;
             
+            if (authService.IsAuthorized)
+                await CheckAuthor();
+            
             if (_article.Visibility == VisibilityEnum.Private && _article.EncryptedDescription != null &&
                 _article.EncryptedKey != null)
             {
-                Visibility = "Private";
+                Visibility = Localization.PrivateVisibility;
 
                 var privateKeyString = privateKeyService.GetKey();
                 if (privateKeyString == null)
@@ -97,9 +121,9 @@ public partial class ArticleDetailViewModel(
                 var photos = await apiService.PostRequest<GetPhotosByArticle, PhotoList>
                     (URL.GetPhotosFromArticle(), getPhotoRequest);
 
-                if (!photos.IsSuccess && photos.ErrorMessage != null)
+                if (!photos.IsSuccess && photos.ErrorMessage != null && photos.StatusCode != null)
                 {
-                    await dialogService.ShowMessage(Localization.Error, photos.ErrorMessage);
+                    await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(photos.StatusCode));
                     return;
                 }
                 
@@ -110,7 +134,9 @@ public partial class ArticleDetailViewModel(
             }
             else if (_article.Visibility == VisibilityEnum.Public && _article.Description != null)
             {
-                Visibility = "Public";
+                if (!IsAuthor)
+                    CanDownload = false;
+                Visibility = Localization.PublicVisibility;
                 Description = _article.Description;
 
                 var getPhotoRequest = new GetPhotosByArticle
@@ -120,9 +146,9 @@ public partial class ArticleDetailViewModel(
                 };
                 var photos = await apiService.PostRequest<GetPhotosByArticle, PhotoList>
                     (URL.GetPhotosFromArticle(), getPhotoRequest);
-                if (!photos.IsSuccess && photos.ErrorMessage != null)
+                if (!photos.IsSuccess && photos.ErrorMessage != null && photos.StatusCode != null)
                 {
-                    await dialogService.ShowMessage(Localization.Error, photos.ErrorMessage);
+                    await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(photos.StatusCode));
                     return;
                 }
                 
@@ -140,19 +166,119 @@ public partial class ArticleDetailViewModel(
 
         try
         {
-            var photosList = await photoService.AddPhotosToLocalAsync(photos);
+            var photosList = await photoService.AddPhotosToLocalAsync(photos, _article.Id.ToString());
             Photos = new ObservableCollection<string>(photosList);
         }
         catch (Exception ex)
         {
-            await dialogService.ShowMessage(Localization.Error, $"Ошибка загрузки фото: {ex.Message}");
+            await dialogService.ShowMessage(Localization.Error, Localization.PhotoUploadError);
         }
     }
 
-    public void ClearCache()
+    private async Task CheckAuthor()
     {
-        if(Photos.Count == 0)
+        var result = await apiService.GetRequest<GetId>(URL.GetAuthor(ArticleId));
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
+        else if (result.IsSuccess && result.Data != null)
+        {
+            var authorId = result.Data.Id;
+            var userId = await storageService.GetUserIdAsync();
+            if (authorId.ToString() == userId)
+                IsAuthor = true;
+            else
+                IsAuthor = false;
+        }
+        else
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+    }
+
+    [RelayCommand]
+    private async Task OpenPhotoAsync(string photoPath)
+    {
+        if (string.IsNullOrEmpty(photoPath))
             return;
-        photoService.RemovePhotosFromLocal(Photos.ToList());
+
+        try
+        {
+            var contentPage = new ContentPage
+            {
+                BackgroundColor = Colors.Black
+            };
+
+            var image = new Image
+            {
+                Aspect = Aspect.AspectFit,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill
+            };
+
+            var bytes = await File.ReadAllBytesAsync(photoPath);
+            image.Source = ImageSource.FromStream(() => new MemoryStream(bytes));
+
+            var closeButton = new Button
+            {
+                Text = "✕",
+                FontSize = 24,
+                TextColor = Colors.White,
+                BackgroundColor = Colors.Transparent,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Start,
+                Margin = new Thickness(20, 40, 20, 0),
+                WidthRequest = 50,
+                HeightRequest = 50,
+                ZIndex = 1
+            };
+
+            var grid = new Grid();
+            grid.Children.Add(image);
+            grid.Children.Add(closeButton);
+
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += async (s, e) => await contentPage.Navigation.PopModalAsync();
+            image.GestureRecognizers.Add(tapGesture);
+
+            closeButton.Clicked += async (s, e) => await contentPage.Navigation.PopModalAsync();
+
+            contentPage.Content = grid;
+
+            await Shell.Current.Navigation.PushModalAsync(contentPage);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error opening photo: {ex.Message}");
+            await dialogService.ShowMessage(Localization.Error, "Не удалось открыть изображение");
+        }
+    }
+
+    [RelayCommand]
+    private async Task DownloadSelectedPhotosAsync()
+    {
+        if (SelectedPhotos.Count == 0)
+        {
+            await dialogService.ShowMessage(Localization.Error, "Выберите фото");
+            return;
+        }
+
+        try
+        {
+            var paths = SelectedPhotos.Cast<string>().ToList();
+            await photoSaveService.DownloadPhotoAsync(paths);
+            
+            await dialogService.ShowMessage("Успех", "Все фотографии успешно сохранены");
+        }
+        catch (Exception e)
+        {
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
+        }
+    }
+
+    [RelayCommand]
+    private async Task DeleteArticleAsync()
+    {
+        await apiService.DeleteRequest(URL.DeletePhotosByArticle(ArticleId));
+        await apiService.DeleteRequest(URL.DeleteArticle(ArticleId));
+        await dialogService.ShowMessage(Localization.Success, Localization.ArticleDelete);
+        await navigation.GoBack();
     }
 }
