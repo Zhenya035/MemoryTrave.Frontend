@@ -60,7 +60,8 @@
                                 FontSize="13"
                                 Padding="14,8"
                                 CornerRadius="10"
-                                HeightRequest="36"/>
+                                HeightRequest="36"
+                                IsVisible="false"/>
     
                         <Button Text="{x:Static localization:Localization.Delete}"
                                 Command="{Binding DeleteArticleCommand}"
@@ -90,7 +91,8 @@
                        LineBreakMode="WordWrap"/>
                 
                 <Button Text="Download"
-                        Command="{Binding DownloadSelectedPhotosCommand}"/>
+                        Command="{Binding DownloadSelectedPhotosCommand}"
+                        IsVisible="{Binding CanDownload}"/>
             
                 <CollectionView ItemsSource="{Binding Photos}" 
                                 SelectedItems="{Binding SelectedPhotos}"

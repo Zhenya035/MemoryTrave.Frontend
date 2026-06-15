@@ -7,6 +7,7 @@ public static class URL
     //Article
     private const string ArticleUrl = $"{BaseUrl}/articles";
     public static string GetArticleById(string articleId) => $"{ArticleUrl}/{articleId.ToString()}";
+    public static string GetAuthor(string articleId) => $"{ArticleUrl}/{articleId.ToString()}/author";
     public static string GetMyPrivate() => $"{ArticleUrl}/private";
     public static string AddAccessForUser(string userId) => $"{ArticleUrl}/access/{userId}";
     public static string AddPrivateArticle(string locationId) => $"{ArticleUrl}/private/{locationId}/create";

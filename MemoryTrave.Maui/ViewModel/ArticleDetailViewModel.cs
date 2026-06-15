@@ -5,10 +5,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryTrave.Maui.Infrastructure.Api;
 using MemoryTrave.Maui.Infrastructure.Security;
+using MemoryTrave.Maui.Models;
 using MemoryTrave.Maui.Models.Articles;
 using MemoryTrave.Maui.Models.Enums;
 using MemoryTrave.Maui.Models.Photos;
 using MemoryTrave.Maui.Resources.Localization;
+using MemoryTrave.Maui.Services.Auth;
 using MemoryTrave.Maui.Services.Dialog;
 using MemoryTrave.Maui.Services.Error;
 using MemoryTrave.Maui.Services.Navigation;
@@ -28,7 +30,8 @@ public partial class ArticleDetailViewModel(
     IPhotoSaveService  photoSaveService,
     IStorageService storageService,
     INavigationService navigation,
-    IDialogService dialogService) : ObservableObject
+    IDialogService dialogService,
+    IAuthService authService) : ObservableObject
 {
     [ObservableProperty]
     private string _visibility = string.Empty;
@@ -53,6 +56,9 @@ public partial class ArticleDetailViewModel(
    
     [ObservableProperty] 
     private string _articleId = string.Empty;
+
+    [ObservableProperty] 
+    private bool _canDownload = authService.IsAuthorized;
     
     private Article _article = new();
 
@@ -79,14 +85,13 @@ public partial class ArticleDetailViewModel(
             AuthorName = _article.AuthorName;
             LocationName = _article.LocationName;
             
-            var userId = await storageService.GetUserIdAsync();
-            if (_article.AuthorId.ToString() == userId)
-                IsAuthor = true;
+            if (authService.IsAuthorized)
+                await CheckAuthor();
             
             if (_article.Visibility == VisibilityEnum.Private && _article.EncryptedDescription != null &&
                 _article.EncryptedKey != null)
             {
-                Visibility = "Private";
+                Visibility = Localization.PrivateVisibility;
 
                 var privateKeyString = privateKeyService.GetKey();
                 if (privateKeyString == null)
@@ -129,7 +134,9 @@ public partial class ArticleDetailViewModel(
             }
             else if (_article.Visibility == VisibilityEnum.Public && _article.Description != null)
             {
-                Visibility = "Public";
+                if (!IsAuthor)
+                    CanDownload = false;
+                Visibility = Localization.PublicVisibility;
                 Description = _article.Description;
 
                 var getPhotoRequest = new GetPhotosByArticle
@@ -166,6 +173,24 @@ public partial class ArticleDetailViewModel(
         {
             await dialogService.ShowMessage(Localization.Error, Localization.PhotoUploadError);
         }
+    }
+
+    private async Task CheckAuthor()
+    {
+        var result = await apiService.GetRequest<GetId>(URL.GetAuthor(ArticleId));
+        if (!result.IsSuccess && result.ErrorMessage != null && result.StatusCode != null)
+            await dialogService.ShowMessage(Localization.Error, errorService.ConvertError(result.StatusCode));
+        else if (result.IsSuccess && result.Data != null)
+        {
+            var authorId = result.Data.Id;
+            var userId = await storageService.GetUserIdAsync();
+            if (authorId.ToString() == userId)
+                IsAuthor = true;
+            else
+                IsAuthor = false;
+        }
+        else
+            await dialogService.ShowMessage(Localization.Error, Localization.UnexpectedError);
     }
 
     [RelayCommand]
@@ -255,10 +280,5 @@ public partial class ArticleDetailViewModel(
         await apiService.DeleteRequest(URL.DeleteArticle(ArticleId));
         await dialogService.ShowMessage(Localization.Success, Localization.ArticleDelete);
         await navigation.GoBack();
-    }
-    
-    [RelayCommand]
-    private async Task EditArticleAsync()
-    {
     }
 }
