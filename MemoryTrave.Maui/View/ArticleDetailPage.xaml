@@ -90,13 +90,11 @@
                        TextColor="#1F2937"
                        LineBreakMode="WordWrap"/>
                 
-                <Button Text="Download"
+                <Button Text="{x:Static localization:Localization.DownloadAll}"
                         Command="{Binding DownloadSelectedPhotosCommand}"
                         IsVisible="{Binding CanDownload}"/>
             
                 <CollectionView ItemsSource="{Binding Photos}" 
-                                SelectedItems="{Binding SelectedPhotos}"
-                                SelectionMode="Multiple"
                                 HeightRequest="200"
                                 ItemsLayout="HorizontalList"
                                 HorizontalScrollBarVisibility="Never">

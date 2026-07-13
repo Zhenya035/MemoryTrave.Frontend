@@ -96,7 +96,7 @@ public partial class MapViewModel : ObservableObject
             var color = loc.LocationContentState switch
             {
                 LocationContentState.Empty => "#969696",
-                LocationContentState.MyArticles => "#4285F4",
+                LocationContentState.MyArticles => "#9C27B0",
                 LocationContentState.FriendsArticles => "#34A853",
                 LocationContentState.MyAndFriendsArticles => "#EA4335",
                 _ => "#FBBC04"

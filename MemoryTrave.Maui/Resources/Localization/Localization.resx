@@ -228,4 +228,19 @@
     <data name="ArticleDelete" xml:space="preserve">
         <value>Article deleted</value>
     </data>
+    <data name="DownloadAll" xml:space="preserve">
+        <value>Download all</value>
+    </data>
+    <data name="My" xml:space="preserve">
+        <value>My</value>
+    </data>
+    <data name="MyAndFriends" xml:space="preserve">
+        <value>Common with friends</value>
+    </data>
+    <data name="Other" xml:space="preserve">
+        <value>Other</value>
+    </data>
+    <data name="Empty" xml:space="preserve">
+        <value>Empty</value>
+    </data>
 </root>

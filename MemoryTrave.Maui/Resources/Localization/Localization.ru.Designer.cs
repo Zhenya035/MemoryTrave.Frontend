@@ -240,11 +240,29 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Скачать всё.
+        /// </summary>
+        internal static string DownloadAll {
+            get {
+                return ResourceManager.GetString("DownloadAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изменить.
         /// </summary>
         internal static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пустые.
+        /// </summary>
+        internal static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
             }
         }
         
@@ -384,6 +402,24 @@ namespace MemoryTrave.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Мои.
+        /// </summary>
+        internal static string My {
+            get {
+                return ResourceManager.GetString("My", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Общие с друзьями.
+        /// </summary>
+        internal static string MyAndFriends {
+            get {
+                return ResourceManager.GetString("MyAndFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нет друзей.
         /// </summary>
         internal static string NoFriends {
@@ -434,6 +470,15 @@ namespace MemoryTrave.Maui.Resources.Localization {
         internal static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Другие.
+        /// </summary>
+        internal static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
             }
         }
         

@@ -228,4 +228,19 @@
     <data name="ArticleDelete" xml:space="preserve">
         <value>Статья удалена</value>
     </data>
+    <data name="DownloadAll" xml:space="preserve">
+        <value>Скачать всё</value>
+    </data>
+    <data name="My" xml:space="preserve">
+        <value>Мои</value>
+    </data>
+    <data name="MyAndFriends" xml:space="preserve">
+        <value>Общие с друзьями</value>
+    </data>
+    <data name="Other" xml:space="preserve">
+        <value>Другие</value>
+    </data>
+    <data name="Empty" xml:space="preserve">
+        <value>Пустые</value>
+    </data>
 </root>
