@@ -254,15 +254,15 @@ public partial class ArticleDetailViewModel(
     [RelayCommand]
     private async Task DownloadSelectedPhotosAsync()
     {
-        if (SelectedPhotos.Count == 0)
+        /*if (SelectedPhotos.Count == 0)
         {
             await dialogService.ShowMessage(Localization.Error, "Выберите фото");
             return;
-        }
+        }*/
 
         try
         {
-            var paths = SelectedPhotos.Cast<string>().ToList();
+            var paths = Photos.ToList();
             await photoSaveService.DownloadPhotoAsync(paths);
             
             await dialogService.ShowMessage("Успех", "Все фотографии успешно сохранены");
